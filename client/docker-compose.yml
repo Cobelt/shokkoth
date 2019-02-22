@@ -4,16 +4,16 @@ volumes:
   node_modules:
 
 services:
-  dofusLab:
-    image: cobelt/dofusLab
-    container_name: dofusLab_frontend
+  dofuslab:
+    image: cobelt/dofuslab
+    container_name: dofuslab_frontend
 
     build:
       context: .
       dockerfile: Dockerfile
     volumes:
     - .:/app
-    - node_modules:/app/dofusLab/node_modules
+    - node_modules:/app/dofuslab/node_modules
 
     ports:
     - '3051:80'

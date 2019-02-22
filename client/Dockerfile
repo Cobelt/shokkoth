@@ -4,14 +4,14 @@ FROM node:latest
 # creator
 MAINTAINER Cobelt Dierk <cobelt60@gmail.com>
 
-ENV APP_PATH=/app/dofusLab
+ENV APP_PATH=/app/dofuslab
 ENV NODE_MODULES_BIN=$APP_PATH/node_modules/.bin
 
 # set working directory
 RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
 
-# add `/app/dofusLab/node_modules/.bin` to $PATH
+# add `/app/dofuslab/node_modules/.bin` to $PATH
 ENV PATH $NODE_MODULES_BIN:$PATH
 
 # Install vim

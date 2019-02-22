@@ -18,16 +18,10 @@ module.exports = {
         historyApiFallback: true,
         disableHostCheck: true,
         allowedHosts: [
-            'muejs',
+            'labdofus',
             'localhost',
         ],
     },
-    watchOptions: {
-        aggregateTimeout: 300,
-        poll: true,
-        ignored: ['node_modules', './**/components'],
-    },
-
     entry: {
         app: './src/app.js',
     },
@@ -37,7 +31,7 @@ module.exports = {
     },
     plugins: [
         cleanPlugin('dist'),
-        copyPlugin('./srcdemo/app.js'),
+        copyPlugin('./src/app.js'),
         htmlPlugin,
         HMRPlugin({ webpack }),
     ]
