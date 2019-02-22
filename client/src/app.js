@@ -18,9 +18,9 @@ const history = createBrowserHistory();
 
 class App extends Component {
     render() {
-        const quantityOfRows = 6;
+        const quantityOfRows = 4;
         return (
-            <Grid className="page" rowsTemplate={{ [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '60vw', 3: '1fr' }}>
+            <Grid className="page" rowsTemplate={{ 2: '50vh', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '47.5vw', 3: '47.5vw', 4: '1fr' }}>
                 <Navbar row={0} />
                 <Switch>
                     <Route exact path="/" component={Home} />
