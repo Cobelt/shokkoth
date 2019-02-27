@@ -6,9 +6,12 @@ import { GridsProvider, Grid } from 'muejs';
 import { Router, Route, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
 
-import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+
+import Home from './pages/Home';
+import MyStuffs from './pages/MyStuffs';
+import MyCharacters from './pages/MyCharacters';
 
 import './app.styl';
 
@@ -24,6 +27,8 @@ class App extends Component {
                 <Navbar row={0} />
                 <Switch>
                     <Route exact path="/" component={Home} />
+                    <Route path="/my-stuffs" component={MyStuffs} />
+                    <Route path="/my-characters" component={MyCharacters} />
                 </Switch>
                 <Footer row={quantityOfRows} />
             </Grid>

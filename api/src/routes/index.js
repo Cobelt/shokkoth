@@ -1,0 +1,1 @@
+export useEquipmentsRouter, { getEquipmentsRouter } from './equipments';

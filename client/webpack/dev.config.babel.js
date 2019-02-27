@@ -7,13 +7,13 @@ module.exports = {
     mode: 'development',
     devtool: 'inline-source-map',
     devServer: {
-        host: '0.0.0.0',
-        port: 80,
+        // host: '0.0.0.0',
+        port: 3051,
         public: 'localhost:3051',
 
         hot: true,
 
-        contentBase: './dist',
+        contentBase: './src',
 
         historyApiFallback: true,
         disableHostCheck: true,

@@ -1,11 +1,13 @@
 {
   "dependencies": {
+    "axios": "^0.18.0",
     "history": "^4.7.2",
     "muejs": "^1.1.1",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
     "react-motion": "^0.5.2",
-    "react-router": "^4.3.1"
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -13,7 +15,7 @@
     "@babel/plugin-proposal-export-default-from": "^7.2.0",
     "@babel/plugin-syntax-object-rest-spread": "^7.2.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-env": "^7.3.4",
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.3.1",

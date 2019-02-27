@@ -1,0 +1,1 @@
+export EquipmentsModel from './equipments';

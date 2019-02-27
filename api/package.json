@@ -1,0 +1,29 @@
+{
+  "name": "dofuslab-api",
+  "version": "0.0.1",
+  "description": "DofusLab REST API",
+  "main": "src/index.js",
+  "author": "cobelt",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.4",
+    "@babel/node": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.4",
+    "@babel/plugin-proposal-export-default-from": "^7.2.0",
+    "@babel/plugin-syntax-object-rest-spread": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "@babel/runtime": "^7.3.4",
+    "nodemon": "^1.18.9"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.16"
+  },
+  "scripts": {
+    "start": "nodemon --exec babel-node server.js"
+  }
+}
