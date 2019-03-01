@@ -3,6 +3,56 @@ import mongoose from 'mongoose';
 
 const Equipment = mongoose.model('Equipments');
 
+const _formatExtractedStat = equipment => {
+    const toReturn = equipment;
+    if (equipment.stats.length > 0) {
+        equipment.stats.forEach((stat, index) => {
+            const statEntry = Object.entries(stat)[0];
+            toReturn.stats[index] = { name: statEntry[0], ...statEntry[1] };
+        });
+    }
+    return toReturn;
+};
+
+const _formatExtractedRecipe = equipment => {
+    const toReturn = equipment;
+    if (equipment.recipe.length > 0) {
+        equipment.recipe.forEach((stat, index) => {
+            const statEntry = Object.entries(stat)[0];
+            toReturn.recipe[index] = { name: statEntry[0], ...statEntry[1] };
+        });
+    }
+    return toReturn;
+};
+
+
+const _update = function(itemId, newEquipment) {
+    let toReturn;
+    Equipment.findOneAndUpdate({ _id: itemId }, newEquipment, { returnNewDocument: true }, function(err, equipment) {
+        if (err) toReturn = err;
+        else toReturn = equipment;
+    });
+    return toReturn;
+};
+
+const _save = async (toSave) => {
+    let toReturn;
+    toSave.save(await function(err, equipment) {
+        if(err) {
+            if (err.code === 11000) {
+                toReturn = _update(toSave._id, toSave);
+            }
+            else {
+                throw err;
+            }
+        }
+        else toReturn = equipment;
+    });
+    return toReturn;
+};
+
+
+
 export const getAll = function(req, res) {
     Equipment.find({}, function(err, equipment) {
         if (err) res.send(err);
@@ -10,12 +60,36 @@ export const getAll = function(req, res) {
     });
 };
 
+
+export const extractAll = async function(req, res) {
+    const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments`);
+
+    if (!data) res.send(new Error('Got no data from the API for https://dofapi2.herokuapp.com/equipments/'));
+
+    console.log('=> Extracting', data.length, 'equipments !....');
+
+    const extracted = [];
+    data.map((equipmentFromAPI, index) => {
+        const formattedEquipment = _formatExtractedRecipe(_formatExtractedStat(equipmentFromAPI));
+
+        const newEquipment = new Equipment(formattedEquipment);
+        try {
+            const saved = _save(newEquipment);
+            extracted.push(saved);
+        }
+        catch (e) {
+            res.send(err);
+        }
+    });
+    res.send(`Done for ${extracted.length} equipments`);
+};
+
 export const extract = async function(req, res) {
     const { itemId } = req.params || {};
     if (!itemId) res.send(new Error('No itemId given. Please tell me what I should extract !'));
 
-    const response = await axios.get(`https://dofapi2.herokuapp.com/equipments/${itemId}`);
-    console.log(response.data);
+    const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments/${itemId}`);
+    if (!data) res.send(new Error(`Got no data from the API for https://dofapi2.herokuapp.com/equipments/${itemId}`));
 
     const newEquipment = new Equipment(response.data);
     newEquipment.save(function(err, equipment) {
@@ -23,6 +97,7 @@ export const extract = async function(req, res) {
         res.json(equipment);
     });
 };
+
 
 export const create = function(req, res) {
     const newEquipment = new Equipment(req.body);
@@ -43,6 +118,8 @@ export const get = function(req, res) {
         res.json(equipment);
     });
 };
+
+
 
 
 export const update = function(req, res) {

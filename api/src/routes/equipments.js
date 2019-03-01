@@ -14,6 +14,10 @@ equipmentsRouter.route('/:itemId')
     .put(Controller.update)
     .delete(Controller.remove);
 
+equipmentsRouter.route('/extract/all')
+    .get(Controller.extractAll)
+    .post(Controller.extractAll);
+
 equipmentsRouter.route('/extract/:itemId')
     .get(Controller.extract)
     .post(Controller.extract);
