@@ -7,6 +7,7 @@ module.exports = function (api) {
   const plugins = [
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-proposal-export-namespace-from",
     "@babel/plugin-syntax-object-rest-spread",
     [
       "@babel/plugin-transform-runtime",

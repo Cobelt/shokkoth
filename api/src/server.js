@@ -2,8 +2,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 
-import { EquipmentsModel } from './src/models';
-import { useEquipmentsRouter } from './src/routes';
+import { EquipmentsModel } from './models';
+import { useEquipmentsRouter } from './routes';
 
 const hostname = 'localhost';
 const port = process.env.PORT || 5012;
