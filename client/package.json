@@ -2,6 +2,10 @@
   "dependencies": {
     "axios": "^0.18.0",
     "history": "^4.7.2",
+    "immer": "^2.1.1",
+    "lodash.get": "^4.4.2",
+    "lodash.isequal": "^4.5.0",
+    "lodash.set": "^4.3.2",
     "muejs": "^1.1.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",

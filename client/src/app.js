@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import { GridsProvider, Grid } from 'muejs';
+import { UserProvider } from './store/context/user';
 
 import { Router, Route, Switch } from 'react-router';
 import { createBrowserHistory } from 'history';
@@ -39,8 +40,10 @@ class App extends Component {
 
 ReactDOM.render((
     <Router history={history}>
-        <GridsProvider>
-            <App />
-        </GridsProvider>
+        <UserProvider>
+            <GridsProvider>
+                <App />
+            </GridsProvider>
+        </UserProvider>
     </Router>
 ), document.getElementById('root'));

@@ -2,7 +2,35 @@ import React, { Component } from 'react';
 import { withRouter, NavLink } from 'react-router-dom';
 import { Navbar, NavBrand, NavIcon, NavLabel } from 'muejs';
 
+import UserContext from '../../store/context/user';
+import { isLogged } from '../../store/selectors/user';
+
 import './stylesheet.styl';
+
+class WithConsumerNavItems extends Component {
+    render() {
+        const { idgrid } = this.props;
+        const { store } = this.context;
+        if (isLogged(store)) {
+            return (
+                <>
+                    <NavLabel justify="right" idgrid={idgrid}>
+                        <NavLink to="/my-stuffs" activeClassName="active">Mes stuffs</NavLink>
+                    </NavLabel>
+                    <NavLabel justify="right" idgrid={idgrid}>
+                        <NavLink to="/my-characters" activeClassName="active">Mes persos</NavLink>
+                    </NavLabel>
+                </>
+            );
+        }
+        return (
+            <NavLabel justify="right" idgrid={idgrid}>
+                <NavLink to="/login" activeClassName="active">Login</NavLink>
+            </NavLabel>
+        );
+    }
+}
+WithConsumerNavItems.context = UserContext;
 
 class NavbarComponent extends Component {
     render () {
@@ -13,12 +41,7 @@ class NavbarComponent extends Component {
                     <NavLink to="/">DofusLab</NavLink>
                 </NavBrand>
 
-                <NavLabel justify="right">
-                    <NavLink to="/my-stuffs" activeClassName="active">Mes stuffs</NavLink>
-                </NavLabel>
-                <NavLabel justify="right">
-                    <NavLink to="/my-characters" activeClassName="active">Mes persos</NavLink>
-                </NavLabel>
+                <WithConsumerNavItems />
 
                 {/*<NavLabel justify="right" label="karyt.fr" route="http://karyt.fr"/>*/}
                 {/*<NavLabel justify="right" label="cobelt.fr" route="http://cobelt.fr"/>*/}
