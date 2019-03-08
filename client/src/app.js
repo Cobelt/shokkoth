@@ -25,7 +25,7 @@ class App extends Component {
     render() {
         const quantityOfRows = 4;
         return (
-            <Grid className="page" gap="2vw" rowsTemplate={{ 2: '50vh', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '25vw', 3: '20vw', 4: '20vw', 5: '25vw', 6: '1fr' }}>
+            <Grid className="page" gap="2vw" rowsTemplate={{ 1: '1fr', 2: '1fr', 3: '1fr', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '25vw', 3: '20vw', 4: '20vw', 5: '25vw', 6: '1fr' }}>
                 <Navbar row={0} />
                 <Switch>
                     <Route exact path="/" component={Home} />

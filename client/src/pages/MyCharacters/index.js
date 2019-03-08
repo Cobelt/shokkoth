@@ -73,13 +73,13 @@ export default class MyCharacters extends Component {
         const position = { row: 1, col: 0 };
         return (
             <>
-                <Element row={1} col={2} width={2} style={{ marginTop: '64px' }}>
+                <Element row={1} col={3} width={2} style={{ marginTop: '64px' }}>
                     <h2>
                         My characters
                     </h2>
                 </Element>
 
-                <Element stretch row={2} width={6}>
+                <Element stretch row={2} width={6} height={2}>
                     <Grid gap="1.25rem" className="characters-list" columnsTemplate={ '1fr '.repeat(characterByRow) }>
                         { fakeData.map((character, index) => {
                             position.row = Math.trunc(1 + index / characterByRow);

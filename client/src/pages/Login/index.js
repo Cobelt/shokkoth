@@ -14,13 +14,13 @@ export default class Home extends Component {
                     </h2>
                 </Element>
 
-                <Row className="bg-error">
+                <Element row={2} width={6} className="bg-error">
                     <h5>Username :</h5>
-                </Row>
+                </Element>
 
-                <Row className="bg-error">
+                <Element row={3} width={6} className="bg-error">
                     <h5>Password :</h5>
-                </Row>
+                </Element>
             </>
         );
     }
