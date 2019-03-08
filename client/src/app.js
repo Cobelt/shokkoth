@@ -11,6 +11,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
 import Home from './pages/Home';
+import Login from './pages/Login';
 import MyStuffs from './pages/MyStuffs';
 import MyCharacters from './pages/MyCharacters';
 
@@ -24,10 +25,11 @@ class App extends Component {
     render() {
         const quantityOfRows = 4;
         return (
-            <Grid className="page" rowsTemplate={{ 2: '50vh', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '47.5vw', 3: '47.5vw', 4: '1fr' }}>
+            <Grid className="page" gap="2vw" rowsTemplate={{ 2: '50vh', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '25vw', 3: '20vw', 4: '20vw', 5: '25vw', 6: '1fr' }}>
                 <Navbar row={0} />
                 <Switch>
                     <Route exact path="/" component={Home} />
+                    <Route exact path="/login" component={Login} />
                     <Route path="/my-stuffs" component={MyStuffs} />
                     <Route path="/my-characters" component={MyCharacters} />
                 </Switch>

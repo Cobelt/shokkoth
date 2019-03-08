@@ -1,8 +1,28 @@
 import React, { Component } from 'react';
-import { Grid, Element } from 'muejs';
+import { Grid, Element, Row } from 'muejs';
 
 import './stylesheet.styl';
 
+const breeds = {
+    'Feca': 1,
+    'Osamodas': 2,
+    'Enutrof': 3,
+    'Sram': 4,
+    'Xelor': 5,
+    'Ecaflip': 6,
+    'Eniripsa': 7,
+    'Iop': 8,
+    'Cra': 9,
+    'Sadida': 10,
+    'Sacrieur': 11,
+    'Pandawa': 12,
+    'Roublard': 13,
+    'Zobal': 14,
+    'Steamer': 15,
+    'Eliotrope': 16,
+    'Huppermage': 17,
+    'Ouginak': 18
+}
 
 const fakeData = [
     {
@@ -45,11 +65,12 @@ const fakeData = [
 export default class MyCharacters extends Component {
     constructor(props) {
         super(props);
-        this.state = { characterByRow: 6 };
+        this.state = { characterByRow: 7 };
     }
 
     render() {
         const { characterByRow } = this.state;
+        const position = { row: 1, col: 0 };
         return (
             <>
                 <Element row={1} col={2} width={2} style={{ marginTop: '64px' }}>
@@ -58,18 +79,26 @@ export default class MyCharacters extends Component {
                     </h2>
                 </Element>
 
-                <Element row={2} width={4}>
-                    <Grid className="characters-list" columnsTemplate={ '1fr '.repeat(characterByRow) }>
+                <Element stretch row={2} width={6}>
+                    <Grid gap="1.25rem" className="characters-list" columnsTemplate={ '1fr '.repeat(characterByRow) }>
                         { fakeData.map((character, index) => {
+                            position.row = Math.trunc(1 + index / characterByRow);
+                            position.col = 1 + (index % characterByRow);
                             return (
-                               <Element row={Math.trunc(1 + index / characterByRow)} col={1 + index % characterByRow}>
+                               <Element key={`character#${character.id}#${character.pseudo}`} className="character" style={{ minWidth: `calc(100vh / ${characterByRow})` }} row={position.row} col={position.col}>
+                                   <img className="avatar" alt="avatar-breed" src={`https://s.ankama.com/www/static.ankama.com/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/illu/${breeds[character.classe]}.jpg`} />
                                    { character.id }
                                    { character.pseudo }
-                                   { character.classe }
                                </Element>
                            );
                         }) }
-
+                        <Element
+                            className='new-character'
+                            row={position.col % characterByRow === 0 ? (position.row + 1) : position.row}
+                            col={position.col % characterByRow === 0 ? 1 : position.col + 1 % characterByRow}
+                        >
+                            Create new character
+                        </Element>
                     </Grid>
                 </Element>
             </>

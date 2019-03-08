@@ -7,31 +7,6 @@ import { isLogged } from '../../store/selectors/user';
 
 import './stylesheet.styl';
 
-class WithConsumerNavItems extends Component {
-    render() {
-        const { idgrid } = this.props;
-        const { store } = this.context;
-        if (isLogged(store)) {
-            return (
-                <>
-                    <NavLabel justify="right" idgrid={idgrid}>
-                        <NavLink to="/my-stuffs" activeClassName="active">Mes stuffs</NavLink>
-                    </NavLabel>
-                    <NavLabel justify="right" idgrid={idgrid}>
-                        <NavLink to="/my-characters" activeClassName="active">Mes persos</NavLink>
-                    </NavLabel>
-                </>
-            );
-        }
-        return (
-            <NavLabel justify="right" idgrid={idgrid}>
-                <NavLink to="/login" activeClassName="active">Login</NavLink>
-            </NavLabel>
-        );
-    }
-}
-WithConsumerNavItems.context = UserContext;
-
 class NavbarComponent extends Component {
     render () {
         const { row, idgrid } = this.props;
@@ -41,11 +16,16 @@ class NavbarComponent extends Component {
                     <NavLink to="/">DofusLab</NavLink>
                 </NavBrand>
 
-                <WithConsumerNavItems />
+                <NavLabel justify="right" idgrid={idgrid}>
+                    <NavLink to="/my-stuffs" activeClassName="active">Mes stuffs</NavLink>
+                </NavLabel>
+                <NavLabel justify="right" idgrid={idgrid}>
+                    <NavLink to="/my-characters" activeClassName="active">Mes persos</NavLink>
+                </NavLabel>
 
-                {/*<NavLabel justify="right" label="karyt.fr" route="http://karyt.fr"/>*/}
-                {/*<NavLabel justify="right" label="cobelt.fr" route="http://cobelt.fr"/>*/}
-                {/*<NavIcon justify="right" route="http://github.com/cobelt" icon="github" svg />*/}
+                <NavLabel justify="right" idgrid={idgrid}>
+                    <NavLink to="/login" activeClassName="active">Login</NavLink>
+                </NavLabel>
             </Navbar>
         );
     }

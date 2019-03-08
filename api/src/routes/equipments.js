@@ -8,6 +8,9 @@ const equipmentsRouter = express.Router();
 equipmentsRouter.route('/')
     .get(Controller.getAll);
 
+equipmentsRouter.route('/details')
+    .get(Controller.getDetailed);
+
 equipmentsRouter.route('/:itemId')
     .get(Controller.get)
     .post(Controller.create)

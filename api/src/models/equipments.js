@@ -52,11 +52,23 @@ const EquipmentsSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    saved_at: {
+    created_at: {
         type: Date,
         default: Date.now
     },
 });
+
+
+
+EquipmentsSchema.pre('save', function (next) {
+    try {
+        this.updated_at = Date.now();
+        next();
+    } catch (err) {
+        next(err);
+    }
+});
+
 
 const Equipments = mongoose.model('Equipments', EquipmentsSchema);
 export default Equipments;

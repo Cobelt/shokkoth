@@ -54,7 +54,19 @@ const _save = async (toSave) => {
 
 
 export const getAll = function(req, res) {
-    Equipment.find({}, function(err, equipment) {
+    Equipment.find({}, 'name', function(err, equipment) {
+        if (err) res.send(err);
+        res.json(equipment);
+    });
+};
+
+export const getDetailed = function(req, res) {
+    const { perPage = 100, page = 0 } = req.params || {};
+    Equipment
+        .find({ })
+        .skip(perPage * page)
+        .limit(perPage)
+        .exec(function(err, equipment) {
         if (err) res.send(err);
         res.json(equipment);
     });

@@ -1,0 +1,1 @@
+export const SECRET_KEY = "s3cr3t_t0_ch4ng3";
