@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { EquipmentsTypes } from '../constants/equipments';
 
 const EquipmentsSchema = new mongoose.Schema({
     _id: Number,
@@ -12,7 +13,7 @@ const EquipmentsSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: ['Chapeau', 'Cape', 'Amulette', 'Anneau', 'Ceinture', 'Bottes', 'Bouclier', 'Dofus', 'Trophée', 'Objet d\'apparat', 'Sac à dos', 'Objet vivant'],
+        enum: EquipmentsType,
         required: 'Please give me the type of equipment I am !'
     },
     description: String,

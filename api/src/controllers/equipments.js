@@ -1,5 +1,6 @@
 import axios from 'axios';
 import mongoose from 'mongoose';
+import { EquipmentsTypes } from '../constants/equipments';
 
 const Equipment = mongoose.model('Equipments');
 
@@ -131,6 +132,16 @@ export const get = function(req, res) {
     });
 };
 
+
+export const searchByType = function(req, res) {
+    const { type } = req.params || {};
+    if (!type || !EquipmentsTypes.includes(type)) res.send(new Error('No type given. Please tell me what I should search for !'));
+
+    Equipment.find({ type: new RegExp(type, 'i') }, 'name', function(err, equipment) {
+        if (err) res.send(err);
+        res.json(equipment);
+    });
+}
 
 
 

@@ -1,0 +1,1 @@
+export const EquipmentsTypes = ['Chapeau', 'Cape', 'Amulette', 'Anneau', 'Ceinture', 'Bottes', 'Bouclier', 'Dofus', 'Trophée', 'Objet d\'apparat', 'Sac à dos', 'Objet vivant'];

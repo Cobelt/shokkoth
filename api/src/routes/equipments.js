@@ -11,6 +11,9 @@ equipmentsRouter.route('/')
 equipmentsRouter.route('/details')
     .get(Controller.getDetailed);
 
+equipmentsRouter.route('/type/:type')
+    .get(Controller.searchByType);
+
 equipmentsRouter.route('/:itemId')
     .get(Controller.get)
     .post(Controller.create)
