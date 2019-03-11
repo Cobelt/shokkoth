@@ -77,7 +77,7 @@ export const getDetailed = function(req, res) {
 export const extractAll = async function(req, res) {
     const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments`);
 
-    if (!data) res.send(new Error('Got no data from the API for https://dofapi2.herokuapp.com/equipments/'));
+    if (!data) return res.send(new Error('Got no data from the API for https://dofapi2.herokuapp.com/equipments/'));
 
     console.log('=> Extracting', data.length, 'equipments !....');
 
@@ -99,10 +99,10 @@ export const extractAll = async function(req, res) {
 
 export const extract = async function(req, res) {
     const { itemId } = req.params || {};
-    if (!itemId) res.send(new Error('No itemId given. Please tell me what I should extract !'));
+    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should extract !'));
 
     const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments/${itemId}`);
-    if (!data) res.send(new Error(`Got no data from the API for https://dofapi2.herokuapp.com/equipments/${itemId}`));
+    if (!data) return res.send(new Error(`Got no data from the API for https://dofapi2.herokuapp.com/equipments/${itemId}`));
 
     const newEquipment = new Equipment(response.data);
     newEquipment.save(function(err, equipment) {
@@ -115,6 +115,8 @@ export const extract = async function(req, res) {
 export const create = function(req, res) {
     const newEquipment = new Equipment(req.body);
 
+    // do checks here
+
     newEquipment.save(function(err, equipment) {
         if (err) res.send(err);
         res.json(equipment);
@@ -124,7 +126,7 @@ export const create = function(req, res) {
 
 export const get = function(req, res) {
     const { itemId } = req.params || {};
-    if (!itemId) res.send(new Error('No itemId given. Please tell me what I should search for !'));
+    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should search for !'));
 
     Equipment.findById(itemId, function(err, equipment) {
         if (err) res.send(err);
@@ -135,11 +137,12 @@ export const get = function(req, res) {
 
 export const searchByType = function(req, res) {
     const { type } = req.params || {};
-    if (!type || !EquipmentsTypes.includes(type)) res.send(new Error('No type given. Please tell me what I should search for !'));
+    console.log('=>', type);
+    if (!type) return res.send(new Error('No type given. Please tell me what I should search for !'));
 
-    Equipment.find({ type: new RegExp(type, 'i') }, 'name', function(err, equipment) {
+    Equipment.find({ type: new RegExp(type, 'i') }, 'name', function(err, equipments) {
         if (err) res.send(err);
-        res.json(equipment);
+        else res.json(equipments);
     });
 }
 
@@ -147,7 +150,7 @@ export const searchByType = function(req, res) {
 
 export const update = function(req, res) {
     const { itemId } = req.params || {};
-    if (!itemId) res.send(new Error('No itemId given. Please tell me what I should update !'));
+    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should update !'));
 
     Equipment.findOneAndUpdate({_id: itemId}, req.body, { new: true }, function(err, equipment) {
         if (err) res.send(err);
@@ -158,7 +161,7 @@ export const update = function(req, res) {
 
 export const remove = function(req, res) {
     const { itemId } = req.params || {};
-    if (!itemId) res.send(new Error('No itemId given. Please tell me what I should remove !'));
+    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should remove !'));
 
     Equipment.remove({ _id: itemId
     }, function(err, equipment) {

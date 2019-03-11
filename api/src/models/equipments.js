@@ -13,7 +13,7 @@ const EquipmentsSchema = new mongoose.Schema({
     },
     type: {
         type: String,
-        enum: EquipmentsType,
+        enum: EquipmentsTypes,
         required: 'Please give me the type of equipment I am !'
     },
     description: String,
