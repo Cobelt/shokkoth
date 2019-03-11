@@ -15,6 +15,8 @@ import Login from './pages/Login';
 import MyStuffs from './pages/MyStuffs';
 import MyCharacters from './pages/MyCharacters';
 
+import Character from './pages/Character';
+
 import './app.styl';
 
 
@@ -28,10 +30,12 @@ class App extends Component {
             <Grid className="page" gap="2vw" rowsTemplate={{ 1: '1fr', 2: '1fr', 3: '1fr', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '25vw', 3: '20vw', 4: '20vw', 5: '25vw', 6: '1fr' }}>
                 <Navbar row={0} />
                 <Switch>
-                    <Route exact path="/" component={Home} />
+                    <Route path="/" component={Home} />
+                    <Route path="/character" component={Character} />
+
                     <Route exact path="/login" component={Login} />
-                    <Route path="/my-stuffs" component={MyStuffs} />
-                    <Route path="/my-characters" component={MyCharacters} />
+                    <Route exact path="/my-stuffs" component={MyStuffs} />
+                    <Route exact path="/my-characters" component={MyCharacters} />
                 </Switch>
                 <Footer row={quantityOfRows} />
             </Grid>
