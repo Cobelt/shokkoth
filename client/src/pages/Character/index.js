@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 
-import { Route, Switch, withRouter } from "react-router";
+import { Route, Switch, Redirect, withRouter } from "react-router";
 
+import MyCharacters from '../../pages/Character/MyCharacters';
+
+import Details from './Details';
+import Error404 from './404';
 
 class Character extends Component {
     constructor(props) {
@@ -10,10 +14,13 @@ class Character extends Component {
 
     render() {
         const { location, match: { path } = {} } = this.props;
-        console.log('location', location);
+        console.log('location', location, 'path', path);
         return (
-            <Switch location={location}>
-                <Route path="/6" render={() => 'du popo'} />
+            <Switch>
+                <Route exact path={`${path}/:id`} component={Details} />
+                <Route exact path={path} component={MyCharacters} />
+
+                <Route component={Error404} />
             </Switch>
         );
     }

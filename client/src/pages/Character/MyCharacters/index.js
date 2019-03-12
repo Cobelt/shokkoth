@@ -180,7 +180,7 @@ class MyCharacters extends Component {
                                     style={{ minWidth: `calc(100vh / ${characterByRow})` }}
                                     row={position.row}
                                     col={position.col}
-                                    onClick={() => push(`/character/${character.id}`)}
+                                    onClick={() => push(`/characters/${character.id}`)}
                                 >
                                     <div className={avatarClassnames} style={{ backgroundImage }} aria-disabled={true}>
                                         { (character.pseudo || character.level) && (

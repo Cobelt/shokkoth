@@ -17,10 +17,10 @@ class NavbarComponent extends Component {
                 </NavBrand>
 
                 <NavLabel justify="right" idgrid={idgrid}>
-                    <NavLink to="/my-stuffs" activeClassName="active">Mes stuffs</NavLink>
+                    <NavLink to="/stuffs" activeClassName="active">Mes stuffs</NavLink>
                 </NavLabel>
                 <NavLabel justify="right" idgrid={idgrid}>
-                    <NavLink to="/my-characters" activeClassName="active">Mes persos</NavLink>
+                    <NavLink to="/characters" activeClassName="active">Mes persos</NavLink>
                 </NavLabel>
 
                 <NavLabel justify="right" idgrid={idgrid}>

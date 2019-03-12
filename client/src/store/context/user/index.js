@@ -5,7 +5,6 @@ import { UserReducer } from '../../reducers/user';
 const UserContext = React.createContext();
 export default UserContext;
 
-
 export const UserConsumer = UserContext.Consumer;
 
 export class UserProvider extends Component {
