@@ -1,0 +1,53 @@
+@import '../../../variables.styl';
+
+primary-color-grayscaled = #e4e6c3
+
+.character-details
+
+  .share-icon, .pseudo, .level
+    color primary-color
+
+  .pseudo, .level
+    font-weight 600
+    align-self baseline
+
+  .pseudo
+    justify-self center
+    font-size 1.85rem
+
+  .level
+    justify-self right
+    font-size 1.45rem
+
+  .avatar
+    justify-self center
+
+    img
+      object-fit cover
+      height 100%
+      padding 3rem 0
+
+  .equipment
+    width 5.5rem
+    height 5.5rem
+
+    display flex
+    align-items center
+    justify-content center
+
+    cursor pointer
+    border solid 1px darken(primary-color-grayscaled, 5%)
+    background-color primary-color-grayscaled
+    transition background-color 0.5s, border 0.5s
+
+    &.trophy svg
+      transform scale(0.8)
+      filter grayscale(70%)
+      transition filter 0.5s
+
+    &:hover
+      border solid 1px shade(darken(primary-color-grayscaled, 10%), 10%)
+      background-color shade(darken(primary-color-grayscaled, 5%), 10%)
+
+      &.trophy svg
+        filter grayscale(50%) brightness(90%)

@@ -13,8 +13,7 @@ class Character extends Component {
     }
 
     render() {
-        const { location, match: { path } = {} } = this.props;
-        console.log('location', location, 'path', path);
+        const { match: { path } = {} } = this.props;
         return (
             <Switch>
                 <Route exact path={`${path}/:id`} component={Details} />
