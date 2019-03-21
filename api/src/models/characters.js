@@ -6,9 +6,9 @@ const CharactersSchema = new mongoose.Schema({
         type: String,
         required: 'Please give me a pseudo',
     },
-    lvl: {
+    level: {
         type: Number,
-        required: 'Please give me a lvl',
+        required: 'Please give me a level',
     },
     breed: {
         type: Number,
