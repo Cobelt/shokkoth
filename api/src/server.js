@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 
 import { EquipmentsModel } from './models';
-import { useEquipmentsRouter } from './routes';
+import { useEquipmentsRouter, useExtracterRouter } from './routes';
 
 const hostname = 'localhost';
 const port = process.env.PORT || 5012;
@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 useEquipmentsRouter(app);
+useExtracterRouter(app);
 
 
 app.listen(port, hostname, () => console.log(`DofusLab-API started on http://${hostname}:${port}`));
