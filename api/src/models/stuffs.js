@@ -2,22 +2,25 @@ import mongoose from 'mongoose';
 import get from 'lodash.get';
 
 import Equipments from './equipments.js';
+import Pets from './pets.js';
+import Mounts from './mounts.js';
 
 import {
     AMULET,
     BACKPACK,
     BELT,
-    BOOTS, CEREMONIAL,
+    BOOTS,
     CLOAK,
     DOFUS,
     HAT,
-    LIVING_OBJECT,
     RING,
     SHIELD,
-    TROPHY
+    TROPHY,
+    CEREMONIAL,
+    LIVING_OBJECT,
 } from '../constants/equipments';
-import {Mounts} from "../constants/mounts";
-import {PET, PETSMOUNT} from "../constants/pets";
+import { MOUNT } from "../constants/mounts";
+import { PET, PETSMOUNT } from "../constants/pets";
 
 
 const StuffsSchema = new mongoose.Schema({
@@ -39,22 +42,26 @@ const StuffsSchema = new mongoose.Schema({
 
     // Chapeau
     hat: {
-        type: Equipments,
+        type: Number,
+        ref: 'Equipments',
         validate: [hat => hat.type === HAT, 'Hat should be type hat']
     },
     // Cape ou sac a dos
     cloakOrBackpack: {
-        type: Equipments,
+        type: Number,
+        ref: 'Equipments',
         validate: [cloakOrBackpack => cloakOrBackpack.type === CLOAK || cloakOrBackpack.type === BACKPACK, 'Cloak/Backpack should be type Cloak or type Backpack']
     },
     // Amulette
     amulet: {
-        type: Equipments,
+        type: Number,
+        ref: 'Equipments',
         validate: [amulet => amulet.type === AMULET, 'Amulet should be type amulet']
     },
     // Anneau
     rings: {
-        type: [Equipments],
+        type: [Number],
+        ref: 'Equipments',
         validate: [
             { validator: rings => eachShouldBeOneOfType(rings, [RING]), msg: 'Rings should be rings' },
             { validator: v => v.length <= 2, msg: 'You want to equip more than 2 rings' },
@@ -62,22 +69,26 @@ const StuffsSchema = new mongoose.Schema({
     },
     // Ceinture
     belt: {
-        type: Equipments,
+        type: Number,
+        ref: 'Equipments',
         validate: [belt => belt.type === BELT, 'Belt should be type belt']
     },
     // Bottes
     Boots: {
-        type: Equipments,
+        type: Number,
+        ref: 'Equipments',
         validate: [boots => boots.type === BOOTS, 'Boots should be type boots']
     },
     // Bouclier
     Shield: {
-        type: Equipments,
+        type: Number,
+        ref: 'Equipments',
         validate: [shield => shield.type === SHIELD, 'Shield should be type shield']
     },
     // Trophées et dofus
     dofusAndTrophies: {
-        type: [Equipments],
+        type: [Number],
+        ref: 'Equipments',
         validate: [
             { validator: dofusOrTrophies => eachShouldBeOneOfType(dofusOrTrophies, [DOFUS, TROPHY]), msg: 'Dofus/Trophies should be only types dofus or trophies' },
             { validator: v => v.length <= 6, msg: 'You want to equip more than 6 Dofus and/or trophies' },
@@ -86,36 +97,43 @@ const StuffsSchema = new mongoose.Schema({
     mountOrPet: {
         use: {
             type: String,
-            enum: ['Montilier', 'Familier', 'Monture'],
+            enum: [MOUNT, PET, PETSMOUNT],
         },
-        // mount: {
-        //     type: Mount,
-        // },
-        // pet: {
-        //     type: Pets,
-        // }
-        // petsmount: {
-        //     type: Pets,
-        // }
+        mount: {
+            type: Number,
+            ref: 'Mounts',
+        },
+        pet: {
+            type: Number,
+            ref: 'Pets',
+        },
+        petsmount: {
+            type: Number,
+            ref: 'Pets',
+        },
     },
 
     skin: {
         hat: {
-            type: Equipments,
+            type: Number,
+            ref: 'Equipments',
             validate: [hat => [HAT, LIVING_OBJECT, CEREMONIAL].includes(hat.type), 'Skin for hat should be one of type: hat, living object or ceremonial object'],
         },
         cloakOrBackpack: {
-            type: Equipments,
+            type: Number,
+            ref: 'Equipments',
             validate: [cloakOrBackpack => [CLOAK, BACKPACK, LIVING_OBJECT, CEREMONIAL].includes(cloakOrBackpack.type), 'Skin for cloak/backpack should be one of type: cloak, backpack, living object or ceremonial object'],
         },
         shield: {
-            type: Equipments,
+            type: Number,
+            ref: 'Equipments',
             validate: [shield => [SHIELD, LIVING_OBJECT, CEREMONIAL].includes(shield.type), 'Skin for shield should be one of type: shield, living object or ceremonial object'],
-        }
+        },
         mountOrPet: {
-            type: Equipments,
-            validate: [mountOrPet => [Mounts, PET, PETSMOUNT, CEREMONIAL].includes(mountOrPet.type), 'Skin for shield should be one of type: shield, living object or ceremonial object'],
-        }
+            type: Number,
+            ref: 'Equipments',
+            validate: [mountOrPet => [MOUNT, PET, PETSMOUNT, CEREMONIAL].includes(mountOrPet.type), 'Skin for shield should be one of type: shield, living object or ceremonial object'],
+        },
     },
 
 
@@ -128,11 +146,11 @@ const StuffsSchema = new mongoose.Schema({
 
 
 
-    updated_at: {
+    updatedAt: {
         type: Date,
         default: Date.now
     },
-    created_at: {
+    createdAt: {
         type: Date,
         default: Date.now
     },
@@ -154,7 +172,7 @@ function eachShouldBeOneOfType(items, types) {
 
 StuffsSchema.pre('save', function (next) {
     try {
-        this.updated_at = Date.now();
+        this.updatedAt = Date.now();
         next();
     } catch (err) {
         next(err);

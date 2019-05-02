@@ -20,8 +20,6 @@ equipmentsRouter.route('/:itemId')
     .put(Controller.update)
     .delete(Controller.remove);
 
-const useRouter = (app) => app.use('/equipments', equipmentsRouter);
-
-export default useRouter;
+export default (app) => app.use('/equipments', equipmentsRouter);
 
 export const getEquipmentsRouter = () => equipmentsRouter;

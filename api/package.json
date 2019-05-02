@@ -30,6 +30,7 @@
   },
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",
+    "debug": "DEBUG=express:* babel-node src/server.js",
     "deploy": "node dist/server.js",
     "transpile": "babel src --out-dir dist --copy-files"
   }

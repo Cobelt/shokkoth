@@ -49,11 +49,11 @@ const EquipmentsSchema = new mongoose.Schema({
     },
 
 
-    updated_at: {
+    updatedAt: {
         type: Date,
         default: Date.now
     },
-    created_at: {
+    createdAt: {
         type: Date,
         default: Date.now
     },
@@ -63,7 +63,7 @@ const EquipmentsSchema = new mongoose.Schema({
 
 EquipmentsSchema.pre('save', function (next) {
     try {
-        this.updated_at = Date.now();
+        this.updatedAt = Date.now();
         next();
     } catch (err) {
         next(err);

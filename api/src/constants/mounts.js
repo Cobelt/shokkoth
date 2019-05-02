@@ -1,1 +1,1 @@
-export const MOUNTS = 'Montures';
+export const MOUNT = 'Monture';

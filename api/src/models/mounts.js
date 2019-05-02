@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { MOUNTS } from '../constants/mounts';
+import { updateLastModifDate } from '../utils/common';
 
 const MountsSchema = new mongoose.Schema({
     _id: Number,
@@ -45,26 +46,18 @@ const MountsSchema = new mongoose.Schema({
     },
 
 
-    updated_at: {
+    updatedAt: {
         type: Date,
         default: Date.now
     },
-    created_at: {
+    createdAt: {
         type: Date,
         default: Date.now
     },
 });
 
 
-
-MountsSchema.pre('save', function (next) {
-    try {
-        this.updated_at = Date.now();
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
+MountsSchema.pre('save', updateLastModifDate);
 
 
 const Mounts = mongoose.model('Mounts', MountsSchema);

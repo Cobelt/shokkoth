@@ -2,78 +2,167 @@ import axios from 'axios';
 import bcrypt from 'bcrypt';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
+import set from 'lodash.set';
+import get from 'lodash.set';
 
-import { SECRET_KEY } from '../../env'
+import { SECRET_KEY } from '../../env';
+import { getParam } from '../utils/users';
 
 const User = mongoose.model('Users');
 
-export const signIn = function(req, res) {
-    const { password, ...userData } = req.body;
+// // ENTRY POINTS
+export const getLogIds = function(req, res, next) {
+  const username = getParam(req, 'username');
+  const password = getParam(req, 'password');
 
-    bcrypt.hash(password, 16.5, function(err, hash) {
-        if (err) res.send(err);
+  if (!username) return next('Username undefined');
+  if (!password) return next('Password undefined');
 
-        userData.hash = hash;
+  res.locals.username = username;
+  res.locals.password = password;
 
-        const newUser = new User(userData);
+  next();
+};
 
-        newUser.save(function(err, user) {
-            if (err) res.send(err);
-            res.json(user);
-        });
+export const getUserId = function(req, res, next) {
+    const userId = getParam(req, 'userId');
+
+    if (!userId) return next('UserId undefined');
+
+    res.locals.userId = userId;
+
+    next();
+}
+
+
+// // PASSING THROUGH
+export const getUsers = function(req, res, next) {
+  User.find({}, 'username')
+    .catch(err => next(err))
+    .then(users => {
+      res.locals.users = users;
+      next();
+  });
+};
+
+export const findById = function(req, res, next) {
+  const { userId } = res.locals || {};
+  if (!userId) next('I think you should use getAll');
+
+  User.findById(userId)
+    .catch(err => next(err))
+    .then(user => {
+      res.locals.user = user;
+      next();
     });
 };
+
+export const findByUsername = function(req, res, next) {
+  const { username } = res.locals || {};
+  if (!username) next('Username undefined');
+
+  User.findOne({ username })
+    .catch(err => next(err))
+    .then(user => {
+      res.locals.user = user;
+      next();
+    });
+};
+
+
+export const update = function(req, res, next) {
+    const { userId } = res.locals || {};
+    if (!userId) next('UserId undefined and please create it before updating it !');
+
+    User.findOneAndUpdate({_id: userId}, req.body, { new: true })
+      .catch(err => next(err))
+      .then(user => {
+        res.locals.user = user
+        next();
+    });
+};
+
+export const remove = function(req, res, next) {
+    const { userId } = res.locals || {};
+    if (!userId) next('UserId undefined and I can\'t remove undefined !');
+
+    User.remove({ _id: userId })
+      .catch(err => next(err))
+      .then(user => {
+        res.locals.user = user;
+        next();
+    });
+};
+
+
+
+
+// Sign In
+export const signIn = function(req, res, next) {
+    const { user, username, password } = res.locals || {};
+
+    if (user) return next('User already exist');
+
+    bcrypt.hash(password, 16.5)
+      .catch(err => next(err))
+      .then(hash => {
+        const newUser = new User({ username, hash });
+
+        newUser.save()
+          .catch(err => next(err))
+          .then(user => {
+            res.locals.user = user;
+            next();
+          })
+    });
+};
+
+
+// Log In
+export const comparePassword = function(req, res, next) {
+  const { user, password } = res.locals || {};
+  const { hash } = user;
+
+  bcrypt.compare(password, hash)
+    .catch(err => next(err))
+    .then(result => {
+      if (!result) next('Invalid username or password')
+      next();
+    });
+}
+
 
 export const login = function(req, res) {
-    const { username, password } = req.body;
+  const { user } = res.locals || {};
+  const { hash, ...jwtContent } = user;
 
-    User.findOne({ username }, function(err, user) {
-        if (err) res.send(err);
-        const { hash } = user;
-        bcrypt.compare(password, hash, function(err, res) {
-            if (err) res.send(err);
-            jwt.sign({ user }, SECRET_KEY, { expiresIn: '7d' },(err, token) => {
-                if(err) { console.log(err) }
-                res.send(token);
-            });
-            res.send(res);
-        });
-    });
-
-};
-
-
-export const get = function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) res.send(new Error('No itemId given. Please tell me what I should search for !'));
-
-    User.findById(itemId, function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
-    });
+  jwt.sign({ ...jwtContent, role: 'admin' }, SECRET_KEY, { algorithm: 'RS256', expiresIn: '7d' }, (err, token) => {
+    if (err) return res.send(err);
+    res.send(token)
+  });
 };
 
 
 
 
-export const update = function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) res.send(new Error('No itemId given. Please tell me what I should update !'));
-
-    User.findOneAndUpdate({_id: itemId}, req.body, { new: true }, function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
-    });
-};
 
 
-export const remove = function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) res.send(new Error('No itemId given. Please tell me what I should remove !'));
 
-    User.remove({ _id: itemId
-    }, function(err, equipment) {
-        if (err) res.send(err);
-        res.json({ message: `We successfully removed ${itemId}`});
-    });
-};
+
+
+// // SENDERS
+export const sendDone = function(req, res) {
+  res.send('Action done yay');
+}
+
+export const sendUser = function(req, res) {
+  const { user } = res.locals;
+  if (!user) res.send('No user found');
+  res.send(user);
+}
+
+export const sendUsers = function(req, res) {
+  const { users } = res.locals;
+  if (!users) res.send('No users found');
+  res.send(users);
+}

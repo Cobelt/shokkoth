@@ -18,10 +18,8 @@ extracterRouter.route('/items/:itemId')
     .get(Controller.extractEquipement)
     .post(Controller.extractEquipement);
 
-extracterRouter.route('/dofapi2/')
+// extracterRouter.route('/dofapi2/')
 
-const useRouter = (app) => app.use('/extract', extracterRouter);
-
-export default useRouter;
+export default (app) => app.use('/extract', extracterRouter);
 
 export const getExtracterRouter = () => extracterRouter;

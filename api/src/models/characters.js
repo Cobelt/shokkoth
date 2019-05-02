@@ -1,60 +1,44 @@
 import mongoose from 'mongoose';
-import Stuffs from './stuffs.js';
+import Stuffs from './stuffs';
+import { updateLastModifDate } from '../utils/common';
 
 const CharactersSchema = new mongoose.Schema({
     pseudo: {
         type: String,
         required: 'Please give me a pseudo',
     },
-    level: {
+    lvl: {
         type: Number,
-        required: 'Please give me a level',
+        default: 200,
     },
-    breed: {
+    classe: {
         type: Number,
         min: 1,
         max: 18,
-        required: 'Please give me a breed id'
+        required: 'Pas de classe définie',
     },
 
-    equipments: {
-        type: [Stuffs],
+    stuffs: {
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Stuffs',
         default: [],
     },
 
-    imgUrl: String,
 
-
-    // DB infos to compare with dofapi.fr !
-    status: {
-        type: {
-            type: String,
-            enum: ['Up to date', 'Outdated']
-        },
-    },
-
-
-    updated_at: {
+    updatedAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
-    created_at: {
+    createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
 });
 
 
 
-EquipmentsSchema.pre('save', function (next) {
-    try {
-        this.updated_at = Date.now();
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
+CharactersSchema.pre('save', updateLastModifDate);
 
 
-const Equipments = mongoose.model('Equipments', EquipmentsSchema);
-export default Equipments;
+const Characters = mongoose.model('Characters', CharactersSchema);
+export default Characters;

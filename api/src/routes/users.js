@@ -5,30 +5,36 @@ import * as Controller from '../controllers/users';
 const usersRouter = express.Router();
 
 // todoList Routes
-// usersRouter.route('/')
-//     .get(Controller.getAll);
-
-usersRouter.route('/sign-in')
-    .post(Controller.signIn);
+usersRouter.route('/new')
+    .get(
+      Controller.getLogIds,
+      Controller.findByUsername,
+      Controller.signIn,
+      Controller.sendDone,
+    );
 
 usersRouter.route('/login')
-    .post(Controller.login)
-    .get((req, res, next) => {
-        const { username, password } = req.params;
-        req.body = { username, password };
-        next();
-    }, Controller.login);
+    .get(
+      Controller.getLogIds,
+      Controller.findByUsername,
+      Controller.comparePassword,
+      Controller.login,
+      Controller.sendDone,
+    );
 
-// usersRouter.route('/extract/all')
-//     .get(Controller.extractAll)
-//     .post(Controller.extractAll);
-//
-// usersRouter.route('/extract/:itemId')
-//     .get(Controller.extract)
-//     .post(Controller.extract);
 
-const useRouter = (app) => app.use('/user', usersRouter);
+usersRouter.route('/:userId')
+    .get(
+      Controller.getUserId,
+      Controller.findById,
+      Controller.sendUser,
+    );
 
-export default useRouter;
+usersRouter.route('/')
+    .get(Controller.getUsers, Controller.sendUsers);
+
+
+
+export default (app) => app.use('/users', usersRouter);
 
 export const getUsersRouter = () => usersRouter;

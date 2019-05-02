@@ -28,8 +28,6 @@ equipmentsRouter.route('/extract/:itemId')
     .get(Controller.extract)
     .post(Controller.extract);
 
-const useRouter = (app) => app.use('/equipments', equipmentsRouter);
-
-export default useRouter;
+export default (app) => app.use('/equipments', equipmentsRouter);
 
 export const getEquipmentsRouter = () => equipmentsRouter;

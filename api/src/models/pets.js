@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { PetsTypes } from '../constants/pets';
+import { updateLastModifDate } from '../utils/common';
 
 const PetsSchema = new mongoose.Schema({
     _id: Number,
@@ -16,6 +17,7 @@ const PetsSchema = new mongoose.Schema({
         enum: PetsTypes,
         required: 'Please give me the type of pet I am !'
     },
+
     description: String,
 
     stats: {
@@ -44,11 +46,11 @@ const PetsSchema = new mongoose.Schema({
     },
 
 
-    updated_at: {
+    updatedAt: {
         type: Date,
         default: Date.now
     },
-    created_at: {
+    createdAt: {
         type: Date,
         default: Date.now
     },
@@ -56,14 +58,7 @@ const PetsSchema = new mongoose.Schema({
 
 
 
-PetsSchema.pre('save', function (next) {
-    try {
-        this.updated_at = Date.now();
-        next();
-    } catch (err) {
-        next(err);
-    }
-});
+PetsSchema.pre('save', updateLastModifDate);
 
 
 const Pets = mongoose.model('Pets', PetsSchema);

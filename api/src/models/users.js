@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
+import { updateLastModifDate } from '../utils/common';
 
 const UsersSchema = new mongoose.Schema({
-    _id: Number,
-
     username: {
         type: String,
         index: {
@@ -10,6 +9,7 @@ const UsersSchema = new mongoose.Schema({
         },
         required: 'Please choose a username',
     },
+
     hash: {
         type: String,
         required: true,
@@ -17,24 +17,29 @@ const UsersSchema = new mongoose.Schema({
         minlength: 12
     },
 
-    characters: Array,
-    goals: Array,
+    characters: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: 'Characters',
+      default: []
+    },
+
+    // goals: Array,
 
 
-    updated_at: {
+    updatedAt: {
         type: Date,
         default: Date.now
     },
-    saved_at: {
+    createdAt: {
         type: Date,
         default: Date.now
     },
 });
 
 
+UsersSchema.pre('save', updateLastModifDate);
 UsersSchema.pre('save', function (next) {
     try {
-        this.updated_at = Date.now();
         if (this.isModified('password') || this.isNew) {
 
         }

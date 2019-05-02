@@ -92,7 +92,7 @@ export const extractEquipements = async function(req, res) {
         try {
             const saved = _save(newEquipment).then(saved => extracted.push(saved));
         }
-        catch (e) {
+        catch (err) {
             res.send(err);
         }
     });
