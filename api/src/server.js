@@ -22,7 +22,7 @@ const app = express();
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27018/dofusLab');
+mongoose.connect('mongodb://localhost:27018/dofusLab', { useNewUrlParser: true, useCreateIndex: true });
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

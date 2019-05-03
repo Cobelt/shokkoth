@@ -10,17 +10,25 @@ usersRouter.route('/new')
       Controller.getLogIds,
       Controller.findByUsername,
       Controller.signIn,
-      Controller.sendDone,
+      Controller.login,
+      Controller.sendToken,
     );
 
 usersRouter.route('/login')
+    .post(Controller.login)
     .get(
       Controller.getLogIds,
       Controller.findByUsername,
       Controller.comparePassword,
       Controller.login,
-      Controller.sendDone,
+      Controller.sendToken,
     );
+
+usersRouter.route('/decode')
+  .get(
+    Controller.verifyToken,
+    Controller.sendDecoded,
+  );
 
 
 usersRouter.route('/:userId')
