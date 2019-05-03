@@ -13,7 +13,7 @@ class NavbarComponent extends Component {
         return (
             <Navbar row={row} idgrid={idgrid} position="fixed">
                 <NavBrand justify="left">
-                    <NavLink to="/">DofusLab</NavLink>
+                    <NavLink to="/">Shokkoth.tk</NavLink>
                 </NavBrand>
 
                 <NavLabel justify="right" idgrid={idgrid}>
