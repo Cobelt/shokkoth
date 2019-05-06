@@ -1,3 +1,28 @@
 .navbar
   .current-route
-    filter: brightness(60%);
+    filter brightness(60%)
+
+
+  .animate-brand
+    overflow hidden
+
+    a
+      display inline-flex
+
+      span
+        font-size 2.7rem
+        transition transform 0.6s, font-size 0.6s
+
+        &#shok, &#koth, &#dot-tk
+          transform translate(0, 0)
+
+      &:hover
+        span
+          font-size 2.6rem
+
+          &#shok
+            transform translate(12.5%, -1rem)
+          &#koth
+            transform translate(-12.5%, 1rem)
+          &#dot-tk
+            transform translateX(175%)

@@ -12,8 +12,12 @@ class NavbarComponent extends Component {
         const { row, idgrid } = this.props;
         return (
             <Navbar row={row} idgrid={idgrid} position="fixed">
-                <NavBrand justify="left">
-                    <NavLink to="/">Shokkoth.tk</NavLink>
+                <NavBrand justify="left" className="animate-brand">
+                    <NavLink to="/">
+                      <span id="shok">shok</span>
+                      <span id="koth">koth</span>
+                      <span id="dot-tk">.tk</span>
+                    </NavLink>
                 </NavBrand>
 
                 <NavLabel justify="right" idgrid={idgrid}>

@@ -15,7 +15,13 @@ usersRouter.route('/new')
     );
 
 usersRouter.route('/login')
-    .post(Controller.login)
+    .post(
+      Controller.getLogIds,
+      Controller.findByUsername,
+      Controller.comparePassword,
+      Controller.login,
+      Controller.sendToken
+    )
     .get(
       Controller.getLogIds,
       Controller.findByUsername,

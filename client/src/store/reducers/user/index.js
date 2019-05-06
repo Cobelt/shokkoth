@@ -1,7 +1,7 @@
 import produce  from 'immer';
 import set from 'lodash.set';
 
-import { CREATE_USER, UPDATE_USER } from '../../actions/user';
+import { SAVE_USER, SAVE_JWT } from '../../constants/user';
 
 
 function getInitialState() {
@@ -12,18 +12,22 @@ export const UserReducer = (store = getInitialState(), { type, payload } = {}) =
 	if (!type || !payload) return;
 
 	return produce(store, (draft) => {
-        switch (type) {
+    switch (type) {
 
-            case CREATE_USER:
-            case UPDATE_USER: {
-                const { user, data } = payload;
+      case SAVE_USER: {
+        const { user, data } = payload;
 
-                set(draft, `${user}`, data);
+        set(draft, `${user}`, data);
 
-                break;
-            }
+        break;
+      }
 
-        }
-        return draft;
-    })
+      case SAVE_JWT: {
+
+        break;
+      }
+
+    }
+    return draft;
+  })
 };

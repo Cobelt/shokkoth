@@ -187,6 +187,13 @@ export const verifyToken = function(req, res, next) {
   }
 };
 
+export const saveTokenInCookies = function(req, res, next) {
+  const token = getLocale(res, 'token');
+  if (!token) return next('Token not found !');
+
+  setCookie(res, { name: 'shokkothJWT', value: token, expiresIn: 7 });
+}
+
 
 
 

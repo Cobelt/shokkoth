@@ -6,8 +6,8 @@ import {
 } from '../../selectors/characters';
 
 import {
-	fetchCharactersService,
-} from '../../services/characters';
+	fetchCharacters,
+} from '../../../user/services/characters';
 
 
 const saveCharactersInStore = ({ type, characters }) => ({

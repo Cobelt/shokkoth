@@ -4,35 +4,35 @@ import { cleanPlugin, copyPlugin, htmlPlugin, HMRPlugin } from './plugins';
 import webpack from 'webpack';
 
 module.exports = {
-    mode: 'development',
-    devtool: 'inline-source-map',
-    devServer: {
-        // host: '0.0.0.0',
-        port: 3051,
-        public: 'localhost:3051',
+  mode: 'development',
+  devtool: 'inline-source-map',
+  devServer: {
+    // host: '0.0.0.0',
+    port: 3051,
+    public: 'localhost:3051',
 
-        hot: true,
+    hot: true,
 
-        contentBase: './src',
+    contentBase: './src',
 
-        historyApiFallback: true,
-        disableHostCheck: true,
-        allowedHosts: [
-            'labdofus',
-            'localhost',
-        ],
-    },
-    entry: {
-        app: './src/app.js',
-    },
+    historyApiFallback: true,
+    disableHostCheck: true,
+    allowedHosts: [
+        'labdofus',
+        'localhost',
+    ],
+  },
+  entry: {
+    app: './src/app.js',
+  },
 
-    module: {
-        rules: [HTML, JS, STYL],
-    },
-    plugins: [
-        cleanPlugin('dist'),
-        copyPlugin('./src/app.js'),
-        htmlPlugin,
-        HMRPlugin({ webpack }),
-    ]
+  module: {
+    rules: [HTML, JS, STYL],
+  },
+  plugins: [
+    cleanPlugin('dist'),
+    copyPlugin('./src/app.js'),
+    htmlPlugin,
+    HMRPlugin({ webpack }),
+  ]
 };
