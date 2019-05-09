@@ -14,7 +14,7 @@ usersRouter.route('/new')
       Controller.sendToken,
     );
 
-usersRouter.route('/login')
+usersRouter.route('/login/:username?/:password?')
     .post(
       Controller.getLogIds,
       Controller.findByUsername,
@@ -32,6 +32,7 @@ usersRouter.route('/login')
 
 usersRouter.route('/decode')
   .get(
+    Controller.getJWT,
     Controller.verifyToken,
     Controller.sendDecoded,
   );

@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 import set from 'lodash.set';
 import get from 'lodash.set';
 
-import { SECRET_KEY } from '../../env';
+import { SECRET_KEY } from '../env';
 import { getParam, setLocale, getLocale } from '../utils/users';
 
 const User = mongoose.model('Users');
@@ -33,6 +33,22 @@ export const getUserId = function(req, res, next) {
 
     next();
 }
+
+export const getJWT = function(req, res, next) {
+  let token = getParam(req, 'jwt') || get(req, 'headers[x-access-token]') || get(req, 'headers.authorization'); // Express headers are auto converted to lowercase
+  if (!token || typeof token !== 'string') return next('No token given');
+
+  if (token.startsWith('Bearer ')) {
+    // Remove Bearer from string
+    token = token.slice(7, jwt.length);
+  }
+  
+  setLocale(res, { token });
+
+  next();
+}
+
+
 
 
 // // PASSING THROUGH
@@ -144,6 +160,8 @@ export const changePassword = function(req, res, next) {
 export const comparePassword = function(req, res, next) {
   const user = getLocale(res, 'user');
   const password = getLocale(res, 'password');
+  
+  if (!user) next('Invalid username or password');
   const { hash } = user;
 
   bcrypt.compare(password, hash, (err, result) => {
@@ -169,22 +187,18 @@ export const login = function(req, res, next) {
 
 
 export const verifyToken = function(req, res, next) {
-  let token = get(req, 'query.token') || get(req, 'headers[x-access-token]') || get(req, 'headers.authorization'); // Express headers are auto converted to lowercase
-  if (token.startsWith('Bearer ')) {
-    // Remove Bearer from string
-    token = bearerToken.slice(7, bearerToken.length);
-  }
+  const token = getLocale(res, 'token');
+  
+  if (!token) return next('No token given');
 
-  if (token) {
-    jwt.verify(token, SECRET_KEY, (err, decoded) => {
-      if (err) return next('Token is not valid');
-      if (!decoded) return next('Auth token is not supplied');
+  jwt.verify(token, SECRET_KEY, (err, decoded) => {
+    if (err) return next("REFUSED: Token's signature is probably not valid");
+    if (!decoded) return next('Auth token is not supplied');
 
-      setLocale(res, { isAuth: true });
-      setLocale(res, { decoded });
-      next();
-    });
-  }
+    setLocale(res, { isAuth: true });
+    setLocale(res, { decoded });
+    next();
+  });
 };
 
 export const saveTokenInCookies = function(req, res, next) {
