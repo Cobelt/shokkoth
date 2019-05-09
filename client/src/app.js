@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 
 import { GridsProvider, Grid } from 'muejs';
@@ -23,27 +23,25 @@ import './app.styl';
 const history = createBrowserHistory();
 
 
-class App extends Component {
-    render() {
-        const quantityOfRows = 5;
-        return (
-            <Grid className="page" rowsTemplate={{ 1: '1fr', 2: '2fr', 3: '1fr', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '25vw', 3: '20vw', 4: '20vw', 5: '25vw', 6: '1fr' }}>
-                <Navbar row={0} />
-                <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/public" render={() => <div>Public</div>} />
+const App = () => {
+  const quantityOfRows = 5;
+  return (
+    <Grid className="page" rowsTemplate={{ 2: '1fr', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '25vw', 3: '20vw', 4: '20vw', 5: '25vw', 6: '1fr' }}>
+      <Navbar row={0} />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/public" render={() => <div>Public</div>} />
 
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/stuffs" component={MyStuffs} />
-                    <Route path="/characters" component={Character} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/stuffs" component={MyStuffs} />
+          <Route path="/characters" component={Character} />
 
-                    <Route component={Route404} />
-                </Switch>
-                <Footer row={quantityOfRows} />
-            </Grid>
-        )
-    }
-}
+          <Route component={Route404} />
+        </Switch>
+      <Footer row={quantityOfRows} />
+    </Grid>
+  );
+};
 
 
 ReactDOM.render((

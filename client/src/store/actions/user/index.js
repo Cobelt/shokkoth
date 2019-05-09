@@ -1,38 +1,43 @@
 import React from 'react';
 import deepEqual from 'lodash.isequal';
 
-import { SAVE_USER, SAVE_JWT } from '../../constants/user';
+import { SAVE_USER, SAVE_JWT } from '../../../constants/user';
 import { getUser } from '../../selectors/user';
 
-export const action = ({ loading, data, error, actionType }) => ({ type: actionType, loading, payload: data || error });
+import * as services from '../../../services';
+
+// Give it some utility please
+export const action = ({ loading, payload, type }) => ({ type, loading, payload });
 
 
 export const saveUser = ({ user }) => {
-	return (store, dispatch) => {
+  return (store, dispatch) => {
     if (!user) return;
 
-    const actionType = SAVE_USER;
-
+    const type = SAVE_USER;
 
     const actualUser = getUser(store);
-		if (actualUser && deepEqual(user, actualUser)) return;
+    if (actualUser && deepEqual(user, actualUser)) return;
 
-    dispatch(action({ actionType, loading: false, data: { user } }));
-	};
+    dispatch(action({ type, loading: false, payload: { user } }));
+  };
 };
 
 
-export const login = (data) => {
-	return (store, dispatch) => {
-    const { username, password } = data || data.getAll();
-    if (!username || !password) return false;
+export const login = ({ username, password }, [store, dispatch]) => {
 
-    const actionType = SAVE_JWT;
+    if (!username || !password) return;
 
-    dispatch(action({ actionType, loading: true }))
+    const type = SAVE_JWT;
 
-    const data = service.login({ username, password })
+    try {
+      dispatch(action({ type, loading: true }))
 
-    dispatch(action({ actionType, loading: false, data }))
-	};
+      const token = services.login({ username, password })
+
+      dispatch(action({ type, loading: false, payload: { token } }));
+    }
+    catch (error) {
+      dispatch(action({ type, loading: false, payload: { error } })); 
+    }
 };

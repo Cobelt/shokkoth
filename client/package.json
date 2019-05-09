@@ -42,7 +42,8 @@
   "license": "MIT",
   "name": "dofus-lab-front",
   "scripts": {
-    "start": "webpack-dev-server --config webpack/dev.config.babel.js"
+    "start": "webpack-dev-server --config webpack/dev.config.babel.js",
+    "prod": "webpack --config webpack/dev.config.babel.js"
   },
   "version": "0.0.1",
   "description": "A professional front-end template for building fast, robust, and adaptable web apps or sites."
