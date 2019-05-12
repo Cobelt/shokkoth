@@ -121,7 +121,7 @@ export const signIn = function(req, res, next) {
 
   if (user) return next('User already exist');
 
-  bcrypt.hash(password, 16.5)
+  bcrypt.hash(password, 12)
     .catch(err => next(err))
     .then(hash => {
       const newUser = new User({ username, hash });
@@ -141,7 +141,7 @@ export const changePassword = function(req, res, next) {
   const user = getLocale(res, 'user');
   const newPassword = getLocale(res, 'password');
 
-  bcrypt.hash(newPassword, 16.5)
+  bcrypt.hash(newPassword, 12)
     .catch(err => next(err))
     .then(hash => {
       user.hash = hash;

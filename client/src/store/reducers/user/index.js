@@ -9,20 +9,20 @@ function getInitialState() {
 }
 
 export const UserReducer = (store = getInitialState(), { type, payload } = {}) => {
-    if (!type || !payload) return;
+    if (!type || !payload) return store;
 
     return produce(store, (draft) => {
       switch (type) {
 
         case SAVE_USER: {
-          const { user } = payload;
-          set(draft, 'user', user);
+          const { user, error, loading } = payload;
+          set(draft, 'user', { user, loading, error } );
           break;
         }
 
         case SAVE_JWT: {
-          const { token } = payload;
-	  set(draft, 'jwt', token);
+          const { token, error, loading } = payload;
+	  set(draft, 'jwt', { token, loading, error });
           break;
       }
 
