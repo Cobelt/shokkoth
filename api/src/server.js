@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 
-import { PORT, ALLOWED_ORIGINS } from '../env';
+import { PORT, ALLOWED_ORIGINS } from './env';
 
 import {
   EquipmentsModel,
@@ -29,7 +29,8 @@ mongoose.connect('mongodb://localhost:27018/dofusLab', { useNewUrlParser: true, 
 app.use(cors({
   origin: function(origin, callback){
     // allow requests with no origin (like mobile apps or curl requests)
-    if (origin && !ALLOWED_ORIGINS.includes(origin)){
+    console.log('origin =', origin);
+    if (origin && !ALLOWED_ORIGINS.includes(origin.replace(/https?:\/\//, ''))){
       return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
     }
     return callback(null, true);

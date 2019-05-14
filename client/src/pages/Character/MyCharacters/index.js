@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Grid, Element, Row } from 'muejs';
 import uuid from 'uuid/v4';
 import { withRouter } from 'react-router-dom';
@@ -135,17 +135,15 @@ const fakeData = [
         level: '176',
         classe: 'Sadida',
     },
+    {
+	id: 18,
+	pseudo: 'Blixtnedslag',
+	classe: 'Iop',
+    },
 ];
 
-class MyCharacters extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { characterByRow: 6 };
-    }
-
-    render() {
-        const { characterByRow } = this.state;
-        const { history: { push } = {} } = this.props;
+const MyCharacters = ({ history: { push } = {} }) => {
+  const [characterByRow, setCharacterByRow] = useState(6);
 
         const position = { row: 1, col: 0 };
 
@@ -153,11 +151,11 @@ class MyCharacters extends Component {
 
         return (
             <>
-                <Element row={1} col={3} width={2} style={{ marginTop: '64px' }}>
+                <Element col={3} width={2} style={{ marginTop: '64px' }}>
                     <h2>My characters</h2>
                 </Element>
 
-                <Element justify="stretch" align={"start"} row={2} width={6} height={2}>
+                <Element justify="stretch" align={"start"} row={2} width={6}>
                     <Grid rowGap="1rem" className="characters-list" columnsTemplate={ '1fr '.repeat(characterByRow) }>
                         { dataCompleteRows.map((character, index) => {
                             position.row = Math.trunc(1 + index / characterByRow);
@@ -173,7 +171,7 @@ class MyCharacters extends Component {
 
                             const backgroundImage =  character.classe && `url(https://s.ankama.com/www/static.ankama.com/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/bg/breed-${breeds[character.classe]}.jpg)`;
 
-                            return (
+                            return !character.empty && (
                                 <Element
                                     key={`character#${character.id || uuid()}#${character.pseudo}#breed=${breeds[character.classe]}`}
                                     className={`${character.empty ? 'empty-': ''}character`}
@@ -211,7 +209,6 @@ class MyCharacters extends Component {
                 </Element>
             </>
         );
-    }
 }
 
 export default withRouter(MyCharacters);

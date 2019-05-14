@@ -7,8 +7,8 @@ export default class FooterComponent extends Component {
         const { row, idgrid } = this.props;
 
         return (
-            <Footer idgrid={idgrid} row={row} columnsTemplate={"0.55fr 0.55fr 0.4fr 0.4fr 0.55fr 0.55fr"}>
-                <FooterList row={1} col={1} width={2}>
+            <Footer idgrid={idgrid} row={row} columnsTemplate={"0.55fr 0.55fr 0.4fr 0.4fr 0.55fr 0.55fr"} style={{ marginTop: '3rem' }}>
+               <FooterList row={1} col={1} width={2}>
                     <Element type="h5">Who am I ?</Element>
 
                     <Element type="p" style={{textAlign: 'left'}}>

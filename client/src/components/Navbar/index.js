@@ -7,9 +7,7 @@ import { isLogged } from '../../store/selectors/user';
 
 import './stylesheet.styl';
 
-class NavbarComponent extends Component {
-    render () {
-        const { row, idgrid } = this.props;
+const NavbarComponent = ({ idgrid, row }) => {
         return (
             <Navbar row={row} idgrid={idgrid} position="fixed">
                 <NavBrand justify="left" className="animate-brand">
@@ -32,7 +30,6 @@ class NavbarComponent extends Component {
                 </NavLabel>
             </Navbar>
         );
-    }
 }
 
 export default withRouter(NavbarComponent);
