@@ -142,6 +142,7 @@ const fakeData = [
     },
 ];
 
+
 const MyCharacters = ({ history: { push } = {} }) => {
   const [characterByRow, setCharacterByRow] = useState(6);
 
@@ -169,7 +170,7 @@ const MyCharacters = ({ history: { push } = {} }) => {
                                 position.col === characterByRow && 'last-of-row',
                             ].filter(e => !!e).join(' ');
 
-                            const backgroundImage =  character.classe && `url(https://s.ankama.com/www/static.ankama.com/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/bg/breed-${breeds[character.classe]}.jpg)`;
+                            const backgroundImage =  character.classe && `url(http://img.shokkoth.tk/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/bg/breed-${breeds[character.classe]}.jpg)`;
 
                             return !character.empty && (
                                 <Element
