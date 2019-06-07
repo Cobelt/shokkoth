@@ -4,6 +4,7 @@ import get from 'lodash.get';
 import Equipments from './equipments.js';
 import Pets from './pets.js';
 import Mounts from './mounts.js';
+import Likes from './likes.js';
 
 import {
     AMULET,
@@ -144,6 +145,11 @@ const StuffsSchema = new mongoose.Schema({
 
     imgUrl: String,
 
+    likes: [{
+      type: Number,
+      ref: 'Likes',
+      default: [],
+    }],
 
 
     updatedAt: {
