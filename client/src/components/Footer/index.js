@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 
 import {Footer, FooterLine, FooterList, FooterSeparator, Element} from 'muejs';
 
+import './stylesheet.styl';
+
 export default class FooterComponent extends Component {
     render() {
         const { row, idgrid } = this.props;
 
         return (
             <Footer idgrid={idgrid} row={row} columnsTemplate={"0.55fr 0.55fr 0.4fr 0.4fr 0.55fr 0.55fr"} style={{ marginTop: '3rem' }}>
-               <FooterList row={1} col={1} width={2}>
+               <FooterList className="about-me" rowsTemplate={{ 1: '6vh' }} col={1} width={2}>
                     <Element type="h5">Who am I ?</Element>
 
                     <Element type="p" style={{textAlign: 'left'}}>
@@ -19,7 +21,7 @@ export default class FooterComponent extends Component {
                     </Element>
                 </FooterList>
 
-                <FooterList className="donation" row={1} col={3} width={2}>
+                <FooterList className="donation" rowsTemplate={{ 1: '6vh' }} col={3} width={2}>
                     <Element type="h5">Donation</Element>
 
                     <Element type="p">
@@ -33,7 +35,7 @@ export default class FooterComponent extends Component {
                     </FooterLine>
                 </FooterList>
 
-                <FooterList className="social" row={1} col={5} width={2}>
+                <FooterList className="social" rowsTemplate={{ 1: '6vh' }} col={5} width={2}>
                     <Element type="h5">What do I do ?</Element>
 
                     <Element type="p" style={{textAlign: 'right'}}>
@@ -50,7 +52,7 @@ export default class FooterComponent extends Component {
                 <FooterSeparator row={2} col={2} width={4}/>
 
                 <FooterLine row={3}>
-                    <Element type="a">Facebook</Element>
+                    <Element type="a" href="https://facebook.com/">Facebook</Element>
 
                     <Element type="a" href="https://www.youtube.com/channel/UC7rRGEAXomdP_iUCC0LV3Ag/live">Youtube</Element>
 
