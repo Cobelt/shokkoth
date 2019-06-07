@@ -11,7 +11,7 @@ extracterRouter.route('/dofusbook/iframe')
     .get(Controller.getTruthfulURL, Controller.sendDofusBookIframe);
 
 extracterRouter.route('/items/all')
-    .get(Controller.extractEquipements)
+    .get(Controller.extractEquipements, Controller.sendExtracted)
     .post(Controller.extractEquipements);
 
 extracterRouter.route('/items/:itemId')

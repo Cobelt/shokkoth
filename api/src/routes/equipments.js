@@ -9,12 +9,17 @@ equipmentsRouter.route('/')
     .get(Controller.getAll);
 
 equipmentsRouter.route('/details')
-    .get(Controller.getDetailed);
+  .get(
+    Controller.getSearchParams,
+    Controller.search,
+    Controller.sendEquipments,
+  );
 
-equipmentsRouter.route('/type/:type')
-    .get(Controller.searchByType);
+equipmentsRouter.route('/types')
+  .get(Controller.sendTypes);
 
-equipmentsRouter.route('/:itemId')
+
+equipmentsRouter.route('/get/:itemId')
     .get(Controller.get)
     .post(Controller.create)
     .put(Controller.update)
