@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 
 import { EquipmentsTypes } from '../constants/equipments';
 import { _save, _update } from './equipments'
+import { getParam, setLocale, getLocale } from '../utils/common';
 
 import { DOFUSBOOK_ROUTE_EQUIPMENTS, DOFUSBOOK_ROUTE_EQUIPMENTS_END, DOFUSBOOK_URI } from '../constants/extracter';
 
@@ -17,10 +18,20 @@ const _formatExtractedStat = equipment => {
     if (equipment.stats.length > 0) {
         equipment.stats.forEach((stat, index) => {
             const statEntry = Object.entries(stat)[0];
-            toReturn.stats[index] = { name: statEntry[0], ...statEntry[1] };
+            const values = (typeof statEntry[1] === 'string' ? { value: statEntry[1] } : statEntry[1]);
+            toReturn.stats[index] = { name: statEntry[0], ...values };
+            console.log('formattedStat :', toReturn.stats[index])
         });
     }
     return toReturn;
+};
+
+const _formatExtractedImgUrl = equipment => {
+  const toReturn = equipment;
+  if (equipment.imgUrl) {
+    toReturn.imgUrl = equipment.imgUrl.replace('https://s.ankama.com/www/static.ankama.com', 'http://img.shokkoth.tk');
+  }
+  return toReturn;
 };
 
 const _formatExtractedRecipe = equipment => {
@@ -28,7 +39,8 @@ const _formatExtractedRecipe = equipment => {
     if (equipment.recipe.length > 0) {
         equipment.recipe.forEach((stat, index) => {
             const statEntry = Object.entries(stat)[0];
-            toReturn.recipe[index] = { name: statEntry[0], ...statEntry[1] };
+            const { imgUrl, ...infos } = { ...statEntry[1] };
+            toReturn.recipe[index] = { name: statEntry[0], imgUrl: imgUrl.replace('https://s.ankama.com/www/static.ankama.com', 'http://img.shokkoth.tk'), ...infos };
         });
     }
     return toReturn;
@@ -60,43 +72,28 @@ export const getTruthfulURL = function (req, res, next) {
 }
 
 
-export const sendTruthfulURL = function(req, res, next) {
-  const { truthfulURL } = req.body;
-  if (!truthfulURL) return res.send(new Error("URL couldn't be truthful"))
-
-  res.send(truthfulURL);
-}
 
 
-export const sendDofusBookIframe = function(req, res) {
-  const { truthfulURL } = req.body;
-  if (!truthfulURL) return res.send(new Error("URL couldn't be truthful"))
-
-  res.format({ html: () => res.send(`<iframe id="inlineFrameExample" width="100%" height="100%" src="${truthfulURL}" />`) });
-};
-
-
-
-export const extractEquipements = async function(req, res) {
+export const extractEquipements = async function(req, res, next) {
     const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments`);
 
     if (!data) return next(new Error('Got no data from the API for https://dofapi2.herokuapp.com/equipments/'));
 
     console.log('=> Extracting', data.length, 'equipments !....');
 
-    const extracted = [];
-    data.map((equipmentFromAPI, index) => {
-        const formattedEquipment = _formatExtractedRecipe(_formatExtractedStat(equipmentFromAPI));
+    const promises = data.map(equipmentFromAPI => {
+      const formattedEquipment = _formatExtractedImgUrl(_formatExtractedRecipe(_formatExtractedStat(equipmentFromAPI)));
+      const newEquipment = new Equipment(formattedEquipment);
 
-        const newEquipment = new Equipment(formattedEquipment);
-        try {
-            const saved = _save(newEquipment).then(saved => extracted.push(saved));
-        }
-        catch (err) {
-            res.send(err);
-        }
+      return _save(newEquipment);
     });
-    res.send(`Done for ${extracted.length} equipments`);
+
+    Promise.all(promises).then(items => {
+      setLocale(res, { extracted: items });
+      return next();
+    }).catch(err => {
+      return next(err);
+    });
 };
 
 export const extractEquipement = async function(req, res) {
@@ -106,9 +103,37 @@ export const extractEquipement = async function(req, res) {
     const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments/${itemId}`);
     if (!data) return res.send(new Error(`Got no data from the API for https://dofapi2.herokuapp.com/equipments/${itemId}`));
 
-    const newEquipment = new Equipment(response.data);
+    const newEquipment = new Equipment(data);
     newEquipment.save(function(err, equipment) {
-        if (err) res.send(err);
+        if (err) return res.send(err);
         res.json(equipment);
     });
+};
+
+
+
+
+
+
+// // SENDERS
+export const sendDone = function(req, res) {
+  res.send('Action done yay');
+}
+
+export const sendExtracted = function(req, res) {
+  res.send(getLocale(res, 'extracted'));
+}
+
+export const sendTruthfulURL = function(req, res, next) {
+  const { truthfulURL } = req.body;
+  if (!truthfulURL) return res.send(new Error("URL couldn't be truthful"))
+
+  res.send(truthfulURL);
+}
+
+export const sendDofusBookIframe = function(req, res) {
+  const { truthfulURL } = req.body;
+  if (!truthfulURL) return res.send(new Error("URL couldn't be truthful"))
+
+  res.format({ html: () => res.send(`<iframe id="inlineFrameExample" width="100%" height="100%" src="${truthfulURL}" />`) });
 };

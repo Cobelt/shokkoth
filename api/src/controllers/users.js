@@ -6,20 +6,18 @@ import set from 'lodash.set';
 import get from 'lodash.set';
 
 import { SECRET_KEY } from '../env';
-import { getParam, setLocale, getLocale } from '../utils/users';
+import { getParam, setLocale, getLocale } from '../utils/common';
 
 const User = mongoose.model('Users');
 
 // // ENTRY POINTS
 export const getLogIds = function(req, res, next) {
-  const username = getParam(req, 'username');
-  const password = getParam(req, 'password');
+  const { username, password } = getParam(req, ['username', 'password']);
 
   if (!username) return next('Username undefined');
   if (!password) return next('Password undefined');
 
-  setLocale(res, { username });
-  setLocale(res, { password });
+  setLocale(res, { username, password });
 
   next();
 };
@@ -42,7 +40,7 @@ export const getJWT = function(req, res, next) {
     // Remove Bearer from string
     token = token.slice(7, jwt.length);
   }
-  
+
   setLocale(res, { token });
 
   next();
@@ -115,9 +113,7 @@ export const remove = function(req, res, next) {
 
 // Sign In
 export const signIn = function(req, res, next) {
-  const user = getLocale(res, 'user');
-  const username = getLocale(res, 'username');
-  const password = getLocale(res, 'password');
+  const { user, username, password } = getLocale(res, ['user', 'username', 'password']);
 
   if (user) return next('User already exist');
 
@@ -138,10 +134,9 @@ export const signIn = function(req, res, next) {
 
 // Change password
 export const changePassword = function(req, res, next) {
-  const user = getLocale(res, 'user');
-  const newPassword = getLocale(res, 'password');
+  const { user, password } = getLocale(res, ['user', 'password']);
 
-  bcrypt.hash(newPassword, 12)
+  bcrypt.hash(password, 12)
     .catch(err => next(err))
     .then(hash => {
       user.hash = hash;
@@ -158,9 +153,8 @@ export const changePassword = function(req, res, next) {
 
 // Log In
 export const comparePassword = function(req, res, next) {
-  const user = getLocale(res, 'user');
-  const password = getLocale(res, 'password');
-  
+  const { user, password } = getLocale(res, ['user', 'password']);
+
   if (!user) next('Invalid username or password');
   const { hash } = user;
 
@@ -188,7 +182,7 @@ export const login = function(req, res, next) {
 
 export const verifyToken = function(req, res, next) {
   const token = getLocale(res, 'token');
-  
+
   if (!token) return next('No token given');
 
   jwt.verify(token, SECRET_KEY, (err, decoded) => {
