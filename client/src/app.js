@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState} from 'react';
 import ReactDOM from 'react-dom';
 
-import { GridsProvider, Grid } from 'muejs';
+import { GridsProvider, Grid, Element } from 'muejs';
 import { UserProvider } from './store/context/user';
 
 import { Redirect, Router, Route, Switch } from 'react-router-dom';
@@ -9,13 +9,10 @@ import { createBrowserHistory } from 'history';
 
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import RoutesSwitch from './components/RoutesSwitch';
 
-import Home from './pages/Home';
+import Puddle from './assets/svg/puddle.js';
 import Login from './pages/Login';
-import MyStuffs from './pages/MyStuffs';
-
-import Character from './pages/Character';
-import Route404 from './pages/404';
 
 import './app.styl';
 
@@ -24,21 +21,21 @@ const history = createBrowserHistory();
 
 
 const App = () => {
-  const quantityOfRows = 5;
+  const [shouldShow, showLogin] = useState(false);
+
   return (
-    <Grid className="page" rowsTemplate={{ 2: '1fr', [quantityOfRows]: 'fit-content(100%)' }} columnsTemplate={{ 1: '1fr', 2: '25vw', 3: '20vw', 4: '20vw', 5: '25vw', 6: '1fr' }}>
-      <Navbar row={0} />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route path="/public" render={() => <div>Public</div>} />
+    <Grid className="page" columnsTemplate="1fr" rowsTemplate={{ 2: 'fit-content(100%)' }}>
+      <Puddle className={`puddle ${shouldShow ? "expand" : ""}`} onClick={() => showLogin(!shouldShow)} />
 
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/stuffs" component={MyStuffs} />
-          <Route path="/characters" component={Character} />
+      <div className={`login ${shouldShow ? "visible" : ""}`}>
+        <Login />
+      </div>
 
-          <Route component={Route404} />
-        </Switch>
-      <Footer row={quantityOfRows} />
+
+      {/* <Navbar row={0} /> */}
+      {/* <Element row={2} style={{ marginTop: '7.2rem', alignContent: 'normal', justifyContent: 'normal' }}><RoutesSwitch /></Element> */}
+      <Element row={1} style={{ alignContent: 'normal', justifyContent: 'normal' }}><RoutesSwitch /></Element>
+      <Footer row={2} />
     </Grid>
   );
 };

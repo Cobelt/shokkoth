@@ -1,0 +1,37 @@
+@import "../../variables.styl"
+
+background-item = rgba(101, 162, 185, 0.1)
+background-item-hover = rgba(101, 162, 185, 0.2)
+background-item-active = rgba(101, 162, 185, 0.2)
+
+border-item-hover = darken(background-item-hover, 25%)
+border-width = 2px
+border-half-animation-duration = 0.2s
+
+
+.breeds
+  grid-template-columns 1rem 1rem repeat(auto-fit, minmax(2.2rem, 1fr))
+  justify-items center
+  min-height 2.5rem
+
+  .male-icon, .female-icon
+    cursor pointer
+
+  .male-icon
+    align-self start
+  .female-icon
+    align-self end
+
+
+
+.item-details
+  transform scale(0)
+  &.show
+    animation scale0to1 0.2s ease-in-out forwards;
+
+  &.hide
+    animation scale1to0 0.2s ease-in-out forwards;
+
+
+.equipments-list
+  background-color background-item
