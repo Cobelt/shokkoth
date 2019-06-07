@@ -2,9 +2,11 @@ import React from 'react';
 
 export const Hat = () => (
     <svg
-        height={48}
-        width={48}
+        height="80%"
+        width="80%"
         viewBox="0 0 512 512"
+        style={{ enableBackground: "new 0 0 512 512" }}
+        xmlSpace="preserve"
     >
         <path
             d="M50.332 379.168s4.191-245.055 107.356-322.016c92.042-68.668 202.91-76.75 338.558-17.214 20.723 9.093 21.074 38.402.617 48.082-13.12 6.21-27.539 13.03-41.543 19.656-35.617 16.844-51.937 58.62-36.953 95.058 15.91 38.7 30.285 94.055 24.727 161.422zm0 0"
@@ -39,8 +41,8 @@ export const Hat = () => (
 
 export const Amulet = () => (
     <svg
-        height={48}
-        width={48}
+        height="80%"
+        width="80%"
         viewBox="0 0 512 512"
         style={{ enableBackground: "new 0 0 512 512" }}
         xmlSpace="preserve"
@@ -101,9 +103,11 @@ export const Amulet = () => (
 
 export const Ring = () => (
     <svg
-        width={48}
-        height={48}
+        width="80%"
+        height="80%"
         viewBox="0 0 511 512"
+        style={{ enableBackground: "new 0 0 512 512" }}
+        xmlSpace="preserve"
     >
         <path
             d="M14.246 414.406c9.121 9.117 43.477 34.989 59.379 35.203 15.059.211 11.453-24.601 30.54-31.386-23.966-37.535 18.237-128.512 88.429-202.946 3.18-3.605 6.785-7.21 10.39-10.816 77.192-77.191 176.317-125.844 215.762-100.82 4.879-13.36 29.266-5.09 30.54-16.965 2.542-22.055-22.696-61.29-34.356-72.95-7.422-7.421-17.18-11.663-29.266-13.148-53.863-7.21-159.988 53.953-246.3 140.266-3.602 3.605-6.997 6.996-10.391 10.812C49.027 235-5.898 333.61 1.102 385.141c1.484 12.09 5.722 21.843 13.144 29.265zm0 0"
@@ -133,8 +137,8 @@ export const Ring = () => (
 
 export const Cloak = () => (
     <svg
-        height={50}
-        width={50}
+        height="80%"
+        width="80%"
         viewBox="-5 0 512 512"
     >
         <path
@@ -177,8 +181,8 @@ export const Cloak = () => (
 
 export const Belt = () => (
     <svg
-        height={60}
-        width={60}
+        height="80%"
+        width="80%"
         viewBox="0 -91 512 512"
     >
         <path
@@ -214,8 +218,8 @@ export const Belt = () => (
 
 export const Boots = () => (
     <svg
-        height={48}
-        width={48}
+        height="80%"
+        width="80%"
         viewBox="0 0 512 512"
         style={{ enableBackground: "new 0 0 512 512" }}
         xmlSpace="preserve"
@@ -273,8 +277,8 @@ export const Boots = () => (
 
 export const Weapon = () => (
     <svg
-        height={70}
-        width={70}
+        height="80%"
+        width="80%"
         transform="rotate(15)"
         viewBox="-11 0 512 512"
     >
@@ -339,8 +343,8 @@ export const Weapon = () => (
 
 export const Shield = () => (
     <svg
-        width={60}
-        height={60}
+        width="80%"
+        height="80%"
         viewBox="0 0 512 512"
     >
         <path
@@ -380,8 +384,8 @@ export const Shield = () => (
 
 export const Dofus = () => (
     <svg
-        width={42}
-        height={54}
+        width="80%"
+        height="85%"
         viewBox="0 0 70 90"
     >
         <defs>
@@ -533,8 +537,8 @@ export const Dofus = () => (
 
 export const Pet = () => (
     <svg
-        width={52}
-        height={52}
+        width="80%"
+        height="80%"
         viewBox="0 0 511.563 511.563"
         style={{ enableBackground: "new 0 0 511.563 511.563" }}
         xmlSpace="preserve"
@@ -588,8 +592,8 @@ export const Pet = () => (
 
 export const Pet2 = () => (
     <svg
-        width={60}
-        height={60}
+        width="80%"
+        height="80%"
         viewBox="0 0 512.002 512.002"
         style={{ enableBackground: "new 0 0 512.002 512.002" }}
         xmlSpace="preserve"

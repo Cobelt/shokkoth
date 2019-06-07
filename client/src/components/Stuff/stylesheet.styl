@@ -1,14 +1,13 @@
 @import '../../variables.styl';
 
-primary-color-grayscaled = #e4e6c3
-
 .stuff
   .background-line
-    background-color primary-color-grayscaled
-    background-size 100vw
+    background-color background-item
+    background-size 100%
     left 0
     right 0
     top 0
+    position relative
     z-index 5
 
   .share-icon, .pseudo, .level
@@ -38,32 +37,25 @@ primary-color-grayscaled = #e4e6c3
 
   .avatar
     justify-self center
+    width: 100%;
+    z-index 1
 
     img
       object-fit cover
       height 100%
+      width 100%
       padding 3rem 0
 
-  .equipment
-    width 5.5rem
-    height 5.5rem
 
-    display flex
-    align-items center
-    justify-content center
+  .rotation-arrow
+    align-self center
+    z-index 2
 
-    cursor pointer
-    border solid 1px darken(primary-color-grayscaled, 5%)
-    background-color primary-color-grayscaled
-    transition background-color 0.5s, border 0.5s
+    .icon
+      padding 0
+      margin 0
 
-    svg
-      filter grayscale(90%)
-      transition filter 0.5s
-
-    &:hover
-      border solid 1px shade(darken(primary-color-grayscaled, 10%), 10%)
-      background-color shade(darken(primary-color-grayscaled, 5%), 10%)
-
-      svg
-        filter grayscale(70%) brightness(90%)
+    &.left
+      justify-self left
+    &.right
+      justify-self right
