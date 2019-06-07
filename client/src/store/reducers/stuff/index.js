@@ -15,18 +15,16 @@ export const UserReducer = (store = getInitialState(), { type, payload } = {}) =
     return produce(store, (draft) => {
       switch (type) {
 
-        case SAVE_USER: {
-          const { user, error, loading } = payload;
-          const currentData = get(store, 'user');
-          set(draft, 'user', { ...currentData, user, loading, error } );
+        case SAVE_DRAFT: {
+          const { stuff } = payload;
+          set(draft, 'draft', { stuff } );
           break;
         }
 
-        case SAVE_JWT: {
-          const { token, error, loading } = payload;
-          const currentData = get(store, 'jwt');
+        case SAVE_ACTIVE: {
+          const { idstuff } = payload;
           console.log(payload)
-          set(draft, 'jwt', { ...currentData, token, loading, error });
+          set(draft, 'active', { idstuff });
           break;
         }
 

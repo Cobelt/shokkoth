@@ -1,5 +1,6 @@
 import React from 'react';
 import deepEqual from 'lodash.isequal';
+import { DateTime } from 'luxon';
 
 import { SAVE_USER, SAVE_JWT } from '../../../constants/user';
 import { getUser } from '../../selectors/user';
@@ -7,7 +8,7 @@ import { getUser } from '../../selectors/user';
 import * as services from '../../../services';
 
 // Give it some utility please
-export const action = ({ loading, payload, type }) => ({ type, payload: { payload, loading } });
+export const action = ({ loading, payload, type }) => ({ type, payload: { ...payload, loading } });
 
 
 export const saveUser = ({ user }) => {
@@ -33,11 +34,22 @@ export function login({ username, password } = {}, [store, dispatch]) {
       dispatch(action({ type, loading: true }))
 
       const token = services.login({ username, password })
-	.then(token => dispatch(action({ type, loading: false, payload: { token } })))
-	.catch(error => dispatch(action({ type, loading: false, payload: { error } })));
+                          	.then(token => {
+                              dispatch(action({ type, loading: false, payload: { token } }))
+                              document.cookie = `jwt=${token}; expires=${DateTime.local().plus({ weeks: 1 }).toHTTP()}`;
+                            })
+                          	.catch(error => dispatch(action({ type, loading: false, payload: { error } })));
 
     }
     catch (error) {
-      dispatch(action({ type, loading: false, payload: { error } })); 
+      dispatch(action({ type, loading: false, payload: { error } }));
     }
+};
+
+export function logout([store, dispatch]) {
+    if (!username || !password) return;
+
+    const type = SAVE_JWT;
+    dispatch(action({ type, loading: false, token: undefined }))
+
 };
