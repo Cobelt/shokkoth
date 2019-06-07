@@ -1,3 +1,5 @@
+@import '../../variables.styl';
+
 .error-404
 
   .error-text
@@ -12,12 +14,14 @@
 
     animation scaleIdle 2s ease-in 0.5s infinite alternate
 
+    filter hue-rotate(132deg) saturate(53.1%) brightness(73.1%)
+
     img
       width 16rem
 
   .subtext
     font-size 4rem
-    color #9CA225
+    color primary-color
     font-family Ubuntu
     font-weight 900
     text-align center
