@@ -1,11 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { login } from '../../store/actions/user'
 
 import { Element, Row, Form, Input, Label, Button } from 'muejs';
+import { withRouter, Redirect } from 'react-router-dom';
 
+import { login } from '../../store/actions/user';
 import UserContext from '../../store/context/user/index.js';
 
+
 import './stylesheet.styl';
+
+
 
 const getUsernameAndPwd = (formData) => formData && formData instanceof FormData && ({ username: formData.get('username'), password: formData.get('password') });
 
@@ -20,7 +24,7 @@ const Home = () => {
 
   if (loading) return <div>LOADING</div>;
 
-  console.log(token, loading, error);
+  if (token) return <Redirect to="/" />
 
   const [gotError, setError] = useState(false);
   
@@ -51,4 +55,4 @@ const Home = () => {
   );
 }
 
-export default Home;
+export default withRouter(Home);
