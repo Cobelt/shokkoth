@@ -18,10 +18,16 @@ module.exports = {
     historyApiFallback: true,
     disableHostCheck: true,
     allowedHosts: [
-	'shokkoth.tk',
-        'labdofus',
-        'localhost',
+      'shokkoth.tk',
+      'labdofus',
+      'localhost',
+      'www.dofus.com',
     ],
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': '*',
+    }
+
   },
   entry: {
     app: './src/app.js',
