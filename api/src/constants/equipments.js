@@ -25,3 +25,20 @@ export const EquipmentsTypes = [
     BACKPACK,
     LIVING_OBJECT,
 ];
+
+export const translateEquipmentsTypes = {
+  hat: HAT,
+  cloak: CLOAK,
+  amulet: AMULET,
+  ring: RING,
+  belt: BELT,
+  boots: BOOTS,
+  shield: SHIELD,
+  dofus: DOFUS,
+  trophy: TROPHY,
+  backpack: BACKPACK,
+  livingObject: LIVING_OBJECT,
+  cosmetic: CEREMONIAL,
+}
+
+export const HIGHEST_LEVEL = '200';
