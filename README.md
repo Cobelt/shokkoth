@@ -6,6 +6,7 @@
 
 
 ## TODO avant la première release : 
+### Import equipments sets
 ### Create account
 ### Create character 
 (linked to an account)
