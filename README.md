@@ -1,21 +1,18 @@
 # Shokkoth.tk
-## Site de création de stuff pour dofus
 
-## En cours 
-### Characters Stats
-
-
-## TODO avant la première release : 
-### Import equipments sets
-### Create account
-### Create character 
-(linked to an account)
-### Save stuff
-(linked to a character except for draft in cookies)
+### En cours 
+Characters Stats
 
 
-## Post première release :
-### Drag'n'drop
-### FM
-### Elastic Search
-### IA
+### TODO avant la première release : 
+Import equipments sets
+Create account
+Create character (linked to an account)
+Save stuff (linked to a character except for draft in cookies)
+
+
+### Post première release :
+Drag'n'drop
+FM
+Elastic Search
+IA
