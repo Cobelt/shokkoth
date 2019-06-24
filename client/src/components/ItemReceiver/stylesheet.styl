@@ -1,10 +1,11 @@
+@require '../../animations.styl';
+
 background-item = rgba(101, 162, 185, 0.1)
 background-item-hover = rgba(101, 162, 185, 0.2)
 background-item-active = rgba(101, 162, 185, 0.2)
 
-border-item-hover = darken(background-item-hover, 25%)
 border-width = 2px
-border-half-animation-duration = 0.2s
+border-half-animation-duration = 0.25s
 
 .equipment-input
   --randomize 0
@@ -71,7 +72,8 @@ border-half-animation-duration = 0.2s
       filter grayscale(0%) brightness(110%)
 
 
-@keyframes animate-border-hover-before {
+
+@keyframes animate-border-before {
   0%{
     width 0
     height 0
@@ -94,7 +96,7 @@ border-half-animation-duration = 0.2s
   }
 }
 
-@keyframes animate-border-hover-after {
+@keyframes animate-border-after {
   0%{
     width 0
     height 0

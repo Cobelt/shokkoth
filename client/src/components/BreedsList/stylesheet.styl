@@ -1,0 +1,20 @@
+.breeds
+  grid-template-columns repeat(auto-fit, minmax(2.2rem, 1fr))
+  justify-items center
+  min-height 2.5rem
+
+  .male-icon, .female-icon
+    cursor pointer
+
+  .male-icon
+    align-self start
+  .female-icon
+    align-self end
+
+  @media (max-width: 640px)
+    grid-template-columns repeat(9, minmax(2.2rem, 1fr))
+    grid-template-rows repeat(3, auto)
+    --width 1 !important
+
+    div:first-child
+      display none

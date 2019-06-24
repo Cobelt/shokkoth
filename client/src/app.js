@@ -1,8 +1,9 @@
 import React, { useState} from 'react';
 import ReactDOM from 'react-dom';
 
-import { GridsProvider, Grid, Element } from 'muejs';
+import { Grid, Element } from 'muejs';
 import { UserProvider } from './store/context/user';
+import { EquipmentsProvider } from './store/context/equipments';
 
 import { Redirect, Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
@@ -43,10 +44,10 @@ const App = () => {
 
 ReactDOM.render((
     <Router history={history}>
-        <UserProvider>
-            <GridsProvider>
-                <App />
-            </GridsProvider>
-        </UserProvider>
+      <UserProvider>
+        <EquipmentsProvider>
+              <App />
+        </EquipmentsProvider>
+      </UserProvider>
     </Router>
 ), document.getElementById('root'));

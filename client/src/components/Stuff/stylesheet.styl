@@ -1,4 +1,4 @@
-@import '../../variables.styl';
+@require '../../variables.styl';
 
 .stuff
   .background-line
@@ -12,6 +12,7 @@
 
   .share-icon, .pseudo, .level
     color primary-color !important
+    align-self end
 
   .pseudo, .level
     font-weight 600
@@ -41,9 +42,10 @@
     z-index 1
 
     img
-      object-fit cover
+      object-fit contain
       height 100%
-      width 100%
+      min-width 100%
+      align-self center
       padding 3rem 0
 
 

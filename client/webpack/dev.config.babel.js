@@ -1,5 +1,5 @@
 import { HTML, JS, STYL } from './rules';
-import { cleanPlugin, copyPlugin, htmlPlugin, HMRPlugin } from './plugins';
+import { cleanPlugin, copyPlugin, htmlPlugin, HMRPlugin, CSSPlugin } from './plugins';
 
 import webpack from 'webpack';
 
@@ -41,5 +41,6 @@ module.exports = {
     copyPlugin('./src/app.js'),
     htmlPlugin,
     HMRPlugin({ webpack }),
+    CSSPlugin('[name].css'),
   ]
 };

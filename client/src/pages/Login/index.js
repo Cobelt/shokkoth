@@ -15,6 +15,7 @@ import './stylesheet.styl';
 
 const getUsernameAndPwd = (formData) => formData && formData instanceof FormData && ({ username: formData.get('username'), password: formData.get('password') });
 
+
 const Home = ({ className }) => {
   const context = useContext(UserContext);
   const [userData] = context || [];
@@ -22,19 +23,27 @@ const Home = ({ className }) => {
   const { jwt } = userData || {};
   const { error, loading, token } = jwt || {};
 
-  if (error) return <Element row={2} col={3} width={2} className="error font-error">error</Element>;
-  if (loading) return <Element row={2} col={3} width={2}>LOADING</Element>;
-  if (token) return <Redirect to="/" />
+  // if (error) return <Element row={2} col={3} width={2} className="error font-error">error</Element>;
+  // if (loading) return <Element row={2} col={3} width={2}>LOADING</Element>;
+  // if (token) return <Redirect to="/" />
 
   const [gotError, setError] = useState(false);
-  const [look, setLook] = useState('');
+  const [look, setLook] = useState('half-closed');
+  const [buttonState, setButtonState] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e, formData) => {
+    e.preventDefault();
+    login(getUsernameAndPwd(formData), context);
+    setButtonState('');
+  }
 
   return (
       <Form
-        className={["login-form", className].join(' ').trim()}
-        onSubmit={(e, formData) => login(getUsernameAndPwd(formData), context)}
+        className={["login-form", className, submitted && "submitted"].filter(e => !!e).join(' ').trim()}
+        onSubmit={handleSubmit}
         gridClassName="align-center" colGap="1rem"
-        columnsTemplate={'6vw 7vw 7vw 6vw'}
+        columnsTemplate={'0.5fr 1fr 1fr 0.5fr'}
         rowsTemplate={'fit-content(100%)'.repeat(4)}
       >
         <Element col={1} width={4}>
@@ -47,13 +56,23 @@ const Home = ({ className }) => {
             Veuillez vous logger
           </h2>
         </Element>
-        <Label col={1} width={4} onClick={(e) => setLook(`down#${get(e, 'target.value.length') || 0}`)}>
-          <Input name="username" type="text" placeholder="username *" required onChange={(e) => setLook(`down#${get(e, 'target.value.length') || 0}`)} />
+        <Label col={1} width={4} onClick={(e) => setLook(`fully-opened#${get(e, 'target.value.length') || 0}`)}>
+          <Input name="username" type="text" placeholder="username *" required onChange={(e) => setLook(`fully-opened#${get(e, 'target.value.length') || 0}`)} />
         </Label>
-        <Label col={1} width={4} onClick={() => setLook('away')}>
-          <Input name="password" type="password" placeholder="password *" required onChange={(e) => setLook('away')} />
+        <Label col={1} width={4} onClick={() => setLook('almost-closed')}>
+          <Input name="password" type="password" placeholder="password *" required onChange={(e) => setLook('almost-closed')} />
         </Label>
-        <Button onClick={() => setError(!gotError)} className={`btn-arrow bg-primary ${gotError ? 'bg-error' : ''}`.trim()} col={2} width={2} type="submit">Log me in !</Button>
+        <Button
+          col={2}
+          width={2}
+          type="submit"
+          onClick={() => setError(!gotError)}
+          onMouseDown={() => setButtonState('clickDown')}
+          onMouseUp={() => { setButtonState('clickUp'); setSubmitted(!submitted); setLook(look === 'happy' ? 'choqued' : 'happy') }}
+          className={["btn-arrow", gotError ? 'bg-error' : 'bg-primary', buttonState].filter(e => !!e).join(' ').trim()}
+        >
+          Log me in !
+        </Button>
       </Form>
   );
 }

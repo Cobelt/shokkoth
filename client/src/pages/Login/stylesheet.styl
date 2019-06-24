@@ -1,6 +1,12 @@
-@import "../../variables.styl"
+@require "../../variables.styl"
+
 
 .login-form
+  width 100%
+  display flex
+  justify-content stretch
+  overflow hidden
+
   svg.shokkoth
     max-height 35vh
 
@@ -9,11 +15,51 @@
 
       &.external-border
         darken-20 = darken(primary-color, 20%)
-        darken-35 = darken(primary-color, 35%)
-        filter drop-shadow(2rem 2rem 2rem darken-35)
-        fill #fafafa
         stroke darken-20
-        overflow hiddeb
+
+    .spikes-group
+      transform rotate(0deg)
+      transform-origin 50% 60%
+      transition transform 0.75s ease-in-out
+
+    .body-and-mouth
+      transform rotate(0deg)
+      transform-origin 50% 60%
+      transition transform 0.5s
+
+
+    .iris
+      d path(var(--path))
+      transition d 0.3s
+      animation eye-blink 5s linear infinite;
+
+      &.fully-opened
+        --path "m 41 15 c 0.5 4 5.5 4 6 0 c -1 -2 -5 -2 -6 0"
+
+      &.happy
+        --path "m 41 15 c 0.5 -2 5.5 -2 6 0 c -1 -3.5 -5 -3.5 -6 0"
+
+      &.choqued
+        --path "m 41 15 c 0 4 6 4 6 0 c 0 -4 -6 -4 -6 0"
+
+      &.half-closed
+        --path "m 41 15 c 0.5 4 5.5 4 6 0 c -1 -1 -5 -1 -6 0"
+
+      &.almost-closed
+        --path "m 41 15 c 0.5 4 5.5 4 6 0 c -1 3 -5 3 -6 0"
+
+      &.fully-closed
+        --path "m 41 15 c 0.5 4 5.5 4 6 0 c -0.5 4 -5.5 4 -6 0"
+
+
+  &.submitted svg.shokkoth
+    .spikes-group
+      transform rotate(180deg)
+
+    .body-and-mouth
+      transform rotate(180deg)
+
+
 
   .btn-arrow
     clip-path polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%)
@@ -22,3 +68,16 @@
 
     &:hover
       transform translateX(5%)
+
+    &.clickDown
+      transform translateX(-10%)
+
+    &.clickUp
+      transform translateX(25%)
+
+
+@keyframes eye-blink {
+  5%, 100% {
+    --path "m 41 15 c 0.5 4 5.5 4 6 0 c -1 3 -5 3 -6 0" !important
+  }
+}

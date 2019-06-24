@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import {Footer, FooterLine, FooterList, FooterSeparator, Element} from 'muejs';
+import {Footer, FooterLine, FooterList, FooterSeparator, Element, Icon } from 'muejs';
 
 import './stylesheet.styl';
 
@@ -9,8 +9,9 @@ export default class FooterComponent extends Component {
         const { row, idgrid } = this.props;
 
         return (
-            <Footer idgrid={idgrid} row={row} columnsTemplate={"0.55fr 0.55fr 0.4fr 0.4fr 0.55fr 0.55fr"} style={{ marginTop: '3rem' }}>
-               <FooterList className="about-me" rowsTemplate={{ 1: '6vh' }} col={1} width={2}>
+            <Footer idgrid={idgrid} row={row} columnsTemplate="repeat(3, 1fr)" style={{ marginTop: '3rem' }}>
+
+                <FooterList className="about-me" rowsTemplate={{ 1: '6vh' }} col={1}>
                     <Element type="h5">Who am I ?</Element>
 
                     <Element type="p" style={{textAlign: 'left'}}>
@@ -21,7 +22,7 @@ export default class FooterComponent extends Component {
                     </Element>
                 </FooterList>
 
-                <FooterList className="donation" rowsTemplate={{ 1: '6vh' }} col={3} width={2}>
+                <FooterList className="donation" rowsTemplate={{ 1: '6vh' }} col={2}>
                     <Element type="h5">Donation</Element>
 
                     <Element type="p">
@@ -33,9 +34,9 @@ export default class FooterComponent extends Component {
                         <Element type="a" href="https://www.utip.io">U-Tip</Element>
                         <Element type="a" href="https://www.twitch.tv/cobeltdierk">Twitch</Element>
                     </FooterLine>
-                </FooterList>
+                  </FooterList>
 
-                <FooterList className="social" rowsTemplate={{ 1: '6vh' }} col={5} width={2}>
+                  <FooterList className="social" rowsTemplate={{ 1: '6vh' }} col={3}>
                     <Element type="h5">What do I do ?</Element>
 
                     <Element type="p" style={{textAlign: 'right'}}>
@@ -49,19 +50,37 @@ export default class FooterComponent extends Component {
                     </FooterLine>
                 </FooterList>
 
-                <FooterSeparator row={2} col={2} width={4}/>
+                <FooterSeparator row={2} col={1} width={3} />
+                {/* <Element type="a" href="https://facebook.com/">Facebook</Element> */}
 
-                <FooterLine row={3}>
-                    <Element type="a" href="https://facebook.com/">Facebook</Element>
+                {/* <Element type="a" href="https://www.youtube.com/channel/UC7rRGEAXomdP_iUCC0LV3Ag/live">Youtube</Element> */}
 
-                    <Element type="a" href="https://www.youtube.com/channel/UC7rRGEAXomdP_iUCC0LV3Ag/live">Youtube</Element>
+                <Element className="line-item" type="a" href="https://twitter.com/shokkoth" row={3} col={1}>
+                  <span className="display-on-lg">Twitter (site)</span>
+                  <Icon className="display-on-sm" icon="twitter" svg />
+                </Element>
 
-                    <Element type="a" href="https://twitter.com/cobelt_dierk">Twitter</Element>
+                <Element className="line-item" type="a" href="https://twitter.com/cobelt_dierk" row={3} col={2}>
+                  <span className="display-on-lg">Twitter (perso)</span>
+                  <Icon className="display-on-sm" icon="twitter" svg />
+                </Element>
 
-                    <Element type="a" href="https://www.instagram.com/cobelt_dierk">Instagram</Element>
+                {/* <Element type="a" href="https://www.instagram.com/cobelt_dierk">Instagram</Element> */}
 
-                    <Element type="a" href="http://github.com/cobelt">Github</Element>
-                </FooterLine>
+                <Element className="line-item" type="a" href="http://github.com/cobelt" row={3} col={3}>
+                  <span className="display-on-lg">Github</span>
+                  <Icon className="display-on-sm" icon="github" svg />
+                </Element>
+
+
+                <FooterSeparator className="sm" row={4} col={1} width={3} />
+
+                <Element className="justify-center" col={1} row={5} width={3}>
+                  <span className="ankama-logo pad-1-rem">
+                    Some images used belong to
+                    <img src="//img.shokkoth.tk/assets/png/Ankama_logo.png" />
+                  </span>
+                </Element>
             </Footer>
         );
     }

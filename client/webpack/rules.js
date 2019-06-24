@@ -1,3 +1,5 @@
+import { CSSLoaderPlugin } from './plugins';
+
 export const HTML = {
     test: /\.html$/,
     use: [{
@@ -16,7 +18,7 @@ export const STYL = {
     test: /\.styl$/,
     exclude: /node_modules\/(?!muejs)/,
     use: [
-        'style-loader',
+        process.env.NODE_ENV === 'development' ? 'style-loader' : CSSLoaderPlugin,
         'css-loader',
         'stylus-loader'
     ]

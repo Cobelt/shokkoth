@@ -2,13 +2,14 @@ import React from 'react';
 import deepEqual from 'lodash.isequal';
 import { DateTime } from 'luxon';
 
+import { action } from '../../utils';
+
 import { SAVE_USER, SAVE_JWT } from '../../../constants/user';
 import { getUser } from '../../selectors/user';
 
+
 import * as services from '../../../services';
 
-// Give it some utility please
-export const action = ({ loading, payload, type }) => ({ type, payload: { ...payload, loading } });
 
 
 export const saveUser = ({ user }) => {

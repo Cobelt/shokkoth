@@ -32,7 +32,7 @@ export const BREEDS = [
   {
     id: 6,
     name: 'ecaflip',
-    m: { heads: [2092, 2099], head: 2092, body: 60, height: 150, defaultColors: '1=16380634,2=13726012,3=16735778,4=2786186,5=16761904' },
+    m: { heads: [2092, 2099], head: 2093, body: 60, height: 150, defaultColors: '1=16380634,2=13726012,3=16735778,4=2786186,5=16761904' },
     f: { heads: [2100,2107],  head: 2100, body: 61, height: 150, defaultColors: '1=16380634,2=14378769,3=14568735,4=13201181,5=2057046' },
   },
   {
@@ -44,7 +44,7 @@ export const BREEDS = [
   {
     id: 8,
     name: 'iop',
-    m: { heads: [2124, 2067], head: 2124, body: 80, height: 140, defaultColors: '1=16765564,2=16355883,3=16777185,4=2910064,5=14561799' },
+    m: { heads: [2124, 2067], head: 2125, body: 80, height: 140, defaultColors: '1=16765564,2=16355883,3=16777185,4=2910064,5=14561799' },
     f: { heads: [2132, 2075], head: 2134, body: 81, height: 140, defaultColors: '1=16103775,2=15430419,3=16777185,4=14432786,5=14432786' },
   },
   {
@@ -98,7 +98,7 @@ export const BREEDS = [
   {
     id: 17,
     name: 'huppermage',
-    m: { heads: [3289, 3296], head: 3289, body: 3285, height: 140, defaultColors: '1=#F9EBD0,2=#462B20,3=#295655,4=#448E91,5=#F0F3E9' },
+    m: { heads: [3289, 3296], head: 3290, body: 3285, height: 140, defaultColors: '1=#F9EBD0,2=#462B20,3=#295655,4=#448E91,5=#F0F3E9' },
     f: { heads: [3297, 3304], head: 3298, body: 3286, height: 135, defaultColors: '1=#F9EBD0,2=#FFFADA,3=#295655,4=#448E91,5=#F0F3E9' },
   },
   {

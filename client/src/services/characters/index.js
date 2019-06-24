@@ -1,7 +1,7 @@
-import Axios from 'axios';
+import axios from 'axios';
 import jwt from 'jsonwebtoken';
 
 export async function fetchCharactersService({ iduser }) {
-    const response = Axios.get(`localhost:5013/api/characters/${iduser}`);
+    const response = axios.get(`//api.shokkoth.tk/characters/${iduser}`);
     return response.data;
 }

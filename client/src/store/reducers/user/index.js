@@ -2,7 +2,7 @@ import produce  from 'immer';
 import set from 'lodash.set';
 import get from 'lodash.get';
 
-import { SAVE_USER, SAVE_JWT } from '../../../constants/user';
+import { SAVE_USER, SAVE_JWT } from '../../constants/user';
 
 
 function getInitialState() {

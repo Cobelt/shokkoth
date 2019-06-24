@@ -1,30 +1,13 @@
 import React, { useState } from 'react';
-import { Grid, Element, Row } from 'muejs';
+import { Grid, Element, Row, Icon } from 'muejs';
 import uuid from 'uuid/v4';
 import { withRouter } from 'react-router-dom';
 
+
+
+import { BREEDS } from '../../../constants/breeds';
 import './stylesheet.styl';
 
-const breeds = {
-    'Feca': 1,
-    'Osamodas': 2,
-    'Enutrof': 3,
-    'Sram': 4,
-    'Xelor': 5,
-    'Ecaflip': 6,
-    'Eniripsa': 7,
-    'Iop': 8,
-    'Cra': 9,
-    'Sadida': 10,
-    'Sacrieur': 11,
-    'Pandawa': 12,
-    'Roublard': 13,
-    'Zobal': 14,
-    'Steamer': 15,
-    'Eliotrope': 16,
-    'Huppermage': 17,
-    'Ouginak': 18
-}
 
 const fakeData = [
     {
@@ -125,7 +108,7 @@ const fakeData = [
     },
     {
         id: 16,
-        pseudo: 'Knochoupi',
+        pseudo: 'Ectorche',
         level: '199',
         classe: 'Steamer',
     },
@@ -136,80 +119,103 @@ const fakeData = [
         classe: 'Sadida',
     },
     {
-	id: 18,
-	pseudo: 'Blixtnedslag',
-	classe: 'Iop',
+      	id: 18,
+      	pseudo: 'Blixtnedslag',
+      	classe: 'Iop',
     },
 ];
 
 
-const MyCharacters = ({ history: { push } = {} }) => {
-  const [characterByRow, setCharacterByRow] = useState(6);
+const MyCharacters = ({ history: { goBack, push } = {} }) => {
+    const [characterByRow, setCharacterByRow] = useState(5);
 
-        const position = { row: 1, col: 0 };
+    const widthChange = (mq) => {
+      if (mq.matches) {
+        if (characterByRow !== 5) setCharacterByRow(5);
+      } else {
+        if (characterByRow !== 2) setCharacterByRow(2);
+      }
+    }
 
-        const dataCompleteRows = [...fakeData].concat(Array((characterByRow - (fakeData.length % characterByRow)) % characterByRow).fill({ empty: true }));
+    const mq = window.matchMedia("(min-width: 800px)");
+    mq.addListener(widthChange);
+    widthChange(mq);
 
-        return (
-            <>
-                <Element col={3} width={2} style={{ marginTop: '64px' }}>
-                    <h2>My characters</h2>
-                </Element>
 
-                <Element justify="stretch" align={"start"} row={2} width={6}>
-                    <Grid rowGap="1rem" className="characters-list" columnsTemplate={ '1fr '.repeat(characterByRow) }>
-                        { dataCompleteRows.map((character, index) => {
-                            position.row = Math.trunc(1 + index / characterByRow);
-                            position.col = 1 + (index % characterByRow);
+    const position = { row: 1, col: 0 };
 
-                            const avatarClassnames = [
-                                'avatar',
-                                character.classe && `breed-${breeds[character.classe]}`,
-                                (position.row - 1) % 2 === 1 && 'row-odd',
-                                position.col === 1 && 'first-of-row',
-                                position.col === characterByRow && 'last-of-row',
-                            ].filter(e => !!e).join(' ');
+    const dataCompleteRows = [...fakeData].concat(Array((characterByRow - (fakeData.length % characterByRow)) % characterByRow).fill({ empty: true }));
 
-                            const backgroundImage =  character.classe && `url(http://img.shokkoth.tk/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/bg/breed-${breeds[character.classe]}.jpg)`;
 
-                            return !character.empty && (
-                                <Element
-                                    key={`character#${character.id || uuid()}#${character.pseudo}#breed=${breeds[character.classe]}`}
-                                    className={`${character.empty ? 'empty-': ''}character`}
-                                    style={{ minWidth: `calc(100vh / ${characterByRow})` }}
-                                    row={position.row}
-                                    col={position.col}
-                                    onClick={() => push(`/characters/${character.id}`)}
-                                >
-                                    <div className={avatarClassnames} style={{ backgroundImage }} aria-disabled={true}>
-                                        { (character.pseudo || character.level) && (
-                                            <div className="pseudo-and-level">
-                                                { character.pseudo && <span className="pseudo">{ character.pseudo }</span> }
-                                                { character.level && <span className="level">{ character.level }</span> }
-                                            </div>
-                                        ) }
-                                    </div>
-                                </Element>
-                           );
-                        }) }
-                        {/*<Element*/}
-                        {/*    className='new-character'*/}
-                        {/*    row={position.col % characterByRow === 0 ? (position.row + 1) : position.row}*/}
-                        {/*    col={position.col % characterByRow === 0 ? 1 : position.col + 1 % characterByRow}*/}
-                        {/*>*/}
-                        {/*    <div className={[*/}
-                        {/*        'avatar',*/}
-                        {/*        (position.col % characterByRow === 0 ? (position.row + 1) : position.row - 1) % 2 === 1 && 'row-odd',*/}
-                        {/*        position.col % characterByRow === 0 ? 1 : position.col + 1 % characterByRow === 1 && 'first-of-row',*/}
-                        {/*        position.col % characterByRow === 0 ? 1 : position.col + 1 % characterByRow === characterByRow && 'last-of-row',*/}
-                        {/*    ].filter(e => !!e).join(' ')}>*/}
-                        {/*        <span className="pseudo">Create new character</span>*/}
-                        {/*    </div>*/}
-                        {/*</Element>*/}
-                    </Grid>
-                </Element>
-            </>
-        );
+
+    return (
+        <Grid className="home-container" gap="3rem" rowsTemplate="2.5rem 3.5rem fit-content(100%)" columnsTemplate="6rem 1fr">
+            <Element row={1} col={1} height={2}>
+                <Icon icon="home" row={1} col={1} style={{ justifySelf: 'start', fontSize: '2rem' }} onClick={() => push('/')} />
+            </Element>
+
+            <Element col={1} row={1} height={2} width={2} className="text-center font-primary">
+                <h2>My characters</h2>
+            </Element>
+
+            <Element justify="stretch" align={"start"} row={3} width={2}>
+                <Grid rowGap="1rem" className="characters-list" columnsTemplate={ '1fr '.repeat(characterByRow) }>
+                    { dataCompleteRows.map((character, index) => {
+                        let breed;
+                        if (character.classe) {
+                          breed = BREEDS.find(breed => breed.name === character.classe.toLowerCase());
+                        }
+                        position.row = Math.trunc(1 + index / characterByRow);
+                        position.col = 1 + (index % characterByRow);
+
+                        const avatarClassnames = [
+                            'avatar',
+                            breed && `breed-${breed.id}`,
+                            (position.row - 1) % 2 === 1 && 'row-odd',
+                            position.col === 1 && 'first-of-row',
+                            position.col === characterByRow && 'last-of-row',
+                        ].filter(e => !!e).join(' ');
+
+                        const backgroundImage = breed && `url(//img.shokkoth.tk/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/bg/breed-${breed.id}.jpg)`;
+
+                        return !character.empty && (
+                            <Element
+                                key={`character#${character.id || uuid()}#${character.pseudo}#breed=${breed.id}`}
+                                className={`${character.empty ? 'empty-': ''}character`}
+                                style={{ minWidth: `calc(100vw / ${characterByRow})` }}
+                                row={position.row}
+                                col={position.col}
+                                onClick={() => push(`/characters/${character.id}`)}
+                            >
+                                <div className={avatarClassnames} style={{ backgroundImage }} aria-disabled={true}>
+                                    { (character.pseudo || character.level) && (
+                                        <div className="pseudo-and-level">
+                                            { character.pseudo && <span className="pseudo">{ character.pseudo }</span> }
+                                            { character.level && <span className="level">{ character.level }</span> }
+                                        </div>
+                                    ) }
+                                </div>
+                            </Element>
+                       );
+                    }) }
+                    {/*<Element*/}
+                    {/*    className='new-character'*/}
+                    {/*    row={position.col % characterByRow === 0 ? (position.row + 1) : position.row}*/}
+                    {/*    col={position.col % characterByRow === 0 ? 1 : position.col + 1 % characterByRow}*/}
+                    {/*>*/}
+                    {/*    <div className={[*/}
+                    {/*        'avatar',*/}
+                    {/*        (position.col % characterByRow === 0 ? (position.row + 1) : position.row - 1) % 2 === 1 && 'row-odd',*/}
+                    {/*        position.col % characterByRow === 0 ? 1 : position.col + 1 % characterByRow === 1 && 'first-of-row',*/}
+                    {/*        position.col % characterByRow === 0 ? 1 : position.col + 1 % characterByRow === characterByRow && 'last-of-row',*/}
+                    {/*    ].filter(e => !!e).join(' ')}>*/}
+                    {/*        <span className="pseudo">Create new character</span>*/}
+                    {/*    </div>*/}
+                    {/*</Element>*/}
+                </Grid>
+            </Element>
+        </Grid>
+    );
 }
 
 export default withRouter(MyCharacters);

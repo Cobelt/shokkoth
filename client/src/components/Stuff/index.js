@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import get from 'lodash.get';
 import { Element, Grid, Icon } from 'muejs';
 import {
@@ -13,12 +13,21 @@ import {
     Shield,
     Weapon,
 } from './equipments-icons';
-import Sword from '../../assets/svg/sword';
+
+import EquipmentsContext from '../../store/context/equipments';
+
+import * as selectors from '../../store/selectors/equipments';
+import * as actions from '../../store/actions/equipments';
+
 
 import ItemReceiver from '../ItemReceiver';
 
+
 import { generateImageLink } from '../../utils/hexGenerator';
+
 import { DOFUS_IMG_URI } from '../../constants/URIs';
+import { WEAPONS, PETS, MOUNTS, EQUIPMENTS, ALL } from '../../constants/equipments';
+
 
 import './stylesheet.styl';
 
@@ -35,15 +44,24 @@ const copyUrlToClipboard = () => {
 
 
 
-const Stuff = ({ className, character = {}, step, changeStep = () => undefined, ...otherProps }) => {
+const Stuff = ({ className, character = {}, ...otherProps }) => {
   const [rotation, setRotation] = useState(1);
 
+  const [store, dispatch] = useContext(EquipmentsContext);
+
+  useEffect(() => {
+    async function fetchStuffItems() {
+        actions.fetchStuffItems([store, dispatch]);
+    }
+    fetchStuffItems();
+  }, [store]);
+
   const { pseudo, level, breed, gender } = character;
-  const avatarLink = get(breed, gender) && generateImageLink({ ...breed[gender], head: breed[gender].heads[0], rotation });
+  const avatarLink = get(breed, gender) && generateImageLink({ ...breed[gender], head: breed[gender].heads[0], rotation, padding: 10 });
 
 
   return (
-    <Grid className={["stuff", "justify-center", className].join(' ')} gap="1rem" columnsTemplate={'minmax(3rem, 3.5vw) '.repeat(6)} rowsTemplate={`auto ${'minmax(3rem, 3.5vw) '.repeat(6)}`}>
+    <Grid className={["stuff", "justify-center", className].join(' ')} gap="1rem" columnsTemplate={'repeat(6, minmax(2.5rem, 3vw))'} rowsTemplate={'auto repeat(6, minmax(2.5rem, 3vw))'}>
 
       {/* Row 1 */}
       <Icon className="share-icon" icon="share" size="small" onClick={copyUrlToClipboard} />
@@ -69,28 +87,25 @@ const Stuff = ({ className, character = {}, step, changeStep = () => undefined, 
       </Element>
 
       {/* Left side */}
-      <ItemReceiver col={1} row={2} type={'amulet'} step={step} changeStep={changeStep} icon={Amulet} />
-      <ItemReceiver col={1} row={3} type={'shield'} step={step} changeStep={changeStep} icon={Shield} />
-      <ItemReceiver col={1} row={4} type={'ring'} index={'1'} step={step} changeStep={changeStep} icon={Ring} />
-      <ItemReceiver col={1} row={5} type={'belt'}   step={step} changeStep={changeStep} icon={Belt} />
-      <ItemReceiver col={1} row={6} type={'boots'} step={step} changeStep={changeStep} icon={Boots} />
+      { console.log('stuff re-render here') }
+      <ItemReceiver col={1} row={2} types={'amulet'} icon={Amulet} />
+      <ItemReceiver col={1} row={3} types={'shield'} icon={Shield} />
+      <ItemReceiver col={1} row={4} types={'ring'} stepName={'ringLeft'} icon={Ring} />
+      <ItemReceiver col={1} row={5} types={'belt'}  icon={Belt} />
+      <ItemReceiver col={1} row={6} types={'boots'} icon={Boots} />
 
 
       {/* Right side */}
-      <ItemReceiver col={6} row={2} type={'hat'} step={step} changeStep={changeStep} icon={Hat} />
-
-      {/* Need to change this one, it"s not an "ItemReceiver", it's a "Weapon" */}
-      <ItemReceiver col={6} row={3} type={'weapon'} step={step} changeStep={changeStep} icon={Sword} />
-      <ItemReceiver col={6} row={4} type={'ring'} index={'2'} step={step} changeStep={changeStep} icon={Ring} />
-      <ItemReceiver col={6} row={5} type={'cloak'} step={step} changeStep={changeStep} icon={Cloak} />
-
-      {/* Need to change this one, it"s not an "ItemReceiver", it's a "PetOrMount" */}
-      <ItemReceiver col={6} row={6} type={'mount,pet,petsmount'} step={step} changeStep={changeStep} icon={Pet} />
+      <ItemReceiver col={6} row={2} types={'hat'} icon={Hat} />
+      <ItemReceiver col={6} row={3} types={WEAPONS} stepName={'weapon'} icon={Weapon} />
+      <ItemReceiver col={6} row={4} types={'ring'} stepName={'ringRight'} icon={Ring} />
+      <ItemReceiver col={6} row={5} types={'cloak,backpack'} stepName={'cloak'} icon={Cloak} />
+      <ItemReceiver col={6} row={6} types={'mount,pet,petsmount'} stepName={'pet'} icon={Pet} />
 
       {/* Bottom side */}
       { Array(6).fill('trophy,dofus').map((type, index) => {
-        const value = `${type}#${index+1}`;
-        return <ItemReceiver key={value} col={index} row={7} index={index} type={type} step={step} changeStep={changeStep} icon={Dofus} />
+        const value = `dofus#${index+1}`;
+        return <ItemReceiver key={value} col={index+1} row={7} stepName={value} types={type} icon={Dofus} />
       }) }
     </Grid>
   );

@@ -1,0 +1,43 @@
+.footer
+
+  .ankama-logo
+    align-items center
+    display flex
+
+    img
+      margin-left 1rem
+      max-height 2rem
+      width auto
+
+
+  .about-me, .donation, .social
+    padding 1vw
+
+  .footer-separator
+    margin-left 15%
+    margin-right 15%
+
+    &.sm
+      margin-left 25%
+      margin-right 25%
+
+  @media (max-width: 640px)
+    .display-on-lg
+      display none
+
+  @media (min-width: 641px)
+
+    .display-on-sm
+      display none
+
+  @media (max-width: 640px)
+    .about-me
+      display none !important
+    .social
+      display none !important
+    .donation
+      --col 1 !important
+      --width 3 !important
+
+      p
+        text-align center !important

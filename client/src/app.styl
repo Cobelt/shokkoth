@@ -1,5 +1,5 @@
-@import './variables.styl';
-@import './animations.styl';
+@require './variables.styl';
+@require './animations.styl';
 
 .btn.circle
   background-color darken(primary-color, 20%)
@@ -37,7 +37,15 @@
       opacity 0
       transform translateX(-50%)
       transition opacity 0.25s ease-in
-      z-index 6
+      z-index 99
+      width 30%
+
+      @media (max-width: 1280px)
+        width 50%
+
+      @media (max-width: 640px)
+        width 80%
+
 
       h2
         color #fafafa
@@ -62,10 +70,11 @@
 
       width calc(4.5vw * var(--width))
       min-width calc(4rem * var(--width))
+      max-width unset
 
       fill primary-color
-      transition width 0.45s ease-out
-      z-index 5
+      transition width 0.45s ease-out, min-width 0.45s ease-out
+      z-index 98
 
       transform-origin top right
 
@@ -73,21 +82,25 @@
         d path(var(--path))
         transition d 0.6s, fill 0.6s
         cursor pointer
+        transition-delay 0.3s
 
+        // animation puddle-idle 4s linear alternate infinite;
 
 
       &:not(.expand)
         path:hover
-          --path "M 100 50 V 0 H 30 c -57 1 -12 10 -20 25 c -11 20 15 3 20 10 c 11 14 -29 10 -20 40 c 4 15 30 -5 50 10 			c 4 4 -16 -3 -17 7 	C 41 106 100 100 100 90 l 0 -40" !important
+          --path "m 100 50 v -50 h -70 c -37 1 0 21 0 21 c -7 0 -59 45 13 29 c 6 -2 -6 9 -6 9 c -9 8 -6 12 14 10 c -6 7 -30 51 23 14 c 0 0 22 24 26 7 v -40" !important
+          transition-delay unset
 
 
       &.expand
-        --width 28
+        --width 30
 
         path
           // todo : new path when expands (with keyframes and forwards ?)
-          --path "M 100 50 V 0 H 30 c -57 1 -12 10 -20 25 c -11 20 15 3 20 10 c 11 14 -29 10 -20 40 c 4 15 30 -5 50 10 			c 4 4 -16 -3 -17 7 	C 41 106 100 100 100 90 l 0 -40" !important
+          --path "M 100 50 V 0 H 30 c -57 1 -12 10 -20 25 c -11 20 15 3 20 10 c 11 14 -29 10 -20 40 c 4 15 30 -5 50 10 			c 4 4 -16 -3 -17 7 	C 41 106 100 100 100 90 v -40" !important
           fill #2d7e93
+          transition-delay unset
 
 
 
@@ -162,3 +175,17 @@
 
     i.material-icons
       font-size 3.75rem
+
+/*
+@keyframes puddle-idle {
+  0% {
+    d: path("m 100 50   v -50 h -70   c -57 1 2 15 0 21       c 0 2 -37 49 13 29    c 15 -7 -1 10 -2 16     c 0 10 12 -4 10 3     c -2 7 -3 51 23 14    c 8 -11 22 24 26 7        v -40")
+  }
+  50% {
+    d: path("m 100 50   v -50 h -70   c -37 1 0 21 0 21       c -7 0 -59 45 13 29   c 6 -2 -6 9 -6 9        c -9 8 -6 12 14 10    c -6 7 -30 51 23 14   c 0 0 22 24 26 7          v -40")
+  }
+  100% {
+    d: path("m 100 50   v -50 h -70   c -57 1 2 15 0 21       c 0 2 -37 49 13 29    c 15 -7 -1 10 -2 16     c 0 10 12 -4 10 3     c -2 7 -3 51 23 14    c 8 -11 22 24 26 7        v -40")
+  }
+}
+*/

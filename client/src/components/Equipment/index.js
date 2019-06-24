@@ -4,8 +4,10 @@ import { Element } from 'muejs';
 import './stylesheet.styl';
 
 
-const Equipment = ({ index, equipment, select, isSelected }) => {
+const Equipment = ({ index, equipment, select = () => undefined, isSelected = false }) => {
   const [loading, setLoading] = useState(true);
+
+  console.log('OK');
 
   return (
     <Element
