@@ -1,1 +1,7 @@
-export const MOUNT = 'Monture';
+export const MOUNT = 'Montures';
+
+export const MountsTypes = [MOUNT];
+
+export const translateMountsTypes = {
+  mount: MOUNT,
+}

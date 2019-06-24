@@ -41,4 +41,53 @@ export const translateEquipmentsTypes = {
   cosmetic: CEREMONIAL,
 }
 
-export const HIGHEST_LEVEL = '200';
+// export const Types = {
+//     HAT: {
+//       fr: 'Chapeau',
+//       en: 'Hat',
+//     },
+//     CLOAK: {
+//       fr: 'Cape',
+//       en: 'Cloak',
+//     },
+//     AMULET: {
+//       fr: 'Amulette',
+//       en: 'Amulet',
+//     },
+//     RING: {
+//       fr: 'Anneau',
+//       en: 'Ring',
+//     },
+//     BELT: {
+//       fr: 'Ceinture',
+//       en: 'Belt',
+//     },
+//     BOOTS: {
+//       fr: 'Bottes',
+//       en: 'Boots',
+//     },
+//     SHIELD: {
+//       fr: 'Bouclier',
+//       en: 'Shield',
+//     },
+//     DOFUS: {
+//       fr: 'Dofus',
+//       en: 'Dofus',
+//     },
+//     TROPHY: {
+//       fr: 'Trophée',
+//       en: 'Trophy',
+//     },
+//     CEREMONIAL: {
+//       fr: 'Objet d\'apparat',
+//       en: 'Ceremonial',
+//     },
+//     BACKPACK: {
+//       fr: 'Sac à dos',
+//       en: 'Backpack',
+//     },
+//     LIVING_OBJECT: {
+//       fr: 'Objet vivant',
+//       en: 'Living object',
+//     },
+// }

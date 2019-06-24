@@ -2,8 +2,6 @@ import mongoose from 'mongoose';
 import get from 'lodash.get';
 
 import Equipments from './equipments.js';
-import Pets from './pets.js';
-import Mounts from './mounts.js';
 import Likes from './likes.js';
 
 import {
@@ -80,6 +78,12 @@ const StuffsSchema = new mongoose.Schema({
         ref: 'Equipments',
         validate: [boots => boots.type === BOOTS, 'Boots should be type boots']
     },
+    // Arme
+    Weapon: {
+        type: Number,
+        ref: 'Equipments',
+        validate: [weapon => WeaponsTypes.includes(weapon.type), 'Weapon should be a type of weapon']
+    },
     // Bouclier
     Shield: {
         type: Number,
@@ -95,23 +99,10 @@ const StuffsSchema = new mongoose.Schema({
             { validator: v => v.length <= 6, msg: 'You want to equip more than 6 Dofus and/or trophies' },
         ]
     },
-    mountOrPet: {
-        use: {
-            type: String,
-            enum: [MOUNT, PET, PETSMOUNT],
-        },
-        mount: {
-            type: Number,
-            ref: 'Mounts',
-        },
-        pet: {
-            type: Number,
-            ref: 'Pets',
-        },
-        petsmount: {
-            type: Number,
-            ref: 'Pets',
-        },
+
+    pet: {
+        type: Number,
+        ref: 'Equipments',
     },
 
     skin: {

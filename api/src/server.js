@@ -7,14 +7,16 @@ import { PORT, ALLOWED_ORIGINS } from './env';
 
 import {
   EquipmentsModel,
-  PetsModel,
-  MountsModel,
   StuffsModel,
   CharactersModel,
   UsersModel,
 } from './models';
 
-import { useUsersRouter, useEquipmentsRouter, useExtracterRouter } from './routes';
+import {
+  useUsersRouter,
+  useExtracterRouter,
+  useEquipmentsRouter,
+} from './routes';
 
 const hostname = 'localhost';
 const port = PORT || 5013;
@@ -32,7 +34,7 @@ app.use(cors({
     if (origin && !ALLOWED_ORIGINS.includes(origin.replace(/https?:\/\//, ''))){
       return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
     }
-    console.log('Accepted origin =', origin);
+    console.log('Accepted origin =', origin, 'for request');
     return callback(null, true);
   },
   header: '*'
@@ -42,8 +44,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 useUsersRouter(app);
-useEquipmentsRouter(app);
 useExtracterRouter(app);
-
+useEquipmentsRouter(app);
 
 app.listen(port, hostname, () => console.log(`DofusLab-API started on http://${hostname}:${port}`));

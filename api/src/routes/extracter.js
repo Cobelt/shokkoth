@@ -10,13 +10,43 @@ extracterRouter.route('/dofusbook/url')
 extracterRouter.route('/dofusbook/iframe')
     .get(Controller.getTruthfulURL, Controller.sendDofusBookIframe);
 
-extracterRouter.route('/items/all')
-    .get(Controller.extractEquipements, Controller.sendExtracted)
-    .post(Controller.extractEquipements);
 
-extracterRouter.route('/items/:itemId')
-    .get(Controller.extractEquipement)
-    .post(Controller.extractEquipement);
+extracterRouter.route('/equipments/all')
+    .get(
+      Controller.initEquipmentsExtraction,
+      Controller.extractEquipements,
+      Controller.sendExtracted
+    );
+
+extracterRouter.route('/weapons/all')
+    .get(
+      Controller.initWeaponsExtraction,
+      Controller.extractEquipements,
+      Controller.sendExtracted
+    );
+
+extracterRouter.route('/pets/all')
+    .get(
+      Controller.initPetsExtraction,
+      Controller.extractEquipements,
+      Controller.sendExtracted
+    );
+
+extracterRouter.route('/mounts/all')
+    .get(
+      Controller.initMountsExtraction,
+      Controller.extractEquipements,
+      Controller.sendExtracted
+    );
+
+
+
+extracterRouter.route('/equipments/:itemId')
+    .get(Controller.initEquipmentsExtraction, Controller.extractEquipement);
+
+extracterRouter.route('/weapons/:itemId')
+    .get(Controller.initWeaponsExtraction, Controller.extractEquipement);
+
 
 // extracterRouter.route('/dofapi2/')
 

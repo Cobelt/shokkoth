@@ -1,5 +1,6 @@
 import get from 'lodash.get';
 import set from 'lodash.set';
+import removeAccent from 'lodash.deburr';
 
 export const getParam = (req, param) => {
   if (Array.isArray(param)) {
@@ -27,4 +28,12 @@ export function updateLastModifDate(next) {
   } catch (err) {
       next(err);
   }
+}
+
+export const toLowerCaseNFC = string => string.normalize('NFC').toLowerCase();
+
+export const toURLValid = string => toLowerCaseNFC(removeAccent(string).replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').replace(/\W+/g, '-'));
+
+export const findMatchingParam = (typesList, param) => {
+  typesList.find(type => [toURLValid(type.fr), toURLValid(type.en)].includes(toURLValid(param)))
 }

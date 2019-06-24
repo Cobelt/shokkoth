@@ -2,49 +2,32 @@ import axios from 'axios';
 import get from 'lodash.get';
 import set from 'lodash.set';
 import mongoose from 'mongoose';
+import fs from 'fs';
 
-import { EquipmentsTypes } from '../constants/equipments';
-import { _save, _update } from './equipments'
+import { _save } from './common';
+
+import { formatFullEquipment as format } from '../utils/format';
 import { getParam, setLocale, getLocale } from '../utils/common';
 
-import { DOFUSBOOK_ROUTE_EQUIPMENTS, DOFUSBOOK_ROUTE_EQUIPMENTS_END, DOFUSBOOK_URI } from '../constants/extracter';
+import {
+  DOFUSBOOK_ROUTE_EQUIPMENTS,
+  DOFUSBOOK_ROUTE_EQUIPMENTS_END,
+  DOFUSBOOK_URI,
+
+  ALL_EQUIPMENTS_FILE,
+  ALL_WEAPONS_FILE,
+  ALL_PETS_FILE,
+  ALL_MOUNTS_FILE,
+} from '../constants/extracter';
 
 
 const Equipment = mongoose.model('Equipments');
 
 
-const _formatExtractedStat = equipment => {
-    const toReturn = equipment;
-    if (equipment.stats.length > 0) {
-        equipment.stats.forEach((stat, index) => {
-            const statEntry = Object.entries(stat)[0];
-            const values = (typeof statEntry[1] === 'string' ? { value: statEntry[1] } : statEntry[1]);
-            toReturn.stats[index] = { name: statEntry[0], ...values };
-            console.log('formattedStat :', toReturn.stats[index])
-        });
-    }
-    return toReturn;
-};
-
-const _formatExtractedImgUrl = equipment => {
-  const toReturn = equipment;
-  if (equipment.imgUrl) {
-    toReturn.imgUrl = equipment.imgUrl.replace('https://s.ankama.com/www/static.ankama.com', 'http://img.shokkoth.tk');
-  }
-  return toReturn;
-};
-
-const _formatExtractedRecipe = equipment => {
-    const toReturn = equipment;
-    if (equipment.recipe.length > 0) {
-        equipment.recipe.forEach((stat, index) => {
-            const statEntry = Object.entries(stat)[0];
-            const { imgUrl, ...infos } = { ...statEntry[1] };
-            toReturn.recipe[index] = { name: statEntry[0], imgUrl: imgUrl.replace('https://s.ankama.com/www/static.ankama.com', 'http://img.shokkoth.tk'), ...infos };
-        });
-    }
-    return toReturn;
-};
+const getDataFromFile = (file) => {
+  const unparsedData = fs.readFileSync(file);
+  return JSON.parse(unparsedData);
+}
 
 
 export const getTruthfulURL = function (req, res, next) {
@@ -72,46 +55,70 @@ export const getTruthfulURL = function (req, res, next) {
 }
 
 
+export const initEquipmentsExtraction = async function(req, res, next) {
+  setLocale(res, { file: ALL_EQUIPMENTS_FILE })
+  next();
+};
+
+export const initWeaponsExtraction = async function(req, res, next) {
+  setLocale(res, { file: ALL_WEAPONS_FILE })
+  next();
+};
+
+export const initPetsExtraction = async function(req, res, next) {
+  setLocale(res, { file: ALL_PETS_FILE })
+  next();
+};
+
+export const initMountsExtraction = async function(req, res, next) {
+  setLocale(res, { file: ALL_MOUNTS_FILE })
+  next();
+};
 
 
 export const extractEquipements = async function(req, res, next) {
-    const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments`);
+  const file = getLocale(res, 'file');
+  const data = getDataFromFile(file);
+  if (!data) return next(new Error('Got no data from the file'));
 
-    if (!data) return next(new Error('Got no data from the API for https://dofapi2.herokuapp.com/equipments/'));
+  console.log('[==>] Extracting', data.length, 'items.');
 
-    console.log('=> Extracting', data.length, 'equipments !....');
+  const promises = data.map(equipment => new Promise((resolve, reject) => {
+    const formatted = format(equipment);
+    if (!formatted) reject("Error from formatting");
 
-    const promises = data.map(equipmentFromAPI => {
-      const formattedEquipment = _formatExtractedImgUrl(_formatExtractedRecipe(_formatExtractedStat(equipmentFromAPI)));
-      const newEquipment = new Equipment(formattedEquipment);
+    const toSave = new Equipment(formatted);
+    if (!toSave) reject("Error from Model");
 
-      return _save(newEquipment);
-    });
+    _save(Equipment, toSave).then(saved => resolve(saved)).catch(err => reject(err));
+  }));
 
-    Promise.all(promises).then(items => {
-      setLocale(res, { extracted: items });
-      return next();
-    }).catch(err => {
-      return next(err);
-    });
+  Promise.all(promises).then(items => {
+    setLocale(res, { extracted: items.map(i => i && i._id) });
+    console.log('[==>] Done.');
+    return next();
+  }).catch(err => {
+    return next(err);
+  });
 };
+
 
 export const extractEquipement = async function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should extract !'));
+  const { itemId } = req.params || {};
+  if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should extract !'));
 
-    const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments/${itemId}`);
-    if (!data) return res.send(new Error(`Got no data from the API for https://dofapi2.herokuapp.com/equipments/${itemId}`));
+  const file = getLocale(res, 'file');
+  const data = getDataFromFile(file);
+  if (!data) return next(new Error('Got no data from the file'));
 
-    const newEquipment = new Equipment(data);
-    newEquipment.save(function(err, equipment) {
-        if (err) return res.send(err);
-        res.json(equipment);
-    });
+  const equipmentToSave = data.find(equip => equi._id === itemId);
+
+  const newEquipment = new Equipment(equipmentToSave);
+  newEquipment.save(function(err, equipment) {
+      if (err) return res.send(err);
+      res.json(equipment);
+  });
 };
-
-
-
 
 
 

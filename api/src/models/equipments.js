@@ -1,29 +1,52 @@
 import mongoose from 'mongoose';
+
 import { EquipmentsTypes } from '../constants/equipments';
+import { WeaponsTypes } from '../constants/weapons';
+import { PetsTypes } from '../constants/pets';
+import { MountsTypes } from '../constants/mounts';
+
+
+const prefixError = ({ _id }, errorString) => `Error on an Equipment#${_id}: ${errorString}`;
 
 const EquipmentsSchema = new mongoose.Schema({
-    _id: Number,
+    _id: {
+    type: Number,
+    required: 'I need an _id',
+    },
     name: {
-        type: String,
-        required: 'Please give me a name',
+      type: String,
+      required: 'I need a name',
     },
-    lvl: {
-        type: Number,
-        required: 'Please give me a lvl',
+    level: {
+      type: Number,
+      required: 'I need a level',
     },
+
     type: {
-        type: String,
-        enum: EquipmentsTypes,
-        required: 'Please give me the type of equipment I am !'
+      type: String,
+      enum: [EquipmentsTypes, WeaponsTypes, PetsTypes, MountsTypes].flat(),
+      required: 'I need a type',
     },
+    category: {
+      type: String,
+    },
+
     description: String,
 
-    stats: {
+    statistics: {
+        type: Array,
+        default: [],
+    },
+    characteristics: {
+        type: Array,
+        default: [],
+    },
+    passives: {
         type: Array,
         default: [],
     },
 
-    condition: {
+    conditions: {
         type: Array,
         default: [],
     },
@@ -58,7 +81,7 @@ const EquipmentsSchema = new mongoose.Schema({
         default: Date.now
     },
 });
-
+EquipmentsSchema.index({"$**": "text" });
 
 
 EquipmentsSchema.pre('save', function (next) {
