@@ -13,20 +13,21 @@ export const _save = (model, toSave) => new Promise((resolve, reject) => {
   toSave.save(function(err, saved) {
     if(err) {
         if (err.code === 11000) {
-          Model.findOneAndUpdate({ _id: toSave.id }, toSave, { returnNewDocument: true }, (updateError, updated) => {
+          Model.findOneAndUpdate({ _id: toSave._id }, toSave, { returnNewDocument: true }, (updateError, updated) => {
             if (updateError) {
-              reject(updateError)
+              return reject(updateError)
             }
             else {
-              resolve(updated);
+              return resolve(updated);
             }
           });
         }
         else {
-          reject(err);
+          return reject(err);
         }
     }
-    resolve(saved);
+    // if (!saved) reject('Error on document with _id', toSave._id, ': Nothing saved', saved, err);
+    return resolve(saved);
   });
 });
 
@@ -34,7 +35,7 @@ export const _save = (model, toSave) => new Promise((resolve, reject) => {
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { typesList: AllTypes, model: Equipment, translations: allTranslations })
+  setLocale(res, { typesList: AllTypes, model: Equipment, translations: allTranslations, toPopulate: ['set'] })
   next();
 }
 
@@ -52,12 +53,6 @@ export const getIdsParam = function(req, res, next) {
   next();
 }
 
-export const getPlainTextParam = function(req, res, next) {
-  const plainText = getParam(req, 'plainText');
-  setLocale(res, { plainText });
-  next();
-}
-
 
 export const getSearchParams = function(req, res, next) {
     const { typesList: TYPES, translations } = getLocale(res, ['typesList', 'translations']);
@@ -68,62 +63,65 @@ export const getSearchParams = function(req, res, next) {
       perPage = 100,
       page = 0,
       types = '',
-      order = JSON.stringify({ level: -1, type: 1, _id: -1 })
-    } = getParam(req, ['levelMin', 'levelMax', 'perPage', 'page', 'types', 'order']);
+      order = JSON.stringify({ level: -1, type: 1, _id: -1 }),
+      searchText = '',
+    } = getParam(req, ['levelMin', 'levelMax', 'perPage', 'page', 'types', 'order', 'searchText']);
 
-    let regexTypes = createTypesRegex({ chosenTypes: types, TYPES, translations });
+    let regexTypes = '';
 
-    if (regexTypes.match(/\(\|?\)/)) {
-      if (types !== '') {
-        return next('Sorry but the type(s) you mentioned doesn\'t match anything of this route.')
-      }
-      else {
-        regexTypes = createTypesRegex({ chosenTypes: TYPES.join(','), TYPES, translations });
+    if (TYPES && translations) {
+      regexTypes = createTypesRegex({ chosenTypes: types, TYPES, translations });
+
+      if (regexTypes.match(/\(\|?\)/)) {
+        if (types !== '') {
+          return next('Sorry but the type(s) you mentioned doesn\'t match anything of this route.')
+        }
+        else {
+          regexTypes = createTypesRegex({ chosenTypes: TYPES.join(','), TYPES, translations });
+        }
       }
     }
 
-    setLocale(res, { levelMin, levelMax, perPage, page, types: regexTypes, order: JSON.parse(order) });
+    setLocale(res, { levelMin, levelMax, perPage, page, types: regexTypes, order: JSON.parse(order), searchText });
     next();
 }
 
 
 export const search = function(req, res, next) {
-    const { model: Model, levelMin, levelMax, perPage, page, types, order } = getLocale(res, ['model', 'levelMin', 'levelMax', 'perPage', 'page', 'types', 'order']);
+    const { model: Model, toPopulate = [''], levelMin, levelMax, perPage, page, types, order, searchText } = getLocale(res, ['model', 'toPopulate', 'levelMin', 'levelMax', 'perPage', 'page', 'types', 'order', 'searchText']);
 
     const filters = {};
     if (types) filters.type = new RegExp(types, 'i');
 
     filters.level = { $gte: Math.max(levelMin, 1), $lte: Math.min(levelMax, 200) }
 
-    Model.find(filters)
-      .sort(order)
-      .skip(parseInt(perPage * page, 10))
-      .limit(parseInt(perPage, 10))
-      .exec((err, searchResult) => {
-        if (err) return next(err);
-        setLocale(res, { searchResult });
-        next();
-      });
-};
-
-
-export const searchPlainText = function(req, res, next) {
-    const { model: Model, levelMin, levelMax, perPage, page, types, order, plainText } = getLocale(res, ['model', 'levelMin', 'levelMax', 'perPage', 'page', 'types', 'order', 'plainText']);
-
-    const filters = {};
-    if (types) filters.type = new RegExp(types, 'i');
-
-    filters.level = { $gte: Math.max(levelMin, 1), $lte: Math.min(levelMax, 200) }
-
-    Model.find({$text: {$search: plainText}})
-      .sort(order)
-      .skip(parseInt(perPage * page, 10))
-      .limit(parseInt(perPage, 10))
-      .exec((err, searchResult) => {
-        if (err) return next(err);
-        setLocale(res, { searchResult });
-        next();
-      });
+    // const searchOrder = { score: { $meta: "textScore" }, ...order };
+    if (searchText) {
+      // filters.$text = { $search: searchText, $language: 'fr' };
+      // , { score: { $meta: "textScore" } }
+      Model.fuzzySearch(searchText, filters)
+        .populate(...toPopulate)
+        .sort(order)
+        .skip(parseInt(perPage * page, 10))
+        .limit(parseInt(perPage, 10))
+        .exec((err, searchResult) => {
+          if (err) return next(err);
+          setLocale(res, { searchResult });
+          next();
+        });
+    }
+    else {
+      Model.find(filters)
+        .populate(...toPopulate)
+        .sort(order)
+        .skip(parseInt(perPage * page, 10))
+        .limit(parseInt(perPage, 10))
+        .exec((err, searchResult) => {
+          if (err) return next(err);
+          setLocale(res, { searchResult });
+          next();
+        });
+    }
 };
 
 
@@ -131,14 +129,17 @@ export const getAll = function(req, res) {
   const { typesList: TYPES, model: Model, translations } = getLocale(res, ['typesList', 'model', 'translations']);
 
   const filters = {};
-  const types = createTypesRegex({ chosenTypes: TYPES.join(','), TYPES, translations });
-  if (types) filters.type = new RegExp(types, 'i');
+  if (TYPES && translations) {
+    const types = createTypesRegex({ chosenTypes: TYPES.join(','), TYPES, translations });
+    if (types) filters.type = new RegExp(types, 'i');
+  }
 
   Model.find(filters, 'name', function(err, result) {
       if (err) res.send(err);
       res.json(result);
   });
 };
+
 
 export const get = function(req, res) {
     const Model = getLocale(res, 'model');
@@ -151,6 +152,7 @@ export const get = function(req, res) {
         res.json(equipment);
     });
 };
+
 
 export const getEquipements = function(req, res) {
     const { model: Model, ids } = getLocale(res, ['model', 'ids']);

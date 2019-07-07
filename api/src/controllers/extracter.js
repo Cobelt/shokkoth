@@ -6,7 +6,7 @@ import fs from 'fs';
 
 import { _save } from './common';
 
-import { formatFullEquipment as format } from '../utils/format';
+import { formatFullEquipment as format, formatSet } from '../utils/format';
 import { getParam, setLocale, getLocale } from '../utils/common';
 
 import {
@@ -18,15 +18,23 @@ import {
   ALL_WEAPONS_FILE,
   ALL_PETS_FILE,
   ALL_MOUNTS_FILE,
+  ALL_SETS_FILE,
 } from '../constants/extracter';
 
 
 const Equipment = mongoose.model('Equipments');
+const Set = mongoose.model('Sets');
 
 
 const getDataFromFile = (file) => {
   const unparsedData = fs.readFileSync(file);
-  return JSON.parse(unparsedData);
+  try {
+    console.log(JSON.parse(unparsedData).length);
+    return JSON.parse(unparsedData);
+  }
+  catch (error) {
+    return;
+  }
 }
 
 
@@ -75,6 +83,11 @@ export const initMountsExtraction = async function(req, res, next) {
   next();
 };
 
+export const initSetsExtraction = async function(req, res, next) {
+  setLocale(res, { file: ALL_SETS_FILE })
+  next();
+};
+
 
 export const extractEquipements = async function(req, res, next) {
   const file = getLocale(res, 'file');
@@ -119,6 +132,55 @@ export const extractEquipement = async function(req, res) {
       res.json(equipment);
   });
 };
+
+
+
+export const extractSets = async function(req, res, next) {
+  const file = getLocale(res, 'file');
+  const data = getDataFromFile(file);
+  if (!data) return next(new Error('Got no data from the file'));
+
+  console.log('[==>] Extracting', data.length, 'items.');
+
+  const promises = data.map(equipmentsSet => new Promise((resolve, reject) => {
+    const formatted = formatSet(equipmentsSet);
+    if (!formatted) reject("Error from formatting");
+
+    const toSave = new Set(formatted);
+    if (!toSave) reject("Error from Model");
+
+    console.log('toSave=', toSave);
+    _save(Set, toSave).then(saved => console.log('saved !') || resolve(saved)).catch(err => console.log('rejected !') || reject(err));
+  }));
+
+  Promise.all(promises).then(items => {
+    // console.log(items);
+    setLocale(res, { extracted: items.map(i => i && i._id) });
+    console.log('[==>] Done.');
+    return next();
+  }).catch(err => {
+    return next(err);
+  });
+};
+
+
+export const extractSet = async function(req, res) {
+  const { setId } = req.params || {};
+  if (!setId) return res.send(new Error('No setId given. Please tell me what I should extract !'));
+
+  const file = getLocale(res, 'file');
+  const data = getDataFromFile(file);
+  if (!data) return next(new Error('Got no data from the file'));
+
+  const equipmentToSave = data.find(setInFile => setInFile._id === setId || setInFile.ankamaId === setId);
+
+  const newEquipment = new Equipment(equipmentToSave);
+  newEquipment.save(function(err, equipment) {
+      if (err) return res.send(err);
+      res.json(equipment);
+  });
+};
+
 
 
 

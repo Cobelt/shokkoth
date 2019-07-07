@@ -3,12 +3,12 @@ import get from 'lodash.get';
 import { isStat, isPassif, isWeaponCharac, getWeaponCharac, getStatSrcImg, getDefaultPassiveImg } from './stats';
 import { toCategory } from './equipments';
 
-export const formatCharacteristics = equipment => {
-  const toReturn = equipment;
+export const formatCharacteristics = toFormat => {
+  const toReturn = toFormat;
   const characteristicsArray = [];
 
-  if (get(equipment, 'characteristics')) {
-    for (let [name, values] of Object.entries(get(equipment, 'characteristics'))) {
+  if (get(toFormat, 'characteristics')) {
+    for (let [name, values] of Object.entries(get(toFormat, 'characteristics'))) {
       if (name === 'CC') {
         const [rateToFix, boostToFix] = values.split(' ');
 
@@ -38,25 +38,26 @@ export const formatCharacteristics = equipment => {
   return toReturn;
 }
 
-export const formatStatistics = equipment => {
-    const toReturn = equipment;
+
+export const formatStatistics = toFormat => {
+    const toReturn = toFormat;
     const statisticsArray = [];
     const passivesArray = [];
 
-    if (get(equipment, 'statistics.length') > 0) {
-        equipment.statistics.forEach((stat, index) => {
-          const entries = Object.entries(stat)[0];
-          const value = typeof entries[1] === 'string' ? { value: entries[1] } : { min: entries[1].min || entries[1].max, max: entries[1].max || entries[1].min };
+    if (get(toFormat, 'statistics.length') > 0) {
+        toFormat.statistics.forEach((stat, index) => {
+          const [name, values] = Object.entries(stat)[0] || [];
+          const value = typeof values === 'string' ? { value: values } : { min: values.min || values.max, max: values.max || values.min };
 
-          if (entries[0].match(/^\(.*?\)$/)) {
-            const finalName = entries[0].replace(/^\((.*?)\)$/, '$1');
+          if (name.match(/^\(.*?\)$/)) {
+            const finalName = name.replace(/^\((.*?)\)$/, '$1');
             toReturn.characteristics.push({ name: finalName, ...getWeaponCharac(finalName), ...value });
           }
-          else if (entries[0] !== 'Compatible avec : 0') {
-            if (isStat(entries[0]))
-              statisticsArray.push({ name: entries[0], imgUrl: getStatSrcImg(entries[0]), ...value });
-            else if (isPassif(entries[0]))
-              passivesArray.push({ name: entries[0], imgUrl: getDefaultPassiveImg(entries[0]), ...value })
+          else if (name !== 'Compatible avec : 0') {
+            if (isStat(name))
+              statisticsArray.push({ name, imgUrl: getStatSrcImg(name), ...value });
+            else if (isPassif(name))
+              passivesArray.push({ name, imgUrl: getDefaultPassiveImg(name), ...value })
           }
 
         });
@@ -67,10 +68,42 @@ export const formatStatistics = equipment => {
 };
 
 
-export const formatRecipe = equipment => {
-    const toReturn = equipment;
-    if (get(equipment, 'recipe.length') > 0) {
-        equipment.recipe.forEach((stat, index) => {
+export const formatSetBonus = toFormat => {
+  const toReturn = toFormat;
+
+  if (get(toFormat, 'bonus.length') > 0) {
+    toFormat.bonus.forEach((bonus, index) => {
+
+      if (get(bonus, 'statistics.length') > 0) {
+        const statisticsArray = [];
+        const passivesArray = [];
+        bonus.statistics.forEach((stat, index) => {
+
+          const [name, values] = Object.entries(stat)[0] || [];
+          const value = typeof values === 'string' ? { value: values } : { min: values.min || values.max, max: values.max || values.min };
+
+          if (name !== 'Compatible avec : 0') {
+            if (isStat(name))
+              statisticsArray.push({ name, imgUrl: getStatSrcImg(name), ...value });
+            else
+              passivesArray.push({ name, imgUrl: getDefaultPassiveImg(name), ...value })
+          }
+
+        });
+        toReturn.statistics = statisticsArray;
+        toReturn.passives = passivesArray;
+
+      }
+    });
+  }
+  return toReturn;
+};
+
+
+export const formatRecipe = toFormat => {
+    const toReturn = toFormat;
+    if (get(toFormat, 'recipe.length') > 0) {
+        toFormat.recipe.forEach((stat, index) => {
             const statEntry = Object.entries(stat)[0];
             const { imgUrl, ankamaId: _id, ...infos } = statEntry[1];
             // Todo : new model Resource and just put the _id here
@@ -81,26 +114,30 @@ export const formatRecipe = equipment => {
 };
 
 
-export const formatImgUrl = equipment => {
-  const toReturn = equipment;
-  if (equipment.imgUrl) {
-    toReturn.imgUrl = equipment.imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.tk');
+export const formatImgUrl = toFormat => {
+  const toReturn = toFormat;
+  if (toFormat.imgUrl) {
+    toReturn.imgUrl = toFormat.imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.tk');
   }
   return toReturn;
 };
 
 
-export const formatTypeToCategory = equipment => {
-  const toReturn = equipment;
-  toReturn.category = toCategory(equipment.type);
+export const formatTypeToCategory = toFormat => {
+  const toReturn = toFormat;
+  toReturn.category = toCategory(toFormat.type);
   return toReturn;
 }
 
 
-export const formatId = equipment => {
-  const toReturn = equipment;
-  toReturn._id = equipment.ankamaId;
+export const formatId = toFormat => {
+  const toReturn = toFormat;
+  toReturn._id = toFormat.ankamaId || toFormat._id || toFormat.id;
+  toReturn.set = toFormat.set || toFormat.setId;
   return toReturn;
 };
 
 export const formatFullEquipment = toFormat => formatId(formatTypeToCategory(formatImgUrl(formatRecipe(formatStatistics(formatCharacteristics(toFormat))))));
+
+
+export const formatSet = toFormat => formatId(formatImgUrl(formatSetBonus(toFormat)));

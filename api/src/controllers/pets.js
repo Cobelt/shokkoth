@@ -7,7 +7,7 @@ import { getParam, setLocale, getLocale } from '../utils/common';
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { typesList: PetsTypes, model: Equipment, translations: translatePetsTypes })
+  setLocale(res, { typesList: PetsTypes, model: Equipment, translations: translatePetsTypes, toPopulate: ['set'] })
   next();
 }
 

@@ -6,6 +6,8 @@ export useCommonRouter, { getCommonRouter } from './common';
   export useWeaponsRouter, { getWeaponsRouter } from './weapons';
   export usePetsRouter, { getPetsRouter } from './pets';
   export useMountsRouter, { getMountsRouter } from './mounts';
+  // and maybe sets too
+  export useSetsRouter, { getSetsRouter } from './sets';
 //
 
 export useExtracterRouter, { getExtracterRouter } from './extracter';
