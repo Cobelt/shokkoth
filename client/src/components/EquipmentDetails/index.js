@@ -31,7 +31,7 @@ import Passive from '../Stat/Passive';
         { equipment.name }
       </Element>
 
-      <Element type="span" col={2} row={2} className="align-start" show={get(equipment, 'set')}>
+      <Element type="span" col={2} row={2} className="align-start" show={get(equipment, 'set')} onClick={() => console.log('Set is :', get(equipment, 'set'))}>
         { get(equipment, 'set.name') }
       </Element>
 

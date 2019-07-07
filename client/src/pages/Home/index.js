@@ -34,8 +34,8 @@ const Home = ({ history: { push } = {} }) => {
     <Grid className="home-container" gap="3rem" rowsTemplate="2.5rem 2.5rem repeat(3, fit-content(100%))" columnsTemplate={`10vw 1fr 10vw`}>
 
       <Element className="nav-icons" row={1} col={1} height={2}>
-        <Icon icon="supervisor_account" onClick={() => push('/characters')} />
-        <Icon icon="save" />
+        <Icon className="font-primary" icon="supervisor_account" onClick={() => push('/characters')} />
+        <Icon className="font-primary" icon="save" />
       </Element>
 
       <Element row={1} col={1} width={3} height={2} className="brand align-stretch" style={{ margin: 0 }}>
