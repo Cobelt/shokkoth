@@ -9,6 +9,8 @@ import * as selectors from '../../store/selectors/equipments';
 import EquipmentsContext from '../../store/context/equipments';
 import Equipment from '../Equipment';
 
+import { ALL } from '../../constants/equipments';
+
 
 import './stylesheet.styl';
 
@@ -16,6 +18,7 @@ import './stylesheet.styl';
 const ItemReceiver = ({ icon: SVGIcon, types, stepName = types, className, ...otherProps }) => {
   const [store, dispatch] = useContext(EquipmentsContext);
   const currentStep = selectors.getActiveStep(store);
+  const currentTypes = selectors.getActiveTypes(store);
   const selected = selectors.getDisplayedEquipment(store);
   const isStoreFullyFetched = selectors.isStuffFullyFetched(store);
   // console.log('stepName=', stepName, 'currentStep', currentStep, 'selected=', selected, 'isStoreFullyFetched', isStoreFullyFetched)
@@ -24,7 +27,7 @@ const ItemReceiver = ({ icon: SVGIcon, types, stepName = types, className, ...ot
   return (
     <Element
       className={["equipment-input", types, currentStep === stepName ? "active" : '', className].join(' ').trim()}
-      onClick={e => actions.changeStep({ step: stepName, types }, [store, dispatch])}
+      onClick={e => actions.changeStep(currentStep === stepName ? { step: '', types: ALL } : { step: stepName, types }, [store, dispatch])}
       {...otherProps}
     >
       {

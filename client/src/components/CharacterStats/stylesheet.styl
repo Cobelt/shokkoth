@@ -1,1 +1,22 @@
-// .character-stats
+.stats-line, .stats-column
+  display flex
+  justify-content space-between
+  position relative
+
+ .character-stat-info
+   text-align center
+   padding 2px
+
+   img
+     vertical-align text-top
+     margin-right 8px
+     white-space nowrap
+     max-width 18px;
+
+.stats-column
+  .character-stat-info
+    text-align left
+
+@media (max-width: 640px)
+  .reverse-on-mobile
+    flex-direction column !important

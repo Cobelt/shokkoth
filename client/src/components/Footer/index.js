@@ -6,10 +6,10 @@ import './stylesheet.styl';
 
 export default class FooterComponent extends Component {
     render() {
-        const { row, idgrid } = this.props;
+        const { row } = this.props;
 
         return (
-            <Footer idgrid={idgrid} row={row} columnsTemplate="repeat(3, 1fr)" style={{ marginTop: '3rem' }}>
+            <Footer row={row} columnsTemplate="repeat(3, 1fr)">
 
                 <FooterList className="about-me" rowsTemplate={{ 1: '6vh' }} col={1}>
                     <Element type="h5">Who am I ?</Element>

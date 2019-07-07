@@ -2,14 +2,12 @@
 @require './animations.styl';
 
 .btn.circle
-  background-color darken(primary-color, 20%)
-
+  background-color var(--primary-color)
+  filter brightness(80%)
 
 
 .min-height-15
   min-height 15rem
-
-
 .min-width-15
   min-width 15rem
 
@@ -32,7 +30,7 @@
 
     .login
       position absolute
-      top 10%
+      top 8%
       left 50%
       opacity 0
       transform translateX(-50%)
@@ -48,10 +46,10 @@
 
 
       h2
-        color #fafafa
+        color var(--primary-bg)
 
       .btn-arrow
-        background-color darken(primary-color, 20%)
+        background-color var(--primary-color)
 
       &:not(.visible)
         display none
@@ -62,21 +60,24 @@
 
 
     svg.puddle
-      --width 1
+      --width 3
 
       position absolute
       top 0%
       right 0%
+      transform-origin top right
 
-      width calc(4.5vw * var(--width))
-      min-width calc(4rem * var(--width))
+      width calc(1.5vw * var(--width))
       max-width unset
 
-      fill primary-color
+      fill var(--primary-color)
       transition width 0.45s ease-out, min-width 0.45s ease-out
       z-index 98
+      min-width 6rem
 
-      transform-origin top right
+      @media (max-width: 640px)
+        min-width 4rem
+
 
       path
         d path(var(--path))
@@ -94,12 +95,20 @@
 
 
       &.expand
-        --width 30
+        filter brightness(120%)
+        --width 100
+
+
+        @media (min-width: 641px) and (max-width: 840px)
+          --width 120
+
+        @media (max-width: 640px)
+          --width 160
+
 
         path
           // todo : new path when expands (with keyframes and forwards ?)
           --path "M 100 50 V 0 H 30 c -57 1 -12 10 -20 25 c -11 20 15 3 20 10 c 11 14 -29 10 -20 40 c 4 15 30 -5 50 10 			c 4 4 -16 -3 -17 7 	C 41 106 100 100 100 90 v -40" !important
-          fill #2d7e93
           transition-delay unset
 
 

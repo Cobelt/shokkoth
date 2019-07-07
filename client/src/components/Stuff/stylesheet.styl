@@ -1,5 +1,3 @@
-@require '../../variables.styl';
-
 .stuff
   .background-line
     background-color background-item
@@ -11,7 +9,7 @@
     z-index 5
 
   .share-icon, .pseudo, .level
-    color primary-color !important
+    color var(--primary-color) !important
     align-self end
 
   .pseudo, .level
@@ -39,7 +37,6 @@
   .avatar
     justify-self center
     width: 100%;
-    z-index 1
 
     img
       object-fit contain
@@ -47,6 +44,41 @@
       min-width 100%
       align-self center
       padding 3rem 0
+
+
+
+  // stats
+  .life-points
+    .life-icon
+      height -moz-fill-available
+      height -webkit-fill-available
+      width 100%
+
+    .hp
+      font-weight bold
+      place-self center
+      color #fafafa
+
+  .row.stat
+    align-content center
+    margin auto
+
+    .pa-icon, .pm-icon
+      max-height 2rem
+      min-width 2rem
+      align-self end
+
+    .mp, .ap
+      font-weight bold
+
+
+    .mp, .ap
+      color var(--primary-color)
+      padding 0 0.5rem
+      text-align right
+      align-self center
+    // end
+
 
 
   .rotation-arrow
@@ -61,3 +93,7 @@
       justify-self left
     &.right
       justify-self right
+
+  .equipment-input
+    min-width 3.5rem
+    min-height 3.5rem

@@ -8,12 +8,12 @@ import UserContext from '../../store/context/user';
 
 import './stylesheet.styl';
 
-const NavbarComponent = ({ idgrid, row }) => {
+const NavbarComponent = ({ row }) => {
   const [store, dispatch] = useContext(UserContext);
 
   const isLogged = !!getJWT(store);
   return (
-      <Navbar row={row} idgrid={idgrid} position="fixed">
+      <Navbar row={row} position="fixed">
           <NavBrand justify="left" className="animate-brand">
               <NavLink to="/">
                 <span id="shok">shok</span>
@@ -22,14 +22,14 @@ const NavbarComponent = ({ idgrid, row }) => {
               </NavLink>
           </NavBrand>
 
-          <NavLabel justify="right" idgrid={idgrid}>
+          <NavLabel justify="right">
               <NavLink to="/stuffs" activeClassName="active">Mes stuffs</NavLink>
           </NavLabel>
-          <NavLabel justify="right" idgrid={idgrid}>
+          <NavLabel justify="right">
               <NavLink to="/characters" activeClassName="active">Mes persos</NavLink>
           </NavLabel>
 
-          <NavLabel justify="right" idgrid={idgrid}>
+          <NavLabel justify="right">
             { isJWTLoading() ? "Loading" : <NavLink to={isLogged ? "/logout" : "/login"}>{isLogged ? "Logout" : "Login"}</NavLink> }
           </NavLabel>
       </Navbar>

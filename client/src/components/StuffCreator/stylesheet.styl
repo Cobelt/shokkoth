@@ -1,0 +1,140 @@
+.stuff-creator-container
+  .stuff-creator
+
+    .stuff
+      margin-bottom 3rem
+
+    @media (min-width: 1041px) and (max-width: 1540px)
+      grid-template-columns 1fr 1fr !important
+      grid-template-rows repeat(6, fit-content(100%)) !important
+      grid-row-gap 3rem
+
+      .stuff-and-equipment-details, .equipments-search
+        --row 1 !important
+        --height 1 !important
+        --width 1 !important
+
+      .stuff-and-equipment-details
+        --col 1 !important
+
+      .equipments-search
+        --col 2 !important
+
+        .equipments-list
+          max-height 60vh
+
+      .primary-stats, .damages-stats, .resistances-stats, .secondary-stats
+        --width 2 !important
+        --col 1 !important
+        flex-direction row
+
+        .stats-line
+          &:before
+            content attr(data-title)
+            position absolute
+            top -65%
+            color #276e80
+            font-size 1.8rem
+
+
+      .primary-stats
+        --row 2 !important
+
+      .damages-stats
+        --row 3 !important
+
+      .resistances-stats
+        --row 4 !important
+
+      .secondary-stats
+        --row 5 !important
+
+
+    @media (max-width: 1280px)
+      .equipments-search
+        display inline-grid !important
+
+
+    @media (min-width: 641px) and (max-width: 1040px)
+      grid-template-columns 1fr !important
+      grid-template-rows repeat(6, fit-content(100%)) !important
+      grid-row-gap 3rem
+
+      .stuff-and-equipment-details, .equipments-search
+        --col 1 !important
+        --height 1 !important
+
+      .stuff-and-equipment-details
+        --row 1 !important
+
+      .equipments-search
+        --row 2 !important
+
+        .equipments-list
+          max-height 60vh
+
+      .primary-stats, .damages-stats, .resistances-stats, .secondary-stats
+        --col 1 !important
+        flex-direction row
+
+        .stats-line
+          &:before
+            content attr(data-title)
+            position absolute
+            top -65%
+            color #276e80
+            font-size 1.8rem
+
+
+      .primary-stats
+        --row 3 !important
+
+      .damages-stats
+        --row 4 !important
+
+      .resistances-stats
+        --row 5 !important
+
+      .secondary-stats
+        --row 6 !important
+
+
+    @media (max-width: 640px)
+      grid-column-gap unset !important
+      grid-template-columns repeat(4, 1fr) !important
+      grid-template-rows repeat(3, fit-content(100%)) !important
+
+
+      .stuff-and-equipment-details, .equipments-search
+        --width 4 !important
+        --col 1 !important
+        --height 1 !important
+
+
+      .stuff-and-equipment-details
+        --row 1 !important
+
+        .stuff-preview .equipment-input
+          min-height 2.8rem
+          min-width 2.8rem
+
+
+      .equipments-search
+        --row 2 !important
+
+
+      .primary-stats, .damages-stats, .resistances-stats, .secondary-stats
+        --row 3 !important
+        margin 1rem 0
+
+      .primary-stats
+        --col 1 !important
+
+      .damages-stats
+        --col 2 !important
+
+      .resistances-stats
+        --col 3 !important
+
+      .secondary-stats
+        --col 4 !important

@@ -19,12 +19,18 @@ export const getInitialState = () => {
     cookies[key] = value;
   })
 
-  const draft = get(cookies, 'stuff#draft')
-  const active = get(cookies, 'stuff#active')
-  if (active) {
-    set(initialState, 'stuff.active', active);
+  let draft;
+  try {
+    const unParsedDraft = get(cookies, 'STUFF_DRAFT');
+    if (unParsedDraft) {
+      draft = JSON.parse(unParsedDraft);
+    }
   }
-  else if (draft) {
+  catch (e) {
+    console.error(e);
+  }
+
+  if (draft) {
     set(initialState, 'stuff.active', draft);
   }
   else {
@@ -52,7 +58,7 @@ export const getInitialState = () => {
 }
 
 export const EquipmentsProvider = ({ initialState = getInitialState(), children }) => (
-  <EquipmentsContext.Provider value={useReducer(EquipmentsReducer, initialState, getInitialState)}>
+  <EquipmentsContext.Provider value={useReducer(EquipmentsReducer, initialState)}>
     { children }
   </EquipmentsContext.Provider>
 );

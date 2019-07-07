@@ -2,18 +2,19 @@ import get from 'lodash.get';
 import memoize from 'lodash.memoize';
 
 
-export const createKey = memoize(({ types, order, lvlMin, lvlMax } = {}) => {
+export const createKey = memoize(({ types, order, searchText, levelMin, levelMax } = {}) => {
   const formattedOrder = JSON.stringify(sortByKeyNames(order));
 
   const params = [];
   if (types && types !== '') params.push(`types=${types}`);
+  if (searchText && searchText !== '') params.push(`searchText=${searchText}`);
   if (order && order !== { level: -1, type: 1, _id: -1 }) params.push(`order=${formattedOrder}`);
 
-  if (lvlMin && lvlMin !== 1) params.push(`lvlMin=${lvlMin}`);
-  if (lvlMax && lvlMax !== 200) params.push(`lvlMax=${lvlMax}`);
+  if (levelMin && levelMin !== 1) params.push(`levelMin=${levelMin}`);
+  if (levelMax && levelMax !== 200) params.push(`levelMax=${levelMax}`);
 
   const key = params.filter(e => !!e).join('&');
-  return key === '' ? 'all' : key
+  return key === '' ? 'all' : key;
 });
 
 export const sortByKeyNames = (obj) => {

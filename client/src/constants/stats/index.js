@@ -3,6 +3,10 @@ export const AP             = 'PA';
 export const MP             = 'PM';
 export const RANGE          = 'Portée';
 
+export const SUMMONS        = 'Invocations';
+export const CRITICAL       = '% Critique';
+export const INITIATIVE     = 'Initiative';
+
 export const VITALITY       = 'Vitalité';
 export const STRENGTH       = 'Force';
 export const AGILITY        = 'Agilité';
@@ -11,8 +15,6 @@ export const CHANCE         = 'Chance';
 export const WISDOM         = 'Sagesse';
 export const PUISSANCE      = 'Puissance';
 
-export const CRITICAL       = '% Critique';
-export const SUMMONS        = 'Invocations';
 
 
 // DAMAGES
@@ -23,28 +25,36 @@ export const AIR_DAMAGE       = 'Dommages Air';
 export const FIRE_DAMAGE      = 'Dommages Feu';
 export const WATER_DAMAGE     = 'Dommages Eau';
 
+export const MELEE_DAMAGE     = '% Dommages mêlée';
+export const RANGED_DAMAGE    = '% Dommages distance';
+
 export const CRITICAL_DAMAGE  = 'Dommages Critiques';
 export const PUSHBACK_DAMAGE  = 'Dommages Poussée';
+
 
 
 // RESISTANCES
 export const NEUTRAL_RESISTANCE   = '% Résistance Neutre';
 export const EARTH_RESISTANCE     = '% Résistance Terre';
-export const AIR_RESISTANCE       = '% Résistance Air';
 export const FIRE_RESISTANCE      = '% Résistance Feu';
 export const WATER_RESISTANCE     = '% Résistance Eau';
+export const AIR_RESISTANCE       = '% Résistance Air';
 
-// TODO: RES FIXES !!
+export const NEUTRAL_STATIC_RESISTANCE   = 'Résistance Neutre';
+export const EARTH_STATIC_RESISTANCE     = 'Résistance Terre';
+export const FIRE_STATIC_RESISTANCE      = 'Résistance Feu';
+export const WATER_STATIC_RESISTANCE     = 'Résistance Eau';
+export const AIR_STATIC_RESISTANCE       = 'Résistance Air';
 
-
+export const MELEE_RESISTANCE     = '% Résistance mêlée';
+export const RANGED_RESISTANCE    = '% Résistance distance';
 
 export const CRITICAL_RESISTANCE  = 'Résistance Critiques';
 export const PUSHBACK_RESISTANCE  = 'Résistance Poussée';
 
 
-// SECONDARY
-export const INITIATIVE           = 'Initiative';
 
+// SECONDARY
 export const AP_PARRY             = 'Esquive PA';
 export const MP_PARRY             = 'Esquive PM';
 
@@ -57,6 +67,7 @@ export const LOCK                 = 'Tacle';
 export const PROSPECTING          = 'Prospection';
 
 export const HEALS                = 'Soins';
+
 
 
 // WEAPONS DAMAGES
@@ -78,54 +89,129 @@ export const WEAPONS_CRITICAL         = '% Critique (base)';
 export const WEAPONS_NO_CRITICAL      = 'Pas de critique possible';
 export const WEAPONS_CRIT_DAMAGES     = 'Dommages bonus (CC)';
 
-
-
-export const PRIMARY_STATS = {
+// PRIMARY
+export const ESSENTIAL_STATS = {
   [AP]:           'PA.png',
   [MP]:           'PM.png',
   [RANGE]:        'PO.png',
-  [VITALITY]:     'vitalite.png',
+}
+
+export const ELEMENTS_STATS = {
   [STRENGTH]:     'terre.png',
-  [AGILITY]:      'air.png',
   [INTELLIGENCE]: 'feu.png',
   [CHANCE]:       'eau.png',
-  [WISDOM]:       'sagesse.png',
-  [PUISSANCE]:    'puissance.png',
-  [CRITICAL]:     'crit.png',
-  [SUMMONS]:      'invocation.png',
+  [AGILITY]:      'air.png',
 }
 
-export const DAMAGES_STATS = {
+export const OTHERS_PRIMARY_STATS = {
+  [VITALITY]:     'vitalite.png',
+  [SUMMONS]:      'invocation.png',
+  [CRITICAL]:     'crit.png',
+  [INITIATIVE]:   'initiative.png',
+  [PUISSANCE]:    'puissance.png',
+  [WISDOM]:       'sagesse.png',
+}
+
+
+// DAMAGES
+export const ELEMENTS_DAMAGES = {
   [NEUTRAL_DAMAGE]:   'neutre.png',
   [EARTH_DAMAGE]:     'terre.png',
-  [AIR_DAMAGE]:       'air.png',
   [FIRE_DAMAGE]:      'feu.png',
   [WATER_DAMAGE]:     'eau.png',
+  [AIR_DAMAGE]:       'air.png',
+}
+
+export const OTHERS_DAMAGES = {
+  [DAMAGE]:           'dommage.png',
   [CRITICAL_DAMAGE]:  'dommage-crit.png',
   [PUSHBACK_DAMAGE]:  'dommage-poussee.png',
+  [MELEE_DAMAGE]:     'arme.png',
+  [RANGED_DAMAGE]:    'arme.png',
 }
 
-export const RESISTANCES_STATS = {
+
+// RESISTANCES
+export const PERCENTS_RES_STATS = {
   [NEUTRAL_RESISTANCE]:   'neutre.png',
   [EARTH_RESISTANCE]:     'terre.png',
-  [AIR_RESISTANCE]:       'air.png',
   [FIRE_RESISTANCE]:      'feu.png',
   [WATER_RESISTANCE]:     'eau.png',
-  [CRITICAL_RESISTANCE]:  'resistance-crit.png',
-  [PUSHBACK_RESISTANCE]:  'resistance-poussee.png',
+  [AIR_RESISTANCE]:       'air.png',
 }
 
-export const SECONDARY_STATS = {
-  [INITIATIVE]:     'initiative.png',
-  [AP_PARRY]:       'esquive-pa.png',
-  [MP_PARRY]:       'esquive-pm.png',
-  [AP_REDUCTION]:   'retrait-pa.png',
-  [MP_REDUCTION]:   'retrait-pm.png',
+
+export const STATIC_RES_STATS = {
+  [NEUTRAL_STATIC_RESISTANCE]:   'neutre.png',
+  [EARTH_STATIC_RESISTANCE]:     'terre.png',
+  [FIRE_STATIC_RESISTANCE]:      'feu.png',
+  [WATER_STATIC_RESISTANCE]:     'eau.png',
+  [AIR_STATIC_RESISTANCE]:       'air.png',
+}
+
+
+export const OTHERS_RES = {
+  [CRITICAL_RESISTANCE]:  'resistance-crit.png',
+  [PUSHBACK_RESISTANCE]:  'resistance-poussee.png',
+  [MELEE_RESISTANCE]:     'passif.png',
+  [RANGED_RESISTANCE]:    'passif.png',
+}
+
+
+
+
+// SECONDARY
+export const ESCAPE_STATS = {
   [DODGE]:          'fuite.png',
   [LOCK]:           'tacle.png',
+}
+
+export const AP_MP_PARRY = {
+  [AP_PARRY]:       'esquive-pa.png',
+  [MP_PARRY]:       'esquive-pm.png',
+}
+
+export const AP_MP_REDUCTION = {
+  [AP_REDUCTION]:   'retrait-pa.png',
+  [MP_REDUCTION]:   'retrait-pm.png',
+}
+
+export const OTHERS_SECONDARY = {
   [PROSPECTING]:    'prospection.png',
   [HEALS]:          'soin.png',
 }
+
+
+
+
+
+export const PRIMARY_STATS = {
+  ...ESSENTIAL_STATS,
+  ...OTHERS_PRIMARY_STATS,
+  ...ELEMENTS_STATS,
+}
+
+
+export const DAMAGES_STATS = {
+  ...ELEMENTS_DAMAGES,
+  ...OTHERS_DAMAGES,
+}
+
+
+export const RESISTANCES_STATS = {
+  ...PERCENTS_RES_STATS,
+  ...STATIC_RES_STATS,
+  ...OTHERS_RES,
+}
+
+export const SECONDARY_STATS = {
+  ...ESCAPE_STATS,
+  ...AP_MP_PARRY,
+  ...AP_MP_REDUCTION,
+  ...OTHERS_SECONDARY,
+}
+
+
 
 export const STATS = {
   ...PRIMARY_STATS,

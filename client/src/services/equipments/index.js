@@ -20,15 +20,15 @@ export async function fetchSome({ ids }) {
 }
 
 
-export async function fetchEquipments({ perPage, page, types, order, lvlMin, lvlMax } = {}) {
+export async function fetchEquipments({ perPage, page, types, order, searchText, levelMin, levelMax } = {}) {
   const params = [];
   if (perPage) params.push(`perPage=${perPage}`);
   if (page) params.push(`page=${page}`);
 
   if (order) params.push(`order=${JSON.stringify(order)}`);
 
-  if (lvlMin) params.push(`lvlMin=${lvlMin}`);
-  if (lvlMax) params.push(`lvlMax=${lvlMax}`);
+  if (levelMin && levelMin !== 1) params.push(`levelMin=${levelMin}`);
+  if (levelMax && levelMax !== 200) params.push(`levelMax=${levelMax}`);
 
   let typesGroup = '';
   switch (types) {
@@ -54,6 +54,8 @@ export async function fetchEquipments({ perPage, page, types, order, lvlMin, lvl
     }
   }
 
-  const response = await axios.get(`//api.shokkoth.tk/equipments/${typesGroup ? `${typesGroup}/` : ''}details?${params.join('&')}`);
+  const response = await axios.get(
+    `//api.shokkoth.tk/equipments/${typesGroup ? `${typesGroup}/` : ''}search${searchText ? `/${searchText}` : ''}?${params.join('&')}`
+  );
   return response.data;
 }

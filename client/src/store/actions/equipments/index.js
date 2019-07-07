@@ -1,5 +1,6 @@
 import deepEqual from 'lodash.isequal';
 import get from 'lodash.get';
+import { DateTime } from 'luxon';
 
 import { action } from '../../utils';
 import { setDefaultStuffValues } from '../../utils/equipments';
@@ -53,7 +54,7 @@ export async function fetchOne({ id }, [store, dispatch]) {
     if (!id) return;
     const currentData = selectors.getEquipment(store, id);
     if (selectors.areEquipmentsLoading(store)) return;
-    if (currentData) return console.log('i already have it', currentData.name);
+    if (currentData) return;
 
     try {
       dispatch(action({ type: SAVE_SOME, loading: true }));
@@ -76,7 +77,7 @@ export async function fetchOne({ id }, [store, dispatch]) {
 export async function fetchSome({ ids }, [store, dispatch]) {
     if (selectors.areEquipmentsLoading(store)) return;
     const needed = ids.filter(id => !selectors.getEquipment(store, id)).length > 0
-    if (!needed) return console.log('i already have all of it');
+    if (!needed) return;
 
     try {
       dispatch(action({ type: SAVE_SOME, loading: true }));
@@ -91,7 +92,7 @@ export async function fetchSome({ ids }, [store, dispatch]) {
       dispatch(action({ type: SAVE_SOME, loading: false, payload: { data } }));
     }
     catch (error) {
-      console.error('Error when fetching and saving item #', id, error);
+      console.error('Error when fetching and saving items', ids, error);
       return;
     }
 }
@@ -136,7 +137,7 @@ export async function equip(equipment, [store, dispatch]) {
 
     try {
 
-      console.log('EQUIP');
+      // console.log('EQUIP');
 
       const equipementToAdd = setDefaultStuffValues(equipment);
 
@@ -155,10 +156,15 @@ export async function equip(equipment, [store, dispatch]) {
 
       // else {
       stuff[category] = equipementToAdd;
-      // }
+
+      const idsOfItems = {};
+      Object.entries(stuff).forEach(([category, item]) => {
+        idsOfItems[category] = { _id: item._id }
+      })
 
 
       dispatch(action({ type: SAVE_ACTIVE, payload: { data: stuff } }));
+      document.cookie = `STUFF_DRAFT=${JSON.stringify(idsOfItems)}; expires=${DateTime.local().plus({ weeks: 1 }).toHTTP()}`;
     }
     catch (error) {
       dispatch(action({ type: SAVE_ACTIVE, payload: { error } }));
@@ -168,15 +174,16 @@ export async function equip(equipment, [store, dispatch]) {
 
 
 export async function changeStep({ step, types = step }, [store, dispatch]) {
-  if (!step) return;
-  console.log('CHANGE STEP')
+  console.log('CHANGE STEP', step, 'TYPES', types);
+  if (step === undefined) return;
+  // console.log('CHANGE STEP')
 
   dispatch(action({ type: SAVE_STEP, payload: { step, types } }));
 }
 
 
 export async function display({ equipment }, [store, dispatch]) {
-  console.log('CHANGE DISPLAY', equipment)
+  // console.log('CHANGE DISPLAY', equipment._id)
   if (!equipment) return;
 
   dispatch(action({ type: SAVE_DISPLAYED, payload: { equipment } }));

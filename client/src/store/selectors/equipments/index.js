@@ -24,14 +24,14 @@ export const getAllEquipmentsLength = createSelector(getAllEquipments, allEquipm
 
 
 
-export const getEquipmentsIds = (store, { page = 0, perPage = 100, types, order, lvlMin, lvlMax } = {}) => {
-  const equipments = get(store, `search.${createKey({ types, order, lvlMin, lvlMax })}.data`) || [];
+export const getEquipmentsIds = (store, { page = 0, perPage = 100, ...params } = {}) => {
+  const equipments = get(store, `search.${createKey(params)}.data`) || [];
   if (equipments.length <= 0) return equipments;
 
   const offset = Math.max(0, page * perPage - 1);
   return equipments.slice(offset, offset+perPage);
 }
-export const areEquipmentsIdsLoading = (store, { types, order, lvlMin, lvlMax } = {}) => get(store, `search.${createKey({ types, order, lvlMin, lvlMax })}.loading`)
+export const areEquipmentsIdsLoading = (store, params) => get(store, `search.${createKey(params)}.loading`)
 
 
 // Get populated equip
@@ -40,7 +40,7 @@ export const getEquipments = (store, params) => {
   const ids = getEquipmentsIds(store, params);
   const equipments = [];
   for (let id of ids) {
-    const equipment = getEquipment(store, id)
+    const equipment = getEquipment(store, id);
     equipments.push(equipment);
   }
   return equipments;

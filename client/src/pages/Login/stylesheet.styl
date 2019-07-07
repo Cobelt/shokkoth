@@ -1,6 +1,3 @@
-@require "../../variables.styl"
-
-
 .login-form
   width 100%
   display flex
@@ -14,8 +11,8 @@
       transition all 0.35s
 
       &.external-border
-        darken-20 = darken(primary-color, 20%)
-        stroke darken-20
+        stroke var(--primary-color)
+        filter brightness(80%)
 
     .spikes-group
       transform rotate(0deg)

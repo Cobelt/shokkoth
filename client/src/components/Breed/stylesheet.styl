@@ -1,61 +1,59 @@
-@require '../../variables.styl';
+.breed
+  width 2.5rem
+  position relative
 
-  .breed
-    width 2.5rem
-    position relative
+  &.loading
+    display none
 
-    &.loading
-      display none
+  &:not(.loading)
+    animation scale0to1 0.25s ease-in-out forwards;
+    animation-delay var(--delay) ms
 
-    &:not(.loading)
-      animation scale0to1 0.25s ease-in-out forwards;
-      animation-delay var(--delay) ms
+  img
+    --scale 1
+    width 100%
+    object-fit contain
+    cursor pointer
 
+    transform scale(var(--scale))
+    filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0))
+    transition transform 0.3s, filter 0.3s
+
+
+  &:after
+    --rotate 0deg
+    content ""
+    width 0
+    height 0
+    border-left 0rem solid transparent
+    border-right 0rem solid transparent
+    border-bottom 0rem solid transparent
+    opacity 0
+
+    position absolute
+    bottom -25%
+    left 50%
+    transform-origin: center -385%
+    transform translateX(-50%) rotate(var(--rotate))
+    transition border 0.4s, opacity 0.4s, transform 0.4s
+
+  &:hover, &.active
     img
-      --scale 1
-      width 100%
-      object-fit contain
-      cursor pointer
+      --scale 1.35
+      filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.2))
 
-      transform scale(var(--scale))
-      filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0))
-      transition transform 0.3s, filter 0.3s
+  &:hover:after
+    border-left 0.35rem solid transparent
+    border-right 0.35rem solid transparent
+    border-bottom 0.35rem solid var(--primary-color)
+    opacity 0.5
 
-
-    &:after
-      --rotate 0deg
-      content ""
-      width 0
-      height 0
-      border-left 0rem solid transparent
-      border-right 0rem solid transparent
-      border-bottom 0rem solid transparent
-      opacity 0
-
-      position absolute
-      bottom -25%
-      left 50%
-      transform-origin: center -385%
-      transform translateX(-50%) rotate(var(--rotate))
-      transition border 0.4s, opacity 0.4s, transform 0.4s
-
-    &:hover, &.active
-      img
-        --scale 1.35
-        filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.2))
-
-    &:hover:after
-      border-left 0.35rem solid transparent
-      border-right 0.35rem solid transparent
-      border-bottom 0.35rem solid primary-color
-      opacity 0.5
-
-    &.active:after
-      --rotate 360deg
-      border-left 0.5rem solid transparent
-      border-right 0.5rem solid transparent
-      border-bottom 0.5rem solid primary-color
-      opacity 1
+  &.active:after
+    --rotate 360deg
+    border-left 0.5rem solid transparent
+    border-right 0.5rem solid transparent
+    border-bottom 0.5rem solid var(--primary-color)
+    opacity 1
 
 
 @keyframes scaleTo1 {

@@ -4,15 +4,53 @@
   .nav-icons
     justify-content start
     z-index 10
+    color var(--primary-color)
 
     .icon
       font-size 2rem
 
   .brand
     font-family 'Amatic SC', cursive, Rubik, Karla, Ubuntu, Poppins, Oswald
-    place-content center
-    font-weight bold
-    font-size 5rem
+    place-content stretch center
+
+    a
+      overflow hidden
+      display inline-flex
+      align-items center
+
+      h2
+        margin 0
+        font-size 5rem
+        font-weight bold
+        transition transform 0.6s
+
+        &#shok, &#koth, &#dot-tk
+          transform translate(0, 0)
+
+        &#shok span
+          font-size 5rem
+          display inline
+          transition transform 0.6s
+          transition-delay 1s
+
+          &#sh, &#o
+            transform translateX(0)
+
+      &:hover
+        h2
+          &#shok
+            transform translate(26%, -30%)
+            span
+              &#sh
+                transform translateX(calc(5 * 26%))
+              &#o
+                transform translateX(calc(2 * 26%))
+
+          &#koth
+            transform translate(0%, 30%)
+          &#dot-tk
+            transform translateX(175%)
+
 
 
   .equipments-search
@@ -25,36 +63,20 @@
     height fit-content
 
 
-  @media (min-width: 651px) and (max-width: 1540px)
-    grid-template-columns 10vw max-content 1fr 10vw !important
-    grid-tempalte-rows 2.5rem 3.5rem repeat(3, fit-content(100%)) !important
-
-    .stats
-      --width 2 !important
-    .brand
-      --width 4 !important
-      align-content end
-
-    .stuf-preview, .equipments-search
-      --row 3 !important
+  @media (min-width: 841px) and (max-width: 1540px)
+    grid-template-rows 3.5rem 4.5rem repeat(3, fit-content(100%)) !important
 
 
-    .stuf-preview
-      --col 2 !important
 
-    .equipments-search
-      --row 4 !important
-      --col 3 !important
-
-    .items-details-container
-      --col 2 !important
-      --row 3 !important
+  @media (min-width: 641px) and (max-width: 840px)
+    grid-template-columns 6vw 1fr 6vw !important
+    grid-template-rows 3.5rem 4.5rem repeat(4, fit-content(100%)) !important
 
 
   @media (max-width: 640px)
     grid-column-gap unset !important
     grid-template-columns 6vw 1fr 6vw !important
-    grid-tempalte-rows 2.5rem 4.5rem repeat(5, fit-content(100%)) !important
+    grid-template-rows 2.5rem 4.5rem repeat(4, fit-content(100%)) !important
 
     .nav-icons
       --width 2 !important
@@ -66,19 +88,23 @@
 
     .brand
       align-content end
+      --width 3 !important
 
-    .stuf-preview, .equipments-search, .items-details-container
-      --col 2 !important
-
-    .stuff-preview
-      --row 3 !important
-
-    .items-details-container
-      --row 4 !important
-
-    .equipments-search
-      --row 6 !important
-
-    .player-stats
-      --width 1 !important
-      --row 7 !important
+    // .stuff-preview, .equipments-search, .items-details-container, .player-stats
+    //   --width 1 !important
+    //   --col 2 !important
+    //
+    // .stuff-preview
+    //   --row 3 !important
+    //
+    // .equipments-search
+    //   --row 5 !important
+    //
+    // .player-stats
+    //   --width 1 !important
+    //   --row 6 !important
+    //   > div
+    //     display flex
+    //     flex-direction column
+    //     .stats-line
+    //       justify-content space-around

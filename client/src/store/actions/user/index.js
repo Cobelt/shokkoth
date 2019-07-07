@@ -37,7 +37,7 @@ export function login({ username, password } = {}, [store, dispatch]) {
       const token = services.login({ username, password })
                           	.then(token => {
                               dispatch(action({ type, loading: false, payload: { token } }))
-                              document.cookie = `jwt=${token}; expires=${DateTime.local().plus({ weeks: 1 }).toHTTP()}`;
+                              document.cookie = `jwt=${token}; expires=${DateTime.local().plus({ weeks: 1 }).toHTTP()}; domain=*.shokkoth.tk; path=/`;
                             })
                           	.catch(error => dispatch(action({ type, loading: false, payload: { error } })));
 

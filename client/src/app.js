@@ -1,7 +1,8 @@
 import React, { useState} from 'react';
 import ReactDOM from 'react-dom';
-
 import { Grid, Element } from 'muejs';
+
+
 import { UserProvider } from './store/context/user';
 import { EquipmentsProvider } from './store/context/equipments';
 
@@ -35,7 +36,7 @@ const App = () => {
 
       {/* <Navbar row={0} /> */}
       {/* <Element row={2} style={{ marginTop: '7.2rem', alignContent: 'normal', justifyContent: 'normal' }}><RoutesSwitch /></Element> */}
-      <Element row={1} style={{ alignContent: 'normal', justifyContent: 'normal' }}><RoutesSwitch /></Element>
+      <Element row={1} style={{ alignContent: 'normal', justifyContent: 'normal', maxHeight: shouldShow ? '100vh' : 'inherit' }}><RoutesSwitch /></Element>
       <Footer row={2} />
     </Grid>
   );
@@ -46,7 +47,7 @@ ReactDOM.render((
     <Router history={history}>
       <UserProvider>
         <EquipmentsProvider>
-              <App />
+          <App />
         </EquipmentsProvider>
       </UserProvider>
     </Router>
