@@ -2279,6 +2279,11 @@ mongodb@3.2.3:
     mongodb-core "^3.2.3"
     safe-buffer "^5.1.2"
 
+mongoose-fuzzy-searching@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/mongoose-fuzzy-searching/-/mongoose-fuzzy-searching-1.1.5.tgz#eef70878b2d0c666ea06ba909848184ab9267195"
+  integrity sha512-WlitMdmfcuCSpCkrXTtFesraxSx9qYCyVE32Kys0FZNv8Lz1+BO9kTpRX6tIOmcaR+M0/Cd9lyUnP4BEWWF+yA==
+
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
