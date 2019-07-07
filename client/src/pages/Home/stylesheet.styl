@@ -4,10 +4,15 @@
   .nav-icons
     justify-content start
     z-index 10
-    color var(--primary-color)
 
     .icon
       font-size 2rem
+      filter brightness(140%)
+      transition filter 0.2s
+
+      &:hover, &:focus
+        filter brightness(120%)
+
 
   .brand
     font-family 'Amatic SC', cursive, Rubik, Karla, Ubuntu, Poppins, Oswald

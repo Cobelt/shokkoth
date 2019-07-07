@@ -30,18 +30,13 @@ import {
   DAMAGES_STATS,
   RESISTANCES_STATS,
 
-  ESCAPE_STATS,
-  AP_MP_PARRY,
-  AP_MP_REDUCTION,
-  OTHERS_SECONDARY,
-
-  ELEMENTS_DAMAGES,
-  OTHERS_DAMAGES,
-
   PERCENTS_RES_STATS,
-  STATIC_RES_STATS,
-  OTHERS_RES,
 
+  MELEE_DAMAGE,
+  MELEE_RESISTANCE,
+
+  RANGED_DAMAGE,
+  RANGED_RESISTANCE,
 
   STATS,
 
@@ -53,7 +48,17 @@ import {
 
 import './stylesheet.styl';
 
+const suffixForResistance = currentStat => {
+  if ([MELEE_RESISTANCE, RANGED_RESISTANCE, ...Object.keys(PERCENTS_RES_STATS)].includes(currentStat)) {
+    return '%';
+  }
+}
 
+const suffixForDamages = currentStat => {
+  if ([MELEE_DAMAGE, RANGED_DAMAGE].includes(currentStat)) {
+    return '%';
+  }
+}
 
 const StuffCreator = ({ character = {}, ...otherProps }) => {
   const [store, dispatch] = useContext(EquipmentsContext);
@@ -116,7 +121,7 @@ const StuffCreator = ({ character = {}, ...otherProps }) => {
     <Element className="stuff-creator-container" {...otherProps}>
       <DragDropContext>
         <Grid className="stuff-creator" columnsTemplate="fit-content(100%) minmax(30rem, min-content) fit-content(100%) auto" rowsTemplate="it-content(100%) fit-content(100%)" colGap="3rem">
-          <Column className="pad pad-1-rem bg-primary" col={1} row={1} height={2}>
+          <Column className="primary-and-secondary pad pad-1-rem bg-primary" col={1} row={1} height={2}>
             <StatsColumn className="primary-stats" style={{ flex: Object.keys(PRIMARY_STATS).length }} statsData={PRIMARY_STATS} statsValues={stats} data-title="Stats primaires" />
             <StatsColumn className="secondary-stats" style={{ flex: Object.keys(SECONDARY_STATS).length }} statsData={SECONDARY_STATS} statsValues={stats} data-title="Stats secondaires" />
           </Column>
@@ -126,9 +131,9 @@ const StuffCreator = ({ character = {}, ...otherProps }) => {
             <EquipmentDetails equipment={equipmentToDetail} onClose={() => select()} />
           </Column>
 
-          <Column className="pad pad-1-rem bg-primary" col={3} row={1} height={2}>
-            <StatsColumn className="damages-stats" style={{ flex: Object.keys(DAMAGES_STATS).length }} statsData={DAMAGES_STATS} statsValues={stats} data-title="Dommages" />
-            <StatsColumn className="resistances-stats" style={{ flex: Object.keys(RESISTANCES_STATS).length }} statsData={RESISTANCES_STATS} statsValues={stats} data-title="Résistances" />
+          <Column className="damages-and-resistances pad pad-1-rem bg-primary" col={3} row={1} height={2}>
+            <StatsColumn className="damages-stats" style={{ flex: Object.keys(DAMAGES_STATS).length }} statsData={DAMAGES_STATS} statsValues={stats} suffix={suffixForDamages} data-title="Dommages" />
+            <StatsColumn className="resistances-stats" style={{ flex: Object.keys(RESISTANCES_STATS).length }} statsData={RESISTANCES_STATS} statsValues={stats} suffix={suffixForResistance} data-title="Résistances" />
           </Column>
 
           <EquipmentsSearch row={1} col={4} height={2} select={select} />

@@ -149,9 +149,9 @@ const MyCharacters = ({ history: { goBack, push } = {} }) => {
 
 
     return (
-        <Grid className="home-container" gap="3rem" rowsTemplate="2.5rem 3.5rem fit-content(100%)" columnsTemplate="6rem 1fr">
+        <Grid className="characters-container marg marg-b-3-rem" gap="3rem" rowsTemplate="2.5rem 3.5rem fit-content(100%)" columnsTemplate="6rem 1fr">
             <Element row={1} col={1} height={2}>
-                <Icon icon="home" row={1} col={1} style={{ justifySelf: 'start', fontSize: '2rem' }} onClick={() => push('/')} />
+                <Icon className="home font-primary" icon="home" row={1} col={1} style={{ justifySelf: 'start', fontSize: '2rem' }} onClick={() => push('/')} />
             </Element>
 
             <Element col={1} row={1} height={2} width={2} className="text-center font-primary">
