@@ -7,6 +7,7 @@ import injectCommonRouter from './common';
 import injectWeaponsRouter from './weapons';
 import injectMountsRouter from './mounts';
 import injectPetsRouter from './pets';
+import injectSetsRouter from './sets';
 
 const equipmentsRouter = express.Router();
 
@@ -17,22 +18,15 @@ equipmentsRouter.route('/')
       CommonController.getAll,
     );
 
-equipmentsRouter.route('/details')
+
+equipmentsRouter.route('/search/:searchText?')
   .get(
     Controller.initLocalState,
     CommonController.getSearchParams,
     CommonController.search,
     CommonController.sendSearchResult,
-  );
+  )
 
-
-equipmentsRouter.route('/search/:types')
-  .get(
-    Controller.initLocalState,
-    CommonController.getSearchParams,
-    CommonController.search,
-    CommonController.sendSearchResult,
-  );
 
 equipmentsRouter.route('/types')
   .get(
@@ -48,10 +42,14 @@ equipmentsRouter.route('/get/:itemId')
     .delete(Controller.remove);
 
 
+
+injectSetsRouter(equipmentsRouter);
+
 injectCommonRouter(equipmentsRouter);
 injectWeaponsRouter(equipmentsRouter);
 injectMountsRouter(equipmentsRouter);
 injectPetsRouter(equipmentsRouter);
+
 
 
 export default (app) => app.use('/equipments', equipmentsRouter);

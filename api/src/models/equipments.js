@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import FuzzySearchPlugin from 'mongoose-fuzzy-searching';
+
+import { updateLastModifDate } from '../utils/common';
 
 import { EquipmentsTypes } from '../constants/equipments';
 import { WeaponsTypes } from '../constants/weapons';
@@ -56,21 +59,13 @@ const EquipmentsSchema = new mongoose.Schema({
         default: [],
     },
 
-    setId: Number,
-
+    set: {
+        type: Number,
+        ref: 'Sets',
+    },
 
     imgUrl: String,
     url: String,
-
-
-    // DB infos to compare with dofapi.fr !
-    status: {
-        type: {
-            type: String,
-            enum: ['Up to date', 'Outdated']
-        },
-    },
-
 
     updatedAt: {
         type: Date,
@@ -81,17 +76,32 @@ const EquipmentsSchema = new mongoose.Schema({
         default: Date.now
     },
 });
-EquipmentsSchema.index({"$**": "text" });
+EquipmentsSchema.index({"name": "text", "statistics": "text", "characteristics": "text", "passives": "text", "set": "text" });
 
-
-EquipmentsSchema.pre('save', function (next) {
-    try {
-        this.updatedAt = Date.now();
-        next();
-    } catch (err) {
-        next(err);
-    }
+EquipmentsSchema.plugin(FuzzySearchPlugin, {
+  fields: [{
+    name: 'name',
+    minSize: 3,
+    weight: 4,
+  }, {
+    name: 'statistics',
+    minSize: 3,
+    weight: 2,
+    keys: ['name']
+  }, {
+    name: 'characteristics',
+    minSize: 3,
+    weight: 2,
+    keys: ['name']
+  }, {
+    name: 'passives',
+    minSize: 3,
+    weight: 2,
+    keys: ['name']
+  }]
 });
+
+EquipmentsSchema.pre('save', updateLastModifDate);
 
 
 const Equipments = mongoose.model('Equipments', EquipmentsSchema);

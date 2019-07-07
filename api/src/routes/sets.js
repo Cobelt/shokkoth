@@ -1,18 +1,18 @@
 import express from 'express';
 
 import * as CommonController from '../controllers/common';
-import * as Controller from '../controllers/pets';
+import * as Controller from '../controllers/sets';
 
-const petsRouter = express.Router();
+const setsRouter = express.Router();
 
 // todoList Routes
-petsRouter.route('/')
+setsRouter.route('/')
     .get(
       Controller.initLocalState,
       CommonController.getAll,
     );
 
-petsRouter.route('/search/:searchText?')
+setsRouter.route('/search/:searchText?')
     .get(
       Controller.initLocalState,
       CommonController.getSearchParams,
@@ -21,19 +21,12 @@ petsRouter.route('/search/:searchText?')
     )
 
 
-petsRouter.route('/types')
-  .get(
-    Controller.initLocalState,
-    CommonController.sendTypes,
-  );
-
-
-petsRouter.route('/get/:itemId')
+setsRouter.route('/get/:setId')
     .get(Controller.get)
     .post(Controller.create)
     .put(Controller.update)
     .delete(Controller.remove);
 
-export default (app) => app.use('/pets', petsRouter);
+export default (app) => app.use('/sets', setsRouter);
 
-export const getPetsRouter = () => petsRouter;
+export const getSetsRouter = () => setsRouter;

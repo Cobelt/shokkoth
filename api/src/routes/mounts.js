@@ -12,13 +12,15 @@ mountsRouter.route('/')
       CommonController.getAll,
     );
 
-mountsRouter.route('/details')
-  .get(
-    Controller.initLocalState,
-    CommonController.getSearchParams,
-    CommonController.search,
-    CommonController.sendSearchResult,
-  );
+
+mountsRouter.route('/search/:searchText?')
+    .get(
+      Controller.initLocalState,
+      CommonController.getSearchParams,
+      CommonController.search,
+      CommonController.sendSearchResult,
+    )
+
 
 mountsRouter.route('/types')
   .get(

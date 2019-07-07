@@ -25,12 +25,11 @@ commonRouter.route('/types')
     Controller.sendTypes,
   );
 
-commonRouter.route('/search/:plainText')
+commonRouter.route('/search/:searchText?')
   .get(
     Controller.initLocalState,
     Controller.getSearchParams,
-    Controller.getPlainTextParam,
-    Controller.searchPlainText,
+    Controller.search,
     Controller.sendSearchResult,
   )
 

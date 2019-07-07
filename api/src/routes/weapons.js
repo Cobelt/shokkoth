@@ -12,13 +12,14 @@ weaponsRouter.route('/')
       CommonController.getAll,
     );
 
-weaponsRouter.route('/details')
+weaponsRouter.route('/search/:searchText?')
   .get(
     Controller.initLocalState,
     CommonController.getSearchParams,
     CommonController.search,
     CommonController.sendSearchResult,
-  );
+  )
+
 
 weaponsRouter.route('/types')
   .get(
