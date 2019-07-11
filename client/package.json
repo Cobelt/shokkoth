@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "express": "^4.17.1",
     "history": "^4.7.2",
     "immer": "^2.1.1",
