@@ -62,7 +62,7 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
         case SAVE_ACTIVE: {
           const { data } = payload;
           // console.log('Stored active stuff');
-          set(draft, 'active', { data });
+          set(draft, 'stuff.active', { data });
           break;
         }
 
