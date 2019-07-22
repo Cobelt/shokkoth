@@ -3,12 +3,11 @@
 
 
 ### Current tasks
-- Characters Stats
+- Create account
 
 
 ### TODO before first release : 
-- Import equipments sets
-- Create account
+- Modifying equipped item stats
 - Create character (linked to an account)
 - Save stuff (linked to a character except for draft in cookies)
 
