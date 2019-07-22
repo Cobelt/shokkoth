@@ -67,6 +67,13 @@ extracterRouter.route('/sets')
     Controller.sendExtracted
   );
 
+extracterRouter.route('/breeds')
+  .get(
+    Controller.initBreedsExtraction,
+    Controller.extractBreeds,
+    Controller.sendExtracted,
+  );
+
 extracterRouter.route('/equipments/:itemId')
     .get(Controller.initEquipmentsExtraction, Controller.extractEquipement);
 

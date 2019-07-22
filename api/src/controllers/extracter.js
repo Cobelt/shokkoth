@@ -19,17 +19,18 @@ import {
   ALL_PETS_FILE,
   ALL_MOUNTS_FILE,
   ALL_SETS_FILE,
+  ALL_BREEDS_FILE,
 } from '../constants/extracter';
 
 
 const Equipment = mongoose.model('Equipments');
 const Set = mongoose.model('Sets');
+const Breed = mongoose.model('Breeds');
 
 
 const getDataFromFile = (file) => {
   const unparsedData = fs.readFileSync(file);
   try {
-    console.log(JSON.parse(unparsedData).length);
     return JSON.parse(unparsedData);
   }
   catch (error) {
@@ -85,6 +86,11 @@ export const initMountsExtraction = async function(req, res, next) {
 
 export const initSetsExtraction = async function(req, res, next) {
   setLocale(res, { file: ALL_SETS_FILE })
+  next();
+};
+
+export const initBreedsExtraction = async function(req, res, next) {
+  setLocale(res, { file: ALL_BREEDS_FILE })
   next();
 };
 
@@ -149,12 +155,10 @@ export const extractSets = async function(req, res, next) {
     const toSave = new Set(formatted);
     if (!toSave) reject("Error from Model");
 
-    console.log('toSave=', toSave);
-    _save(Set, toSave).then(saved => console.log('saved !') || resolve(saved)).catch(err => console.log('rejected !') || reject(err));
+    _save(Set, toSave).then(saved => resolve(saved)).catch(err => reject(err));
   }));
 
   Promise.all(promises).then(items => {
-    // console.log(items);
     setLocale(res, { extracted: items.map(i => i && i._id) });
     console.log('[==>] Done.');
     return next();
@@ -181,6 +185,32 @@ export const extractSet = async function(req, res) {
   });
 };
 
+
+export const extractBreeds = async function(req, res, next) {
+  const file = getLocale(res, 'file');
+  const data = getDataFromFile(file);
+  if (!data) return next(new Error('Got no data from the file'));
+
+  console.log('[==>] Extracting', data.length, 'items.');
+
+  const promises = data.map(breed => new Promise((resolve, reject) => {
+    // to remove
+    delete breed.spells;
+    
+    const toSave = new Breed(breed);
+    if (!toSave) reject("Error from Model");
+
+    _save(Set, toSave).then(saved => resolve(saved)).catch(err => reject(err));
+  }));
+
+  Promise.all(promises).then(items => {
+    setLocale(res, { extracted: items.map(i => i && i._id) });
+    console.log('[==>] Done.');
+    return next();
+  }).catch(err => {
+    return next(err);
+  });
+};
 
 
 

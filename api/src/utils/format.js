@@ -1,4 +1,5 @@
 import get from 'lodash.get';
+import set from 'lodash.set';
 
 import { isStat, isPassif, isWeaponCharac, getWeaponCharac, getStatSrcImg, getDefaultPassiveImg } from './stats';
 import { toCategory } from './equipments';
@@ -77,7 +78,7 @@ export const formatSetBonus = toFormat => {
       if (get(bonus, 'statistics.length') > 0) {
         const statisticsArray = [];
         const passivesArray = [];
-        bonus.statistics.forEach((stat, index) => {
+        bonus.statistics.forEach((stat, statIndex) => {
 
           const [name, values] = Object.entries(stat)[0] || [];
           const value = typeof values === 'string' ? { value: values } : { min: values.min || values.max, max: values.max || values.min };
@@ -90,9 +91,9 @@ export const formatSetBonus = toFormat => {
           }
 
         });
-        toReturn.statistics = statisticsArray;
-        toReturn.passives = passivesArray;
-
+        
+        set(toReturn, `bonus[${index}].statistics`, statisticsArray);
+        set(toReturn, `bonus[${index}].passives`, passivesArray);
       }
     });
   }

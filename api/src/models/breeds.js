@@ -9,6 +9,16 @@ const BreedsSchema = new mongoose.Schema({
         required: 'Please give me a name',
     },
 
+    imgUrl: String,
+    url: String,
+
+    description: String,
+
+    roles: {
+      type: [String],
+      default: []
+    },
+
     spells: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: 'Spells',
@@ -27,7 +37,7 @@ const BreedsSchema = new mongoose.Schema({
 
 
 
-BreedSchema.pre('save', updateLastModifDate);
+BreedsSchema.pre('save', updateLastModifDate);
 
 
 const Breeds = mongoose.model('Breeds', BreedsSchema);

@@ -13,8 +13,8 @@ const prefixError = ({ _id }, errorString) => `Error on an Equipment#${_id}: ${e
 
 const EquipmentsSchema = new mongoose.Schema({
     _id: {
-    type: Number,
-    required: 'I need an _id',
+      type: Number,
+      required: 'I need an _id',
     },
     name: {
       type: String,
@@ -76,30 +76,24 @@ const EquipmentsSchema = new mongoose.Schema({
         default: Date.now
     },
 });
-EquipmentsSchema.index({"name": "text", "statistics": "text", "characteristics": "text", "passives": "text", "set": "text" });
 
-EquipmentsSchema.plugin(FuzzySearchPlugin, {
-  fields: [{
-    name: 'name',
-    minSize: 3,
-    weight: 4,
-  }, {
-    name: 'statistics',
-    minSize: 3,
-    weight: 2,
-    keys: ['name']
-  }, {
-    name: 'characteristics',
-    minSize: 3,
-    weight: 2,
-    keys: ['name']
-  }, {
-    name: 'passives',
-    minSize: 3,
-    weight: 2,
-    keys: ['name']
-  }]
+EquipmentsSchema.index({ name: 'text', type: 'text', category: 'text' })
+
+// EquipmentsSchema.plugin(FuzzySearchPlugin, {
+//   fields: [{
+//     name: 'name',
+//     minSize: 10,
+//   }]
+// });
+
+EquipmentsSchema.on('index', function(err) {
+  if (err) {
+    console.error('Equipments index error: %s', err);
+  } else {
+    console.info('Equipments indexing complete');
+  }
 });
+
 
 EquipmentsSchema.pre('save', updateLastModifDate);
 
