@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 
-import { Element, Row, Form, Input, Label, Button } from 'muejs';
+import { Element, Row, Form, Input, Label, Button, Link } from 'muejs';
 import { withRouter, Redirect } from 'react-router-dom';
 import get from 'lodash.get';
 
@@ -46,7 +46,7 @@ const Home = ({ className }) => {
         columnsTemplate={'0.5fr 1fr 1fr 0.5fr'}
         rowsTemplate={'fit-content(100%)'.repeat(4)}
       >
-        <Element col={1} width={4}>
+        <Element className="justify-center" col={1} width={4}>
           <Shokkoth className="shokkoth" look={look} />
         </Element>
 
@@ -73,6 +73,8 @@ const Home = ({ className }) => {
         >
           Log me in !
         </Button>
+        <Button col={2}>Nouveau compte</Button>
+        <Button col={3}>Nouveau compte</Button>
       </Form>
   );
 }
