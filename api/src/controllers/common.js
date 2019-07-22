@@ -35,7 +35,7 @@ export const _save = (model, toSave) => new Promise((resolve, reject) => {
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { typesList: AllTypes, model: Equipment, translations: allTranslations, toPopulate: ['set'] })
+  setLocale(res, { typesList: AllTypes, model: Equipment, translations: allTranslations, toPopulate: { path: 'set', select: '_id name level bonus equipments', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
   next();
 }
 
@@ -88,19 +88,18 @@ export const getSearchParams = function(req, res, next) {
 
 
 export const search = function(req, res, next) {
-    const { model: Model, toPopulate = [''], levelMin, levelMax, perPage, page, types, order, searchText } = getLocale(res, ['model', 'toPopulate', 'levelMin', 'levelMax', 'perPage', 'page', 'types', 'order', 'searchText']);
+    const { model: Model, toPopulate, levelMin, levelMax, perPage, page, types, order, searchText } = getLocale(res, ['model', 'toPopulate', 'levelMin', 'levelMax', 'perPage', 'page', 'types', 'order', 'searchText']);
 
     const filters = {};
     if (types) filters.type = new RegExp(types, 'i');
 
     filters.level = { $gte: Math.max(levelMin, 1), $lte: Math.min(levelMax, 200) }
 
-    // const searchOrder = { score: { $meta: "textScore" }, ...order };
     if (searchText) {
-      // filters.$text = { $search: searchText, $language: 'fr' };
-      // , { score: { $meta: "textScore" } }
-      Model.fuzzySearch(searchText, filters)
-        .populate(...toPopulate)
+      filters.$text = { $search: searchText, $language: 'fr' };
+
+      Model.find(filters)
+        .populate(toPopulate)
         .sort(order)
         .skip(parseInt(perPage * page, 10))
         .limit(parseInt(perPage, 10))
@@ -112,7 +111,7 @@ export const search = function(req, res, next) {
     }
     else {
       Model.find(filters)
-        .populate(...toPopulate)
+        .populate(toPopulate)
         .sort(order)
         .skip(parseInt(perPage * page, 10))
         .limit(parseInt(perPage, 10))
@@ -134,7 +133,7 @@ export const getAll = function(req, res) {
     if (types) filters.type = new RegExp(types, 'i');
   }
 
-  Model.find(filters, 'name', function(err, result) {
+  Model.find(filters).select('name').exec((err, result) => {
       if (err) res.send(err);
       res.json(result);
   });
@@ -142,26 +141,28 @@ export const getAll = function(req, res) {
 
 
 export const get = function(req, res) {
-    const Model = getLocale(res, 'model');
+    const { model: Model, toPopulate } = getLocale(res, ['model', 'toPopulate']);
 
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should search for !'));
 
-    Model.findById(itemId, function(err, equipment) {
+    Model.findById(itemId).populate(toPopulate).exec((err, equipment) => {
         if (err) res.send(err);
-        res.json(equipment);
+        res.json(equipment.populate(toPopulate));
     });
 };
 
 
-export const getEquipements = function(req, res) {
-    const { model: Model, ids } = getLocale(res, ['model', 'ids']);
+export const getSome = function(req, res) {
+    const { model: Model, ids, toPopulate = [] } = getLocale(res, ['model', 'ids', 'toPopulate']);
 
     if (!ids) return res.send(new Error('No ids given. Please tell me what I should search for !'));
 
     Model.find()
+      .select('') // todo add recipe
       .where('_id')
       .in(ids)
+      .populate(toPopulate)
       .exec(function(err, equipments) {
         if (err) res.send(err);
         res.json(equipments);

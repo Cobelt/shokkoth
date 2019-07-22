@@ -26,7 +26,7 @@ const app = express();
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27018/dofusLab', { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
+mongoose.connect('mongodb://localhost:27018/shokkoth', { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
 
 app.use(cors({
   origin: function(origin, callback){
@@ -34,7 +34,7 @@ app.use(cors({
     if (origin && !ALLOWED_ORIGINS.includes(origin.replace(/https?:\/\//, ''))){
       return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
     }
-    console.log('Accepted origin =', origin, 'for request');
+    console.log('Accepted origin =', origin);
     return callback(null, true);
   },
   header: '*'

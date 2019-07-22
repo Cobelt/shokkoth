@@ -1,3 +1,5 @@
+export BreedsModel from './breeds';
+
 export SetsModel from './sets';
 export EquipmentsModel from './equipments';
 

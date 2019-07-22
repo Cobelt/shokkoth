@@ -6,7 +6,7 @@ import { getParam, setLocale, getLocale } from '../utils/common';
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { model: Set, toPopulate: ['equipments'] })
+  setLocale(res, { model: Set, toPopulate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } })
   next();
 }
 
@@ -28,11 +28,10 @@ export const create = function(req, res) {
 
 export const get = function(req, res) {
     const setId = getParam(req, 'setId');
+    const toPopulate = getLocale(res, 'toPopulate');
     if (!setId) return res.send(new Error('No setId given. Please tell me what I should search for !'));
 
-    console.log('setId=', setId);
-    Set.find({ _id: setId }).exec((err, set) => console.log(set));
-    Set.findById(setId, function(err, set) {
+    Set.findById(setId).populate(toPopulate).exec((err, set) => {
         if (err) res.send(err);
         res.json(set);
     });

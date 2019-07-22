@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MALE, FEMALE } from '../constants/characters'
+import { MALE, FEMALE, BREEDS } from '../constants/characters'
 
 import Stuffs from './stuffs';
 import { updateLastModifDate } from '../utils/common';
@@ -11,6 +11,7 @@ const CharactersSchema = new mongoose.Schema({
     },
     lvl: {
         type: Number,
+        min: 1,
         default: 200,
     },
     genre: {
@@ -18,10 +19,10 @@ const CharactersSchema = new mongoose.Schema({
       enum: [MALE, FEMALE],
       default: MALE,
     },
+
     classe: {
-        type: Number,
-        min: 1,
-        max: 18,
+        type: String,
+        enum: BREEDS,
         required: 'Pas de classe définie',
     },
 

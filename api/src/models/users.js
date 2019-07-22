@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { updateLastModifDate } from '../utils/common';
 
+import { SUPER_ADMIN, ADMIN, MODERATOR, USER } from '../constants/users'
+
 const UsersSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -21,6 +23,12 @@ const UsersSchema = new mongoose.Schema({
       type: [mongoose.Schema.Types.ObjectId],
       ref: 'Characters',
       default: []
+    },
+
+    role: {
+      type: String,
+      enum: [SUPER_ADMIN, ADMIN, MODERATOR, USER],
+      default: USER,
     },
 
     // goals: Array,

@@ -37,7 +37,7 @@ commonRouter.route('/get/some')
   .get(
     Controller.initLocalState,
     Controller.getIdsParam,
-    Controller.getEquipements,
+    Controller.getSome,
   )
 
 commonRouter.route('/get/:itemId')

@@ -8,3 +8,5 @@ export const ALL_PETS_FILE = '/data/external-github/crawlit-dofus-encyclopedia-p
 export const ALL_MOUNTS_FILE = '/data/external-github/crawlit-dofus-encyclopedia-parser/data/dofus/mongo/mount_mongo.json';
 
 export const ALL_SETS_FILE = '/data/external-github/crawlit-dofus-encyclopedia-parser/data/dofus/mongo/set_mongo.json';
+
+export const ALL_BREEDS_FILE = '/data/external-github/crawlit-dofus-encyclopedia-parser/data/dofus/mongo/classe_mongo.json';

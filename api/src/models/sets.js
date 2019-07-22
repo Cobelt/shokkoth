@@ -1,5 +1,8 @@
 import mongoose from 'mongoose';
+import FuzzySearchPlugin from 'mongoose-fuzzy-searching';
+
 import { updateLastModifDate } from '../utils/common';
+
 
 const SetsSchema = new mongoose.Schema({
     _id: {
@@ -24,11 +27,10 @@ const SetsSchema = new mongoose.Schema({
       default: [],
     },
 
-    equipments: {
-      type: [Number],
+    equipments: [{
+      type: Number,
       ref: 'Equipments',
-      default: []
-    },
+    }],
 
 
     updatedAt: {
@@ -39,6 +41,23 @@ const SetsSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+});
+
+SetsSchema.index({ name: 'text' })
+
+// SetsSchema.plugin(FuzzySearchPlugin, {
+//   fields: [{
+//     name: 'name',
+//     weight: 10,
+//   }]
+// });
+
+SetsSchema.on('index', function(err) {
+    if (err) {
+        console.error('Sets index error: %s', err);
+    } else {
+        console.info('Sets indexing complete');
+    }
 });
 
 

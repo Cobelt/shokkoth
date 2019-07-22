@@ -7,11 +7,9 @@ import { getParam, setLocale, getLocale } from '../utils/common';
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { typesList: EquipmentsTypes, model: Equipment, translations: translateEquipmentsTypes, toPopulate: ['set'] })
+  setLocale(res, { typesList: EquipmentsTypes, model: Equipment, translations: translateEquipmentsTypes, toPopulate: { path: 'set', select: '_id name level bonus equipments', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
   next();
 }
-
-
 
 
 
@@ -32,7 +30,7 @@ export const get = function(req, res) {
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should search for !'));
 
-    Equipment.findById(itemId, function(err, equipment) {
+    Equipment.findById(itemId).populate('set').exec((err, equipment) => {
         if (err) res.send(err);
         res.json(equipment);
     });
