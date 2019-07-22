@@ -8,11 +8,17 @@ import { setDefaultStuffValues } from '../../utils/equipments';
 import {
   SAVE_SOME,
   SAVE_IDS,
+
   SAVE_ACTIVE,
+
   SAVE_STEP,
   SAVE_DISPLAYED,
+
   SAVE_LAST_RING_ADDED,
-  SAVE_LAST_DOFUS_ADDED
+  SAVE_LAST_DOFUS_ADDED,
+
+  SAVE_STAT,
+  SAVE_PARCHO,
 } from '../../constants/equipments';
 
 import * as selectors from '../../selectors/equipments';
@@ -66,6 +72,8 @@ export async function fetchOne({ id }, [store, dispatch]) {
       const data = { [equipment._id]: equipment }
 
       dispatch(action({ type: SAVE_SOME, loading: false, payload: { data } }));
+
+      return data;
     }
     catch (error) {
       console.error('Error when fetching and saving item #', id, error);
@@ -90,6 +98,8 @@ export async function fetchSome({ ids }, [store, dispatch]) {
       }
 
       dispatch(action({ type: SAVE_SOME, loading: false, payload: { data } }));
+
+      return data;
     }
     catch (error) {
       console.error('Error when fetching and saving items', ids, error);
@@ -124,37 +134,47 @@ export async function fetchStuffItems([store, dispatch]) {
 }
 
 
-export async function equip(equipment, [store, dispatch]) {
-    if (!equipment) return;
+export async function equip({ id, equipment } = {}, [store, dispatch]) {
+    if (!equipment && !id) return;
+    const toAddEquipment = equipment || selectors.getEquipment(store, id);
 
     const stuff = selectors.getStuffActive(store);
     if (!stuff) return;
 
-    const { _id, name: equipName, category: equipmentCategory } = equipment;
-    const category = selectors.getActiveStep(store) || equipmentCategory;
-    if (!category) return console.warn('No category found');
-    if (get(stuff, `${[category]}._id`) === _id) return;
-
     try {
-
-      // console.log('EQUIP');
+      const { _id, name: equipName, category: equipmentCategory } = toAddEquipment;
+      const activeStep = selectors.getActiveStep(store);
+      const activeTypes = selectors.getActiveTypes(store);
+      let category;
+      if (!activeStep.match(equipmentCategory) && !activeTypes.match(equipmentCategory)) {
+        // todo use "last ring added" and "last dofus added"
+        if (equipmentCategory) {
+          if (['hat', 'weapon', 'belt', 'amulet', 'boots', 'shield'].includes(equipmentCategory)) {
+            category = equipmentCategory;
+          }
+          else if (['cloak', 'backpack'].includes(equipmentCategory)) {
+            category = 'cloak';
+          }
+          else if (equipmentCategory === 'ring') {
+            const ringToAdd = selectors.getRingToAdd(store);
+            category = `ring${ringToAdd}`;
+            dispatch(action({ type: SAVE_LAST_RING_ADDED }));
+          }
+          else if (['trophy', 'dofus'].includes(equipmentCategory)) {
+            const dofusToAdd = selectors.getDofusToAdd(store);
+            category = `dofus#${dofusToAdd}`;
+            dispatch(action({ type: SAVE_LAST_DOFUS_ADDED }));
+          }
+        }
+      }
+      else {
+        category = activeStep;
+      }
+      if (!category) return console.warn('No category found');
+      if (get(stuff, `${[category]}._id`) === _id) return;
 
       const equipementToAdd = setDefaultStuffValues(equipment);
 
-      // if (category === 'ring') {
-      //   const ringToAdd = selectors.getRingToAdd(store);
-      //   console.log(`ring${ringToAdd}`);
-      //   stuff[`ring${ringToAdd}`] = equipementToAdd;
-      //   dispatch(action({ type: SAVE_LAST_RING_ADDED }));
-      // }
-      //
-      // else if (category === 'dofus' || category === 'trophy') {
-      //   const dofusToAdd = selectors.getDofusToAdd(store);
-      //   stuff[`dofus#${dofusToAdd}`] = equipementToAdd;
-      //   dispatch(action({ type: SAVE_LAST_DOFUS_ADDED }));
-      // }
-
-      // else {
       stuff[category] = equipementToAdd;
 
       const idsOfItems = {};
@@ -182,9 +202,25 @@ export async function changeStep({ step, types = step }, [store, dispatch]) {
 }
 
 
-export async function display({ equipment }, [store, dispatch]) {
-  // console.log('CHANGE DISPLAY', equipment._id)
-  if (!equipment) return;
+export async function display({ id, equipment } = {}, [store, dispatch]) {
+  let inStore = null;
+  if (!equipment && id) {
+    inStore = selectors.getEquipment(store, id);
+    if (!inStore) {
+      const data = await fetchOne({ id }, [store, dispatch]);
+      inStore = get(data, id);
+    }
+  }
+  const toAddEquipment = equipment || inStore;
 
-  dispatch(action({ type: SAVE_DISPLAYED, payload: { equipment } }));
+  // console.log('CHANGE DISPLAY', equipment._id)
+  dispatch(action({ type: SAVE_DISPLAYED, payload: { equipment: toAddEquipment } }));
+}
+
+export function setCharacStat({ name, value }, [store, dispatch]) {
+  dispatch(action({ save: SAVE_STAT, payload: { name, value } }));
+}
+
+export function setParchoStat({ name, value }, [store, dispatch]) {
+  dispatch(action({ save: SAVE_PARCHO, payload: { name, value } }));
 }
