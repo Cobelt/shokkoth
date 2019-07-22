@@ -1,56 +1,25 @@
 .stuff-creator-container
   .stuff-creator
+    .show-details
+      margin-bottom auto
 
-    .stuff
+    .stats-line
       margin-bottom 3rem
+      &:before
+        content attr(data-title)
+        position absolute
+        top -3rem
+        left 0
+        color #276e80
+        font-size 1.8rem
+        text-align left
 
-    @media (min-width: 1041px) and (max-width: 1540px)
-      grid-template-columns 1fr 1fr !important
-      grid-template-rows repeat(3, fit-content(100%)) !important
+    @media (max-width: 1540px)
+      grid-template-columns fit-content(100%) 1fr !important
       grid-row-gap 3rem
 
-      .stuff-and-equipment-details, .equipments-search
-        --row 1 !important
-        --height 1 !important
-        --width 1 !important
-
-      .stuff-and-equipment-details
-        --col 1 !important
-
-      .equipments-search
-        --col 2 !important
-
-        .equipments-list
-          max-height 60vh
-
-      .primary-and-secondary, .damages-and-resistances
-        --width 2 !important
-        --col 1 !important
-        --height 1 !important
-        background-color unset !important
-        padding unset !important
-
-        &.primary-and-secondary
-          --row 2 !important
-        &.damages-and-resistances
-          --row 3 !important
-
-        .primary-stats, .damages-stats, .resistances-stats, .secondary-stats
-          background-color var(--primary-color)
-          padding 1rem
-          flex-direction row
-
-          &.primary-stats, &.damages-stats
-            margin-bottom 3rem
-
-          &.stats-column
-            &:before
-              content attr(data-title)
-              position absolute
-              top -65%
-              color #276e80
-              font-size 1.8rem
-
+      .equipments-list
+        max-height 70vh
 
 
     @media (max-width: 1280px)
@@ -58,94 +27,32 @@
         display inline-grid !important
 
 
-    @media (min-width: 641px) and (max-width: 1040px)
-      grid-template-columns 1fr !important
-      grid-template-rows repeat(4, fit-content(100%)) !important
-      grid-row-gap 3rem
-
-      .stuff-and-equipment-details, .equipments-search
-        --col 1 !important
-        --height 1 !important
-
-      .stuff-and-equipment-details
-        --row 1 !important
-        .stuff
-          padding 0 15%
-
-      .equipments-search
-        --row 2 !important
-
-        .equipments-list
-          max-height 60vh
-
-      .primary-and-secondary, .damages-and-resistances
-        --width 1 !important
-        --col 1 !important
-        --height 1 !important
-        background-color unset !important
-        padding unset !important
-
-        &.primary-and-secondary
-          --row 3 !important
-        &.damages-and-resistances
-          --row 4 !important
-
-        .primary-stats, .damages-stats, .resistances-stats, .secondary-stats
-          background-color var(--primary-color)
-          padding 1rem
-          flex-direction row
-
-          &.primary-stats, &.damages-stats
-            margin-bottom 3rem
-
-          &.stats-column
-            &:before
-              content attr(data-title)
-              position absolute
-              top -65%
-              color #276e80
-              font-size 1.8rem
+    @media (max-width: 1040px)
+      .stats-line
+        :before
+          top -2.5rem !important
 
 
     @media (max-width: 640px)
-      grid-template-columns 1fr 1fr !important
-      grid-template-rows repeat(3, fit-content(100%)) !important
+      grid-template-columns 1fr !important
+      grid-template-rows max-content repeat(3, fit-content(100%)) !important
       grid-row-gap 3rem
       grid-column-gap unset !important
 
-      .stuff-and-equipment-details, .equipments-search
-        --col 1 !important
-        --width 2 !important
-        --height 1 !important
+      .equipment-input
+        padding 0 15%
 
-      .stuff-and-equipment-details
-        --row 1 !important
-        .stuff
-          padding 0 15%
+      .equipments-list
+        max-height 60vh
 
-        .stuff-preview .equipment-input
-          min-height 2.8rem
-          min-width 2.8rem
-
-      .equipments-search
-        --row 2 !important
-
-        .equipments-list
-          max-height 60vh
-
-      .primary-and-secondary, .damages-and-resistances
-        --width 1 !important
-        --row 3 !important
-        --height 1 !important
-        background-color unset !important
-        padding unset !important
+      .stats
+        background-color var(--primary-color)
         flex-direction row
 
-        &.primary-and-secondary
-          --col 1 !important
-        &.damages-and-resistances
-          --col 2 !important
-
         .primary-stats, .damages-stats, .resistances-stats, .secondary-stats
-          background-color var(--primary-color)
-          padding 1rem
+          background-color unset !important
+          margin 0 !important
+
+          &.stats-line
+            &:before
+              content unset

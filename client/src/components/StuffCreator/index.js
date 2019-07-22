@@ -1,10 +1,8 @@
 import React, { useState, useContext, useEffect, useMemo } from 'react';
-import get from 'lodash.get';
 import debounce from 'lodash.debounce';
 import isEqual from 'lodash.isequal';
 import { Grid, Element, Column } from 'muejs';
 import { withRouter } from "react-router";
-import { DragDropContext } from 'react-beautiful-dnd';
 
 import EquipmentsContext from '../../store/context/equipments';
 
@@ -12,17 +10,12 @@ import * as service from '../../services/equipments';
 import * as actions from '../../store/actions/equipments';
 import * as selectors from '../../store/selectors/equipments';
 
-import StatsColumn from '../CharacterStats/StatsColumn';
-import EquipmentDetails from '../EquipmentDetails';
+import StatsRow from '../CharacterStats/StatsLine';
+import ShowDetails from '../ShowDetails';
 import EquipmentsSearch from '../EquipmentsSearch';
 import Stuff from '../Stuff';
 
-// import './stylesheet.styl';
-
-// const handleSearch = debounce(async (params, context) => {
-//   console.log('handle')
-//   actions.fetchEquipments(params, context);
-// }, 400);
+import { BREEDS } from '../../constants/breeds';
 
 import {
   PRIMARY_STATS,
@@ -38,15 +31,14 @@ import {
   RANGED_DAMAGE,
   RANGED_RESISTANCE,
 
-  STATS,
-
-  AP,
-  MP,
-  SUMMONS,
-  VITALITY
+  STATS
 } from '../../constants/stats';
 
+import { calculateStats } from './static.js';
+
 import './stylesheet.styl';
+
+
 
 const suffixForResistance = currentStat => {
   if ([MELEE_RESISTANCE, RANGED_RESISTANCE, ...Object.keys(PERCENTS_RES_STATS)].includes(currentStat)) {
@@ -60,7 +52,7 @@ const suffixForDamages = currentStat => {
   }
 }
 
-const StuffCreator = ({ character = {}, ...otherProps }) => {
+const StuffCreator = (otherProps) => {
   const [store, dispatch] = useContext(EquipmentsContext);
 
   const initStats = useMemo(() => {
@@ -72,26 +64,19 @@ const StuffCreator = ({ character = {}, ...otherProps }) => {
   });
 
   const [stats, setStats] = useState(initStats);
+
+  const [gender, setGender] = useState('m');
+  const [selectedBreed, setBreed] = useState(BREEDS.find(i => i.name === 'eliotrope'));
+  const character = { pseudo: 'Shokkoht', level: '200+', breed: selectedBreed, gender };
+
+
+  const characterStats = selectors.getCharacterStats(store);
   const stuff = selectors.getStuff(store);
+  const setsBonuses = stuff && selectors.getCurrentSetsBonus(store);
+
 
   useEffect(() => {
-    const newStats = initStats;
-    newStats[AP] = stuff.lvl && stuff.lvl < 100 ? 6 : 7;
-    newStats[MP] = 3;
-    newStats[SUMMONS] = 1;
-    newStats[VITALITY] = 55 + (stuff.lvl || 200) * 5;
-
-    if (stuff) {
-      for (let [category, equipment] of Object.entries(stuff)) {
-        if (get(equipment, 'statistics.length') > 0)
-        for (let stat of equipment.statistics) {
-          if (stat && Object.keys(STATS).includes(stat.name)) {
-            newStats[stat.name] += parseInt(stat.value || stat.max || stat.min, 10);
-          }
-        }
-      }
-    }
-    setStats(newStats);
+    setStats(calculateStats(initStats, stuff, setsBonuses));
   }, [JSON.stringify(stuff)])
 
   // custom hook useParams?
@@ -112,33 +97,28 @@ const StuffCreator = ({ character = {}, ...otherProps }) => {
   //   handleSearch({ types, order, searchText, levelMin, levelMax, page, perPage }, [store, dispatch])
   // }, [types, order, searchText, levelMin, levelMax, page, perPage]);
 
-
   const equipmentToDetail = selectors.getDisplayedEquipment(store);
-  const select = equipment => actions.display({ equipment }, [store, dispatch]);
+  const select = props => actions.display(props, [store, dispatch]);
+  const equip = props => actions.equip(props, [store, dispatch])
 
+  const setParchoStat = ({ name, value }) => actions.setParchoStat({ name, value }, [store, dispatch]);
 
   return (
     <Element className="stuff-creator-container" {...otherProps}>
-      <DragDropContext>
-        <Grid className="stuff-creator" columnsTemplate="fit-content(100%) minmax(30rem, min-content) fit-content(100%) auto" rowsTemplate="it-content(100%) fit-content(100%)" colGap="3rem">
-          <Column className="primary-and-secondary pad pad-1-rem bg-primary" col={1} row={1} height={2}>
-            <StatsColumn className="primary-stats" style={{ flex: Object.keys(PRIMARY_STATS).length }} statsData={PRIMARY_STATS} statsValues={stats} data-title="Stats primaires" />
-            <StatsColumn className="secondary-stats" style={{ flex: Object.keys(SECONDARY_STATS).length }} statsData={SECONDARY_STATS} statsValues={stats} data-title="Stats secondaires" />
-          </Column>
+      <Grid className="stuff-creator" columnsTemplate="minmax(30rem, min-content) auto" rowsTemplate="max-content repeat(2, fit-content(100%))" gap="3rem">
 
-          <Column className="stuff-and-equipment-details" row={1} col={2} height={2}>
-            <Stuff elementClassName="stuff-preview align-start" character={character} stats={stats} />
-            <EquipmentDetails equipment={equipmentToDetail} onClose={() => select()} />
-          </Column>
+        <Stuff elementClassName="stuff-preview align-start" character={character} stats={stats} row={1} col={1} characterStats={characterStats} setParchoStat={setParchoStat} />
+        <ShowDetails equipment={equipmentToDetail} selectEquipment={select} equip={equip} row={2} col={1} height={{ lg: 2 }} />
 
-          <Column className="damages-and-resistances pad pad-1-rem bg-primary" col={3} row={1} height={2}>
-            <StatsColumn className="damages-stats" style={{ flex: Object.keys(DAMAGES_STATS).length }} statsData={DAMAGES_STATS} statsValues={stats} suffix={suffixForDamages} data-title="Dommages" />
-            <StatsColumn className="resistances-stats" style={{ flex: Object.keys(RESISTANCES_STATS).length }} statsData={RESISTANCES_STATS} statsValues={stats} suffix={suffixForResistance} data-title="Résistances" />
-          </Column>
+        <EquipmentsSearch row={{ xs: 3, sm: 1 }} col={{ xs: 1, sm: 2 }} height={{ sm: 2 }} select={select} equip={equip} itemDisplayed={equipmentToDetail} />
 
-          <EquipmentsSearch row={1} col={4} height={2} select={select} />
-        </Grid>
-      </DragDropContext>
+        <Column className="stats" col={{ xs: 1, lg: 2 }} row={{ xs: 4, sm: 3 }} width={{ sm: 2, lg: 1 }}>
+          <StatsRow className="primary-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(PRIMARY_STATS).length }} statsData={PRIMARY_STATS} statsValues={stats} data-title="Stats primaires" />
+          <StatsRow className="secondary-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(SECONDARY_STATS).length }} statsData={SECONDARY_STATS} statsValues={stats} data-title="Stats secondaires" />
+          <StatsRow className="damages-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(DAMAGES_STATS).length }} statsData={DAMAGES_STATS} statsValues={stats} suffix={suffixForDamages} data-title="Dommages" />
+          <StatsRow className="resistances-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(RESISTANCES_STATS).length }} statsData={RESISTANCES_STATS} statsValues={stats} suffix={suffixForResistance} data-title="Résistances" />
+        </Column>
+      </Grid>
     </Element>
   );
 }
