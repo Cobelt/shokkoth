@@ -1,6 +1,6 @@
 import React from 'react';
 import isEqual from 'lodash.isequal';
-import { Grid } from 'muejs';
+import { Grid, Spinner } from 'muejs';
 
 import Equipment from '../Equipment';
 import './stylesheet.styl';
@@ -12,16 +12,16 @@ const EquipmentsList = ({ equipments, select, selected, equip, className, ...oth
     className={["equipments-list", "no-scrollbar", "justify-evenly", "align-start", className].filter(e => !!e).join(' ').trim()}
     {...otherProps}
   >
-    { equipments.length > 0 && equipments.map((equipment, index) => (
+    { equipments.length > 0 ? equipments.map((equipment, index) => (
       <Equipment
-        key={equipment._id}
+        key={`equipment-list#${equipment._id}`}
         index={index}
         equipment={equipment}
-        equip={() => equip(equipment)}
-        select={() => select(equipment)}
+        equip={equip}
+        select={select}
         isSelected={isEqual(equipment, selected)}
       />
-    )) }
+    )) : <Spinner /> }
   </Grid>
 );
 

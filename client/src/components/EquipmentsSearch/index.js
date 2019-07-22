@@ -19,7 +19,7 @@ const handleSearch = debounce(async (params, context) => {
   actions.fetchEquipments(params, context);
 }, 400);
 
-const EquipmentsSearch = ({ select, ...otherProps }) => {
+const EquipmentsSearch = ({ select, equip, itemDisplayed, ...otherProps }) => {
   const [store, dispatch] = useContext(EquipmentsContext);
 
   // custom hook useParams?
@@ -29,12 +29,10 @@ const EquipmentsSearch = ({ select, ...otherProps }) => {
   const [levelMin, setLevelMin] = useState(1);
   const [levelMax, setLevelMax] = useState(200);
   const types = selectors.getActiveTypes(store);
-  const order = types.split(',').length > 1 && types != 'cloak,backpack' ? { type: 1, level: -1, _id: -1 } : undefined;
+  const order = types === 'trophy,dofus' ? { type: 1, level: -1, _id: -1 } : undefined;
 
   const equipments = selectors.getEquipments(store, { types, order, searchText, levelMin, levelMax, page, perPage });
   // if (get(equipments, 'length') > 0) console.log('equipments =', equipments)
-
-  const itemDisplayed = selectors.getDisplayedEquipment(store);
 
   useEffect(() => {
     handleSearch({ types, order, searchText, levelMin, levelMax, page, perPage }, [store, dispatch])
@@ -49,7 +47,7 @@ const EquipmentsSearch = ({ select, ...otherProps }) => {
 
       <EquipmentsList
         equipments={equipments}
-        equip={(equipment) => actions.equip(equipment, [store, dispatch])}
+        equip={equip}
         select={select}
         selected={itemDisplayed}
       />

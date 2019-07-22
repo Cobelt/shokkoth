@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import get from 'lodash.get';
-import { Element, Grid, Icon, Row } from 'muejs';
+import { Element, Grid, Icon, Row, Column } from 'muejs';
+
 import {
     Amulet,
     Belt,
@@ -13,6 +14,7 @@ import {
     Shield,
     Weapon,
 } from './equipments-icons';
+
 import HPIcon from '../../assets/svg/heart';
 import APIcon from '../../assets/svg/star';
 import MPIcon from '../../assets/svg/isoSquares';
@@ -30,26 +32,17 @@ import { generateImageLink } from '../../utils/hexGenerator';
 
 import { DOFUS_IMG_URI } from '../../constants/URIs';
 import { WEAPONS, PETS, MOUNTS, EQUIPMENTS, ALL } from '../../constants/equipments';
-import { VITALITY, AP, MP } from '../../constants/stats';
+import { PRIMARY_STATS, VITALITY, WISDOM, STRENGTH, INTELLIGENCE, CHANCE, AGILITY, AP, MP } from '../../constants/stats';
 
 
 import './stylesheet.styl';
 
 
 
-const copyUrlToClipboard = () => {
-  const urlReceiver = document.createElement('input');
-  document.body.appendChild(urlReceiver);
-  urlReceiver.value = window.location.href;
-  urlReceiver.select();
-  document.execCommand('copy');
-  document.body.removeChild(urlReceiver);
-};
 
-
-
-const Stuff = ({ className, elementClassName, character = {}, stats, ...otherProps }) => {
+const Stuff = ({ className, elementClassName, character = {}, stats, characterStats, setCharacStat, setParchoStat, ...otherProps }) => {
   const [rotation, setRotation] = useState(1);
+  const [showStats, setShowStats] = useState(false);
 
   const [store, dispatch] = useContext(EquipmentsContext);
   const isEquipmentsFetchedOnce = selectors.getAllEquipmentsLength(store) > 0;
@@ -69,17 +62,24 @@ const Stuff = ({ className, elementClassName, character = {}, stats, ...otherPro
 
   return (
     <Element className={elementClassName} {...otherProps}>
-      <Grid className={["stuff", "justify-center", className].join(' ')} gap="1rem" columnsTemplate={'repeat(6, 1fr)'} rowsTemplate={'auto repeat(6, auto)'}>
+      <Grid
+        className={["stuff", "justify-center", showStats ? "stats-mode" : "", className].filter(e => !!e).join(' ').trim()}
+        columnsTemplate={'repeat(6, minmax(2.5rem, 4.5rem))'}
+        rowsTemplate={'3.5rem repeat(6, auto)'}
+        gap="1rem"
+      >
 
         {/* Row 1 */}
-        <Icon className="share-icon" icon="share" size="small" onClick={copyUrlToClipboard} />
-
-        <Element col={3} width={2} className="pseudo">
-            { pseudo }
+        <Element row={1} className="position-relative" style={{ overflow: 'hidden' }}>
+          <Icon className="chart-icon" icon="bar_chart" size="md" onClick={() => setShowStats(!showStats)}/>
         </Element>
 
-        <Element col={5} width={2} className="level">
-            { level }
+        <Element row={1} col={3} width={2} className="pseudo">
+          { pseudo }
+        </Element>
+
+        <Element row={1} col={5} width={2} className="level">
+          { level }
         </Element>
 
         <Element row={2} col={2} height={5} className="rotation-arrow left">
@@ -129,6 +129,44 @@ const Stuff = ({ className, elementClassName, character = {}, stats, ...otherPro
           const value = `dofus#${index+1}`;
           return <ItemReceiver key={value} col={index+1} row={7} stepName={value} types={type} icon={Dofus} />
         }) }
+
+
+        <Element col={6} row={1} style={{ position: 'relative', overflow: 'hidden' }}>
+          <Icon className="close-icon" icon="close" size="md" onClick={() => setShowStats(false)}/>
+        </Element>
+
+        <Element className="stats-inputs-container bg-primary" col={0} row={1}>
+          <Grid columnsTemplate="max-content repeat(2, minmax(2rem, 1fr))" rowsTemplate="repeat(6, 1fr)" colGap="1.5rem">
+            <Element type="span" className="text-center header" col={2}>Base</Element>
+            <Element type="span" className="text-center header" col={3}>Parchemins</Element>
+
+            <span><img src={`//img.shokkoth.tk/assets/stats/${PRIMARY_STATS[VITALITY]}`} /><em>{ VITALITY }</em></span>
+            <input type="number" className="text-right" min="0" max="999" defaultValue={0} size={4} onChange={v => setCharacStat(VITALITY, v.target.value)} />
+            <input type="number" className="text-right" min="0" max="100" value={get(characterStats, `[${VITALITY}].parcho`) || 0} size={4} onChange={v => setParchoStat(VITALITY, v.target.value)} />
+
+            <span><img src={`//img.shokkoth.tk/assets/stats/${PRIMARY_STATS[WISDOM]}`} /><em>{ WISDOM }</em></span>
+            <input type="number" className="text-right" min="0" max="999" defaultValue={0} size={4} onChange={v => setCharacStat(WISDOM, v.target.value)} />
+            <input type="number" className="text-right" min="0" max="100" value={get(characterStats, `[${WISDOM}].parcho`) || 0} size={4} onChange={v => setParchoStat(WISDOM, v.target.value)} />
+
+            <span><img src={`//img.shokkoth.tk/assets/stats/${PRIMARY_STATS[STRENGTH]}`} /><em>{ STRENGTH }</em></span>
+            <input type="number" className="text-right" min="0" max="999" defaultValue={0} size={4} onChange={v => setCharacStat(STRENGTH, v.target.value)} />
+            <input type="number" className="text-right" min="0" max="100" value={get(characterStats, `[${STRENGTH}].parcho`) || 0} size={4} onChange={v => setParchoStat(STRENGTH, v.target.value)} />
+
+            <span><img src={`//img.shokkoth.tk/assets/stats/${PRIMARY_STATS[INTELLIGENCE]}`} /><em>{ INTELLIGENCE }</em></span>
+            <input type="number" className="text-right" min="0" max="999" defaultValue={0} size={4} onChange={v => setCharacStat(INTELLIGENCE, v.target.value)} />
+            <input type="number" className="text-right" min="0" max="100" value={get(characterStats, `[${INTELLIGENCE}].parcho`) || 0} size={4} onChange={v => setParchoStat(INTELLIGENCE, v.target.value)} />
+
+            <span><img src={`//img.shokkoth.tk/assets/stats/${PRIMARY_STATS[CHANCE]}`} /><em>{ CHANCE }</em></span>
+            <input type="number" className="text-right" min="0" max="999" defaultValue={0} size={4} onChange={v => setCharacStat(CHANCE, v.target.value)} />
+            <input type="number" className="text-right" min="0" max="100" value={get(characterStats, `[${CHANCE}].parcho`) || 0} size={4} onChange={v => setParchoStat(CHANCE, v.target.value)} />
+
+            <span><img src={`//img.shokkoth.tk/assets/stats/${PRIMARY_STATS[AGILITY]}`} /><em>{ AGILITY }</em></span>
+            <input type="number" className="text-right" min="0" max="999" defaultValue={0} size={4} onChange={v => setCharacStat(AGILITY, v.target.value)} />
+            <input type="number" className="text-right" min="0" max="100" value={get(characterStats, `[${AGILITY}].parcho`) || 0} size={4} onChange={v => setParchoStat(AGILITY, v.target.value)} />
+
+            <Element className="text-center marg-t-5" width={3}>Il vous reste 995 point{ 995 !== 1 && 's' } à distribuer</Element>
+          </Grid>
+        </Element>
       </Grid>
     </Element>
   );
