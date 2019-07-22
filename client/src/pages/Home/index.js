@@ -5,40 +5,26 @@ import isEqual from 'lodash.isequal';
 import { Grid, Element, Icon, Column } from 'muejs';
 import { withRouter, Link } from "react-router-dom";
 
-// import EquipmentsContext from '../../store/context/equipments';
-
-// import * as service from '../../services/equipments';
-// import * as selectors from '../../store/selectors/equipments';
-
-
+import Links from '../../components/LinksSwitch';
 import StuffCreator from '../../components/StuffCreator';
-// import ItemDetails from '../../components/Equipment/Detailled';
 
 import EquipmentsSearch from '../../components/EquipmentsSearch';
 import BreedsList from '../../components/BreedsList';
 import CharacterStats from '../../components/CharacterStats';
 
 
-
-import { BREEDS } from '../../constants/breeds';
-
 import './stylesheet.styl';
+
 
 const Home = ({ history: { push } = {} }) => {
   const [shouldShow, showLogin] = useState(false);
 
-  const [gender, setGender] = useState('m');
-  const [selectedBreed, setBreed] = useState(BREEDS.find(i => i.name === 'eliotrope'));
-
   return (
     <Grid className="home-container" gap="3rem" rowsTemplate="2.5rem 2.5rem repeat(3, fit-content(100%))" columnsTemplate={`10vw 1fr 10vw`}>
 
-      <Element className="nav-icons" row={1} col={1} height={2}>
-        <Icon className="font-primary" icon="supervisor_account" onClick={() => push('/characters')} />
-        <Icon className="font-primary" icon="save" />
-      </Element>
+      <Links className="nav-icons" row={1} col={1} height={{ xs: 1, sm: 2 }} width={{ xs: 2, sm: 1 }} />
 
-      <Element row={1} col={1} width={3} height={2} className="brand align-stretch" style={{ margin: 0 }}>
+      <Element row={1} col={1} width={3} height={2} className="brand align-stretch">
         <Link to="/" className="font-primary">
           <h2 id="shok">
             <span id="sh">sh</span>
@@ -50,7 +36,7 @@ const Home = ({ history: { push } = {} }) => {
         </Link>
       </Element>
 
-      <StuffCreator row={3} col={2} character={{ pseudo: 'Shokkoht', level: '200+', breed: selectedBreed, gender }} />
+      <StuffCreator row={3} col={2} />
 
     </Grid>
   );
