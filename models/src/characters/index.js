@@ -21,8 +21,8 @@ const CharactersSchema = new mongoose.Schema({
     },
 
     classe: {
-        type: String,
-        enum: BREEDS,
+        type: [mongoose.Schema.Types.ObjectId],
+        enum: 'Breeds',
         required: 'Pas de classe définie',
     },
 
