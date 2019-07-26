@@ -22,7 +22,7 @@ const CharactersSchema = new mongoose.Schema({
 
     classe: {
         type: [mongoose.Schema.Types.ObjectId],
-        enum: 'Breeds',
+        ref: 'Breeds',
         required: 'Pas de classe définie',
     },
 
