@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import FuzzySearchPlugin from 'mongoose-fuzzy-searching';
+// import FuzzySearchPlugin from 'mongoose-fuzzy-searching';
 
 import { updateLastModifDate } from '../utils/common';
 

@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
 import get from 'lodash.get';
 
-import Equipments from './equipments.js';
-import Likes from './likes.js';
+import Equipments from '../equipments';
+import Likes from '../likes';
 
 import {
     AMULET,
