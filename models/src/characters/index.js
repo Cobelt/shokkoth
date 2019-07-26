@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { MALE, FEMALE, BREEDS } from '../constants/characters'
 
-import Stuffs from './stuffs';
+import Stuffs from '../stuffs';
 import { updateLastModifDate } from '../utils/common';
 
 const CharactersSchema = new mongoose.Schema({
