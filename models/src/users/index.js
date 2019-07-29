@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
-import { updateLastModifDate } from '../utils/common';
+import { updateLastModifDate } from '../utils';
 
-import { SUPER_ADMIN, ADMIN, MODERATOR, USER } from '../constants/users'
+import * as USERS from '../constants/users';
 
-const UsersSchema = new mongoose.Schema({
+export const UsersSchema = new mongoose.Schema({
     username: {
         type: String,
         index: {
@@ -27,8 +27,8 @@ const UsersSchema = new mongoose.Schema({
 
     role: {
       type: String,
-      enum: [SUPER_ADMIN, ADMIN, MODERATOR, USER],
-      default: USER,
+      enum: USERS.ENUM,
+      default: USERS.DEFAULT,
     },
 
     email: String,

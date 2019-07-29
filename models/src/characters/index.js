@@ -1,10 +1,11 @@
 import mongoose from 'mongoose';
-import { MALE, FEMALE, BREEDS } from '../constants/characters'
+
+import { updateLastModifDate } from '../utils';
+import * as CHARACTERS from '../constants/characters';
 
 import Stuffs from '../stuffs';
-import { updateLastModifDate } from '../utils/common';
 
-const CharactersSchema = new mongoose.Schema({
+export const CharactersSchema = new mongoose.Schema({
     pseudo: {
         type: String,
         required: 'Please give me a pseudo',
@@ -16,8 +17,8 @@ const CharactersSchema = new mongoose.Schema({
     },
     genre: {
       type: String,
-      enum: [MALE, FEMALE],
-      default: MALE,
+      enum: CHARACTERS.ENUM,
+      default: CHARACTERS.DEFAULT,
     },
 
     classe: {

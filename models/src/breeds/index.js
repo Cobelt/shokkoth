@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { updateLastModifDate } from '../utils/common';
+import { updateLastModifDate } from '../utils';
 
-const BreedsSchema = new mongoose.Schema({
+export const BreedsSchema = new mongoose.Schema({
     _id: Number,
 
     name: {
@@ -13,6 +13,11 @@ const BreedsSchema = new mongoose.Schema({
     url: String,
 
     description: String,
+
+    skins: {
+      male: Object,
+      female: Object,
+    },
 
     roles: {
       type: [String],

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { updateLastModifDate } from '../utils/common';
+import { updateLastModifDate } from '../utils';
 
 const SpellsSchema = new mongoose.Schema({
     _id: Number,

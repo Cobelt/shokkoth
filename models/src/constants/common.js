@@ -1,20 +1,20 @@
-import { EquipmentsTypes, translateEquipmentsTypes } from './equipments';
-import { WeaponsTypes, translateWeaponsTypes } from './weapons';
-import { MountsTypes, translateMountsTypes } from './mounts';
-import { PetsTypes, translatePetsTypes } from './pets';
+import { findKey, translatetype, validate } from '../utils';
+import * as EQUIPMENTS from './equipments';
+import * as MOUNTS from './mounts';
+import * as PETS from './pets';
+import * as WEAPONS from './weapons';
 
-export const AllTypes = [
-  ...EquipmentsTypes,
-  ...WeaponsTypes,
-  ...MountsTypes,
-  ...PetsTypes,
 
-]
+export const translations = {
+  ...EQUIPMENTS.translations,
+  ...MOUNTS.translations,
+  ...PETS.translations,
+  ...WEAPONS.translations,
+};
 
-export const allTranslations = {
-  ...translateEquipmentsTypes,
-  ...translateWeaponsTypes,
-  ...translateMountsTypes,
-  ...translatePetsTypes,
-  
-}
+export const ENUM = Object.keys(translations);
+
+export const getKey = (type) => findKey(type, translations);
+export const translate = (type, lang) => translatetype(type, translations, lang);
+
+export const validateType = (type, translationName) => validate(type, translationName, translations);

@@ -1,17 +1,10 @@
 import mongoose from 'mongoose';
-// import FuzzySearchPlugin from 'mongoose-fuzzy-searching';
-
-import { updateLastModifDate } from '../utils/common';
-
-import { EquipmentsTypes } from '../constants/equipments';
-import { WeaponsTypes } from '../constants/weapons';
-import { PetsTypes } from '../constants/pets';
-import { MountsTypes } from '../constants/mounts';
-
+import { updateLastModifDate } from '../utils';
+import * as COMMON from '../constants/common';
 
 const prefixError = ({ _id }, errorString) => `Error on an Equipment#${_id}: ${errorString}`;
 
-const EquipmentsSchema = new mongoose.Schema({
+export const EquipmentsSchema = new mongoose.Schema({
     _id: {
       type: Number,
       required: 'I need an _id',
@@ -27,7 +20,7 @@ const EquipmentsSchema = new mongoose.Schema({
 
     type: {
       type: String,
-      enum: [EquipmentsTypes, WeaponsTypes, PetsTypes, MountsTypes].flat(),
+      enum: COMMON.ENUM,
       required: 'I need a type',
     },
     category: {
