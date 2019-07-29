@@ -1,4 +1,9 @@
-export const SUPER_ADMIN = 'user/SUPER_ADMIN';
-export const ADMIN = 'user/ADMIN';
-export const MODERATOR = 'user/MODERATOR';
-export const USER = 'user/USER';
+export const ROLES = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  ADMIN: 'ADMIN',
+  MODERATOR: 'MODERATOR',
+  USER: 'USER',
+};
+
+export const ENUM = Object.keys(ROLES);
+export const DEFAULT = ROLES.USER;

@@ -1,3 +1,5 @@
+import { findKey, translatetype, validate } from '../utils';
+
 export const SWORD = 'Épée';
 export const HAMMER = 'Marteau';
 export const SCYTHE = 'Faux';
@@ -11,36 +13,60 @@ export const SHOVEL = 'Pelle';
 export const TOOL = 'Outil';
 export const SOUL_STONE = 'Pierre d\'âme';
 
+export const translations = {
+  SWORD: {
+    fr: 'épée',
+    en: 'sword',
+  },
+  HAMMER: {
+    fr: 'marteau',
+    en: 'hammer',
+  },
+  SCYTHE: {
+    fr: 'faux',
+    en: 'scythe',
+  },
+  BOW: {
+    fr: 'arc',
+    en: 'bow',
+  },
+  AXE: {
+    fr: 'hache',
+    en: 'axe',
+  },
+  DAGGER: {
+    fr: 'dague',
+    en: 'dagger',
+  },
+  PICKAXE: {
+    fr: 'pioche',
+    en: 'pickaxe',
+  },
+  WAND: {
+    fr: 'baguette',
+    en: 'wand',
+  },
+  STAFF: {
+    fr: 'bâton',
+    en: 'staff',
+  },
+  SHOVEL: {
+    fr: 'pelle',
+    en: 'shovel',
+  },
+  TOOL: {
+    fr: 'outil',
+    en: 'tool',
+  },
+  SOUL_STONE: {
+    fr: "pierre d'âme",
+    en: 'soul stone',
+  },
+};
 
-export const WeaponsTypes = [
-    SWORD,
-    HAMMER,
-    SCYTHE,
-    BOW,
-    AXE,
-    DAGGER,
-    PICKAXE,
-    WAND,
-    STAFF,
-    SHOVEL,
-    TOOL,
-    SOUL_STONE,
-];
+export const ENUM = Object.keys(translations);
 
-export const translateWeaponsTypes = {
-  sword: SWORD,
-  hammer: HAMMER,
-  scythe: SCYTHE,
-  bow: BOW,
-  axe: AXE,
-  dagger: DAGGER,
-  pickaxe: PICKAXE,
-  staff: STAFF,
-  shovel: SHOVEL,
-  tool: TOOL,
-  soulStone: SOUL_STONE,
-}
+export const getKey = (type) => findKey(type, translations);
+export const translate = (type, lang) => translatetype(type, translations, lang);
 
-// TODO : ARRAY JSON [ SWORD: { fr: 'Épée', en: 'Sword' } ]
-
-export const HIGHEST_LEVEL = '200';
+export const validateType = (type, translationName) => validate(type, translationName, translations);

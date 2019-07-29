@@ -1,10 +1,8 @@
 import mongoose from 'mongoose';
-// import FuzzySearchPlugin from 'mongoose-fuzzy-searching';
-
-import { updateLastModifDate } from '../utils/common';
+import { updateLastModifDate } from '../utils';
 
 
-const SetsSchema = new mongoose.Schema({
+export const SetsSchema = new mongoose.Schema({
     _id: {
       type: Number,
       required: 'I need an _id',
