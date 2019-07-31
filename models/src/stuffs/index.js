@@ -12,13 +12,7 @@ import * as WEAPONS from '../constants/weapons';
 export const StuffsSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: 'Please give me a pseudo',
-    },
-    breed: {
-        type: Number,
-        min: 1,
-        max: 18,
-        required: 'Please give me a breed'
+        required: 'Please give me a name',
     },
 
     tags: {
@@ -92,28 +86,28 @@ export const StuffsSchema = new mongoose.Schema({
         ref: 'Equipments',
     },
 
-    skin: {
-        hat: {
-            type: Number,
-            ref: 'Equipments',
-            validate: [hat => shouldBeOneOfType(hat, ['HAT', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for hat should be one of type: hat, living object or ceremonial object'],
-        },
-        cloakOrBackpack: {
-            type: Number,
-            ref: 'Equipments',
-            validate: [cloakOrBackpack => shouldBeOneOfType(cloakOrBackpack, ['CLOAK', 'BACKPACK', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for cloak/backpack should be one of type: cloak, backpack, living object or ceremonial object'],
-        },
-        shield: {
-            type: Number,
-            ref: 'Equipments',
-            validate: [shield => shouldBeOneOfType(shield, ['SHIELD', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for shield should be one of type: shield, living object or ceremonial object'],
-        },
-        mountOrPet: {
-            type: Number,
-            ref: 'Equipments',
-            validate: [mountOrPet => shouldBeOneOfType(mountOrPet, ['MOUNT', 'PET', 'PETSMOUNT', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for shield should be one of type: shield, living object or ceremonial object'],
-        },
-    },
+    // skin: {
+    //     hat: {
+    //         type: Number,
+    //         ref: 'Equipments',
+    //         validate: [hat => shouldBeOneOfType(hat, ['HAT', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for hat should be one of type: hat, living object or ceremonial object'],
+    //     },
+    //     cloakOrBackpack: {
+    //         type: Number,
+    //         ref: 'Equipments',
+    //         validate: [cloakOrBackpack => shouldBeOneOfType(cloakOrBackpack, ['CLOAK', 'BACKPACK', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for cloak/backpack should be one of type: cloak, backpack, living object or ceremonial object'],
+    //     },
+    //     shield: {
+    //         type: Number,
+    //         ref: 'Equipments',
+    //         validate: [shield => shouldBeOneOfType(shield, ['SHIELD', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for shield should be one of type: shield, living object or ceremonial object'],
+    //     },
+    //     mountOrPet: {
+    //         type: Number,
+    //         ref: 'Equipments',
+    //         validate: [mountOrPet => shouldBeOneOfType(mountOrPet, ['MOUNT', 'PET', 'PETSMOUNT', 'LIVING_OBJECT', 'CEREMONIAL']), 'Skin for shield should be one of type: shield, living object or ceremonial object'],
+    //     },
+    // },
 
 
     public: {
@@ -124,7 +118,7 @@ export const StuffsSchema = new mongoose.Schema({
     imgUrl: String,
 
     likes: [{
-      type: Number,
+      type: [mongoose.types.ObjectId],
       ref: 'Likes',
       default: [],
     }],

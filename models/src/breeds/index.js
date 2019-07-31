@@ -15,8 +15,14 @@ export const BreedsSchema = new mongoose.Schema({
     description: String,
 
     skins: {
-      male: Object,
-      female: Object,
+      male: {
+        type: mongoose.Schema.Types.Mixed,
+        required: 'Please give me male heads and colors',
+      },
+      female: {
+        type: mongoose.Schema.Types.Mixed,
+        required: 'Please give me female heads and colors',
+      },
     },
 
     roles: {

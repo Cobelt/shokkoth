@@ -22,7 +22,7 @@ export const CharactersSchema = new mongoose.Schema({
     },
 
     classe: {
-        type: [mongoose.Schema.Types.ObjectId],
+        type: Number,
         ref: 'Breeds',
         required: 'Pas de classe définie',
     },
