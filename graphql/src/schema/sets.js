@@ -4,24 +4,24 @@ import { Sets } from '../models';
 export default function useSets(schemaComposer, customizationOptions = {}) {
   const SetsTC = composeWithMongoose(Sets, customizationOptions);
   schemaComposer.Query.addFields({
-    setById: SetsTC.getResolver('findById'),
-    setByIds: SetsTC.getResolver('findByIds'),
-    setOne: SetsTC.getResolver('findOne'),
-    setMany: SetsTC.getResolver('findMany'),
-    setCount: SetsTC.getResolver('count'),
-    setConnection: SetsTC.getResolver('connection'),
-    setPagination: SetsTC.getResolver('pagination'),
+    setById: SetsTC.get('$findById'),
+    setByIds: SetsTC.get('$findByIds'),
+    setOne: SetsTC.get('$findOne'),
+    setMany: SetsTC.get('$findMany'),
+    setCount: SetsTC.get('$count'),
+    setConnection: SetsTC.get('$connection'),
+    setPagination: SetsTC.get('$pagination'),
   });
 
   schemaComposer.Mutation.addFields({
-    setCreateOne: SetsTC.getResolver('createOne'),
-    setCreateMany: SetsTC.getResolver('createMany'),
-    setUpdateById: SetsTC.getResolver('updateById'),
-    setUpdateOne: SetsTC.getResolver('updateOne'),
-    setUpdateMany: SetsTC.getResolver('updateMany'),
-    setRemoveById: SetsTC.getResolver('removeById'),
-    setRemoveOne: SetsTC.getResolver('removeOne'),
-    setRemoveMany: SetsTC.getResolver('removeMany'),
+    setCreateOne: SetsTC.get('$createOne'),
+    setCreateMany: SetsTC.get('$createMany'),
+    setUpdateById: SetsTC.get('$updateById'),
+    setUpdateOne: SetsTC.get('$updateOne'),
+    setUpdateMany: SetsTC.get('$updateMany'),
+    setRemoveById: SetsTC.get('$removeById'),
+    setRemoveOne: SetsTC.get('$removeOne'),
+    setRemoveMany: SetsTC.get('$removeMany'),
   });
   return SetsTC;
 }

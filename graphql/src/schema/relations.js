@@ -1,11 +1,22 @@
 export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, StuffsTC, CharactersTC, UsersTC }) {
 
+  StuffsTC.addRelation(
+    'equipments',
+    {
+      resolver: () => EquipmentsTC.get('$findByIds'),
+      prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
+        _ids: (source) => source.equipments,
+      },
+        projection: { equipments: 1 },
+    }
+  );
+
   SetsTC.addRelation(
     'equipments',
     {
-      resolver: () => EquipmentsTC.getResolver('findByIds'),
+      resolver: () => EquipmentsTC.get('$findByIds'),
       prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
-        _ids: (source) => source.equipments,
+        _ids: source => source.equipments,
       },
       projection: { equipments: 1 },
     }
@@ -14,7 +25,7 @@ export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, Stuffs
   EquipmentsTC.addRelation(
     'set',
     {
-      resolver: () => SetsTC.getResolver('findById'),
+      resolver: () => SetsTC.get('$findById'),
       prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
         _id: (source) => source.set,
       },
@@ -23,24 +34,35 @@ export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, Stuffs
   );
 
   CharactersTC.addRelation(
-    'classe',
+    'breed',
     {
-      resolver: () => BreedsTC.getResolver('findById'),
+      resolver: () => BreedsTC.get('$findById'),
       prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
-        _id: (source) => source.classe,
+        _id: (source) => source.breed,
       },
-      projection: { classe: 1 },
+      projection: { breed: 1 },
+    }
+  );
+
+  CharactersTC.addRelation(
+    'stuffs',
+    {
+      resolver: () => StuffsTC.get('$findByIds'),
+      prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
+        _ids: (source) => source.stuffs,
+      },
+      projection: { stuffs: 1 },
     }
   );
 
   UsersTC.addRelation(
-  'characters',
-  {
-    resolver: () => CharactersTC.getResolver('findByIds'),
-    prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
-      _ids: (source) => source.characters,
-    },
-    projection: { characters: 1 },
-  }
-);
+    'characters',
+    {
+      resolver: () => CharactersTC.get('$findByIds'),
+      prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
+        _ids: (source) => source.characters,
+      },
+      projection: { characters: 1 },
+    }
+  );
 }

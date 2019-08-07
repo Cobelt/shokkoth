@@ -1,6 +1,6 @@
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 import { Breeds } from '../models';
-import { adminAccess } from '../utils';
+import { adminAccess } from '../utils/auth';
 
 export default function useBreeds(schemaComposer, customizationOptions = {}) {
   const BreedsTC = composeWithMongoose(Breeds, customizationOptions);

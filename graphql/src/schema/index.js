@@ -9,7 +9,11 @@ import useStuffs from './stuffs';
 import useCharacters from './characters';
 import useUsers from './users';
 
-const customizationOptions = {};
+const customizationOptions = {
+  fields: {
+    remove: ['createdAt', 'updatedAt'],
+  },
+};
 
 const BreedsTC = useBreeds(schemaComposer, customizationOptions);
 const SetsTC = useSets(schemaComposer, customizationOptions);

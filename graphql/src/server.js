@@ -6,18 +6,27 @@ import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
+import { getParam, setLocale, getLocale } from './utils';
+import { decodeToken, findJWT, generateHash } from './utils/auth';
+import * as UserController from './controllers/users';
+
 import './models';
 import schema from './schema';
 
 import { PORT, ALLOWED_ORIGINS } from './env';
-const hostname = 'localhost';
+const hostname = '0.0.0.0';
 const port = PORT || 4000;
+
+const DB_HOSTNAME = process.env.MONGO_SERVER || 'localhost';
+const DB_PORT = process.env.MONGO_PORT || '27018';
+const DB_NAME = process.env.MONGO_NAME || 'shokkoth';
 
 const app = express();
 
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27018/shokkoth', { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
+mongoose.connect(`mongodb://${DB_HOSTNAME}:${DB_PORT}/${DB_NAME}`, { useNewUrlParser: true, useCreateIndex: true, useFindAndModify: false });
+
 
 app.use(cors({
   origin: function(origin, callback){
@@ -40,12 +49,34 @@ var root = {
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(cookieParser())
+app.use(cookieParser());
 
-app.use('/graphql', expressGraphQL({
+app.use(async (req, res, next) => {
+  try {
+    setLocale(res, { token: await findJWT(req) });
+    return next();
+  }
+  catch (e) {
+    return next(e);
+  }
+});
+
+app.use(async (req, res, next) => {
+  try {
+    setLocale(res, { decoded: await decodeToken(getLocale(res, 'token')) });
+    return next();
+  }
+  catch (e) {
+    return next(e);
+  }
+});
+
+app.use('/', expressGraphQL({
   schema: schema,
   rootValue: root,
   graphiql: true,
 }));
+
+// app.use(UserController.refreshToken);
 
 app.listen(port, hostname, () => console.log(`Shokkoth-Server started on http://${hostname}:${port}`));
