@@ -9,12 +9,11 @@
 ### TODO before first release : 
 - Drag 'n' drop
 - Searching item
-- Modifying equipped item stats
 - Save stuff (linked to a character except for draft in cookies)
 
 
 ### Post first release :
-- Drag'n'drop
+- Modifying equipped item stats
 - FM
 - Elastic Search
 - IA
