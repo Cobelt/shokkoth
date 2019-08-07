@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Element } from 'muejs';
+
+import { arrayToClassName } from '../../utils/common';
 import './stylesheet.styl';
 
 
@@ -8,8 +10,8 @@ const Equipment = ({ index, className, style, equipment, equip = () => undefined
 
   return (
     <Element
-      className={['equipment', loading && 'loading', isSelected && 'isSelected', className].filter(e => !!e).join(' ').trim()}
-      onClick={() => select(isSelected ? undefined :  { equipment })}
+      className={arrayToClassName(['equipment', loading && 'loading', isSelected && 'isSelected', className])}
+      onClick={() => select(isSelected ? undefined : { equipment })}
       onDoubleClick={() => equip({ equipment })}
       style={{ ...style, '--delay': index ? `${(index+1)*150}ms` : undefined }}
     >

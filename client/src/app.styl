@@ -1,15 +1,28 @@
 @require './variables.styl';
 @require './animations.styl';
 
+.nav-icons
+  justify-content start
+  z-index 10
+
+  .icon
+    font-size 2em
+    max-width 2.6em
+    filter brightness(140%)
+    transition filter 0.2s
+
+    &:hover, &:focus
+      filter brightness(120%)
+
 .btn.circle
   background-color var(--primary-color)
   filter brightness(80%)
 
 
 .min-height-15
-  min-height 15rem
+  min-height 15em
 .min-width-15
-  min-width 15rem
+  min-width 15em
 
 
 .column
@@ -22,33 +35,49 @@
 
     > .grid-element:not(.navbar):not(.footer):not(.article-list)
       place-content center
-      min-width 10rem
-      min-height 5rem
+      min-width 10em
+      min-height 5em
 
+    .main
+      flex 1
+
+      .main-title
+        margin 0
+        align-self end
 
 
     .login
       position absolute
-      top 8%
+      top 1.5em
       left 50%
+      width 80%
+      min-height 20em
+      flex-wrap nowrap
       opacity 0
+      z-index 101
       transform translateX(-50%)
-      transition opacity 0.25s ease-in
-      z-index 99
-      width 30%
+      transition opacity 0.25s ease-in, top 0.25s
 
-      @media (max-width: 1280px)
+
+      @media (min-width: 641px)
+        top 3em
+        width 65%
+
+      @media (min-width: 1041px)
+        top 5em
         width 50%
 
-      @media (max-width: 640px)
-        width 80%
+      @media (min-width: 1281px)
+        width 40%
+
+      @media (min-width: 1541px)
+        width 30%
 
 
-      h2
-        color var(--primary-bg)
+      .shokkoth
+        max-height 30vh
+        min-height 5em
 
-      .btn-arrow
-        background-color var(--primary-color)
 
       &:not(.visible)
         display none
@@ -70,12 +99,12 @@
       max-width unset
 
       fill var(--primary-color)
-      transition width 0.45s ease-out, min-width 0.45s ease-out
-      z-index 98
-      min-width 6rem
+      transition width 0.45s
+      z-index 100
+      min-width 5em
 
       @media (max-width: 640px)
-        min-width 4rem
+        transition width 0.9s
 
 
       path
@@ -95,14 +124,23 @@
 
       &.expand
         filter brightness(120%)
-        --width 100
+        --width 300
 
+        @media (min-width: 381px)
+          --width 250
 
-        @media (min-width: 641px) and (max-width: 840px)
-          --width 120
+        @media (min-width: 641px)
+          --width 125
 
-        @media (max-width: 640px)
-          --width 160
+        @media (min-width: 1041px)
+          --width 110
+
+        @media (min-width: 1281px)
+          --width 100
+
+        @media (min-width: 1541px)
+          --width 100
+
 
 
         path
@@ -111,10 +149,6 @@
           transition-delay unset
 
 
-
-
-.position-relative
-  position relative
 
 .top-right-corner
   position absolute
@@ -155,7 +189,7 @@
 .navbar
   .nav-brand
     margin 0 2.5vw
-    font-size 2.7rem
+    font-size 2.7em
 
   .nav-icon, .nav-label, .nav-logo
     padding 0 1vw
@@ -173,8 +207,8 @@
 
 .btn.circle
   padding 0
-  width 5rem
-  height 5rem
+  width 5em
+  height 5em
   border-radius 50%
   z-index 101
 
@@ -182,7 +216,7 @@
     vertical-align middle
 
     i.material-icons
-      font-size 3.75rem
+      font-size 3.75em
 
 /*
 @keyframes puddle-idle {

@@ -6,13 +6,22 @@ import { createSelector } from 'reselect';
 import { createKey } from '../../utils/equipments';
 
 import { ALL } from '../../../constants/equipments';
-import { VITALITY, WISDOM, STRENGTH, INTELLIGENCE, CHANCE, AGILITY } from '../../../constants/stats';
+import {
+  STATS,
+  AP,
+  MP,
+  SUMMONS,
+  VITALITY,
+  WISDOM,
+  INITIATIVE,
+  ELEMENTS_STATS,
+} from '../../../constants/stats';
 
 
 export const getStepSore = (store) => get(store, 'step');
 export const getEquipmentsStore = (store) => get(store, 'equipments');
 export const getStuffStore = store => get(store, 'stuff');
-export const getStatStore = store => get(store, 'stat');
+export const getStatStore = store => get(store, 'stats');
 
 
 export const getRingToAdd = createSelector(getStuffStore, stuff => get(stuff, 'ringToAdd') || 'Left');
@@ -22,15 +31,17 @@ export const getDofusToAdd = createSelector(getStuffStore, stuff => get(stuff, '
 export const getActiveStep = createSelector(getStepSore, store => get(store, 'active') || '');
 export const getActiveTypes = createSelector(getStepSore, store => get(store, 'types') || ALL);
 
-
-export const getStuffActive = createSelector(getStuffStore, stuff => get(stuff, 'active'));
+// deprecated
+export const getStuffActive = console.warn('Deprecated: Please use getActiveStuff instead of getStuffActive') || createSelector(getStuffStore, stuff => get(stuff, 'active'));
+export const getActiveStuff = createSelector(getStuffStore, stuff => get(stuff, 'active'));
+export const getDemoStuff = createSelector(getStuffStore, stuff => get(stuff, 'demo'));
 
 
 export const getDisplayedEquipment = createSelector(getEquipmentsStore, store => get(store, 'displayed'));
 
 
-export const getCharacterStatsBase = createSelector(getStatStore, stat => get(stat, 'base') || { [VITALITY]: 0, [WISDOM]: 0, [STRENGTH]: 0, [INTELLIGENCE]: 0, [CHANCE]: 0, [AGILITY]: 0 });
-export const getCharacterStatsParcho = createSelector(getStatStore, stat => get(stat, 'parcho') || { [VITALITY]: 100, [WISDOM]: 100, [STRENGTH]: 100, [INTELLIGENCE]: 100, [CHANCE]: 100, [AGILITY]: 100 });
+export const getCharacterStatsBase = createSelector(getStatStore, stat => get(stat, 'base'));
+export const getCharacterStatsParcho = createSelector(getStatStore, stat => get(stat, 'parcho'));
 
 
 export const areEquipmentsLoading = createSelector(getEquipmentsStore, store => get(store, 'loading'));
@@ -63,37 +74,32 @@ export const getEquipments = (store, params) => {
 
 
 
-
 // STUFF
-export const getStuff = memoize((store) => {
-  const stuff = getStuffActive(store);
-  const populatedStuff = {};
-  for (let [key, object] of Object.entries(stuff)) {
-    populatedStuff[key] = getEquipment(store, object._id) || undefined;
-  }
-  return populatedStuff;
-});
+export const getStuffEquipments = createSelector(
+  getActiveStuff,
+  stuff => get(stuff, 'equipments') || {},
+);
 
 export const isStuffFullyFetched = createSelector(
-  getStuffActive,
-  getStuff,
-  (stuffIds, populatedStuff) => {
+  getStuffEquipments,
+  equipments => {
     if (!pickBy(stuffIds) || !pickBy(populatedStuff)) return;
     return Object.keys(pickBy(stuffIds)).length === Object.keys(pickBy(populatedStuff)).length
   }
 );
 
-export const getStuffEquipment = (store, category) => {
-  const stuff = getStuff(store);
-  if (!stuff || stuff === {}) return;
-  return stuff[category];
-}
+export const getStuffEquipment = createSelector(
+  getStuffEquipments,
+  (store, category) => category,
+  (store, category, index) => index,
+  (equipments, category, index) => get(equipments.filter(i => i.category === category), `[${index}]`),
+);
 
 
 // BONUSES
-export const getCurrentSetsBonus = createSelector(getStuff, stuff => {
+export const getCurrentSetsBonus = createSelector(getStuffEquipments, equipments => {
   const itemsPerSet = {};
-  const sets = Object.values(stuff).map(equipment => ({ equipmentId: get(equipment, '_id'), set: get(equipment, 'set') })).filter(e => !!get(e, 'set'));
+  const sets = Object.values(equipments).map(equipment => ({ equipmentId: get(equipment, '_id'), set: get(equipment, 'set') })).filter(e => !!get(e, 'set'));
   sets.forEach(({ equipmentId, set }) => {
     const id = get(set, '_id');
     if (id) {
@@ -112,8 +118,90 @@ export const getCurrentSetsBonus = createSelector(getStuff, stuff => {
 
 
 // STATS
+export const getInitStats = () => {
+  const toReturn = {};
+  for (let stat of Object.keys(STATS)) {
+    toReturn[stat] = 0;
+  }
+  return toReturn;
+};
+
 export const getCharacterStats = createSelector(getCharacterStatsBase, getCharacterStatsParcho, (base, parcho) => {
   const stats = {};
-  Object.entries(base).forEach(([name, value]) => stats[name] = { base: value || 0, parcho: parcho[name] || 0 });
+  Object.entries(base).forEach(([name, value]) => stats[name] = { base: parseInt(value, 10) || 0, parcho: parseInt(parcho[name], 10) || 0 });
   return stats;
 });
+
+export const getPointsToDispatch = createSelector(
+  getCharacterStatsBase,
+  base => {
+    // todo change 200 by lvl
+    let pointsToDispatch = 5*(200 - 1);
+    pointsToDispatch -= parseInt(base[VITALITY], 10);
+    pointsToDispatch -= parseInt(base[WISDOM], 10) * 3;
+
+    for (let stat of Object.keys(ELEMENTS_STATS)) {
+      let statsPoints = parseInt(base[stat], 10);
+      let ratio = 1;
+      while(statsPoints > 0) {
+        const pointsToCount = Math.min(statsPoints, 100);
+        pointsToDispatch -= ratio * pointsToCount;
+        statsPoints -= pointsToCount;
+        ratio++;
+      }
+    }
+    return pointsToDispatch;
+  }
+);
+
+
+export const getStats = createSelector(
+  getInitStats,
+  getCharacterStats,
+  getActiveStuff,
+  getCurrentSetsBonus,
+  (initStats, characterStats, stuff, setsBonuses) => {
+    const { level, equipments } = stuff || {};
+
+    initStats[AP] = level && level < 100 ? 6 : 7;
+    initStats[MP] = 3;
+    initStats[SUMMONS] = 1;
+    initStats[VITALITY] = 55 + (level || 200) * 5;
+
+    if (characterStats) {
+      for (let [statName, { base = 0, parcho = 0 } = {}] of Object.entries(characterStats)) {
+        initStats[statName] += base + parcho;
+      }
+    }
+
+    if (equipments) {
+      for (let equipment of Object.values(equipments)) {
+        if (get(equipment, 'statistics.length') > 0)
+        for (let stat of equipment.statistics) {
+          if (stat && Object.keys(STATS).includes(stat.name)) {
+            initStats[stat.name] += parseInt(stat.value || stat.max || stat.min, 10);
+          }
+        }
+      }
+
+      if (setsBonuses) {
+        for (let { nbItems, equiped, set } of setsBonuses) {
+          const currentBonus = set.bonus.find(bonus => bonus.number === nbItems - 1);
+          if (get(currentBonus, 'statistics')) {
+            for (let stat of currentBonus.statistics) {
+              if (stat && Object.keys(STATS).includes(stat.name)) {
+                initStats[stat.name] += parseInt(stat.value || stat.max || stat.min, 10);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    Object.keys(ELEMENTS_STATS).forEach(name => {
+      initStats[INITIATIVE] += initStats[name];
+    });
+
+    return initStats;
+  }
+)

@@ -3,22 +3,21 @@ import deepEqual from 'lodash.isequal';
 import { DateTime } from 'luxon';
 
 import { action } from '../../utils';
+import * as cookies from '../../../utils/cookies';
 
-import { SAVE_USER, SAVE_JWT } from '../../../constants/user';
-import { getUser } from '../../selectors/user';
-
-
-import * as services from '../../../services';
-
+import { SAVE_USER, SAVE_JWT, SAVE_CHARACTERS } from '../../constants/user';
+import * as selectors from '../../selectors/user';
+import * as services from '../../../services/user';
 
 
-export const saveUser = ({ user }) => {
+
+export const saveUser = async ({ user }) => {
   return (store, dispatch) => {
     if (!user) return;
 
     const type = SAVE_USER;
 
-    const actualUser = getUser(store);
+    const actualUser = selectors.getUser(store);
     if (actualUser && deepEqual(user, actualUser)) return;
 
     dispatch(action({ type, loading: false, payload: { user } }));
@@ -26,7 +25,7 @@ export const saveUser = ({ user }) => {
 };
 
 
-export function login({ username, password } = {}, [store, dispatch]) {
+export async function login({ username, password } = {}, [store, dispatch]) {
     if (!username || !password) return;
 
     const type = SAVE_JWT;
@@ -34,12 +33,28 @@ export function login({ username, password } = {}, [store, dispatch]) {
     try {
       dispatch(action({ type, loading: true }))
 
-      const token = services.login({ username, password })
-                          	.then(token => {
-                              dispatch(action({ type, loading: false, payload: { token } }))
-                              document.cookie = `jwt=${token}; expires=${DateTime.local().plus({ weeks: 1 }).toHTTP()}; domain=*.shokkoth.tk; path=/`;
-                            })
-                          	.catch(error => dispatch(action({ type, loading: false, payload: { error } })));
+      const token = await services.login({ username, password });
+      dispatch(action({ type, loading: false, payload: { token } }))
+      cookies.set('shokkothJWT', token, '.shokkoth.tk');
+    }
+    catch (error) {
+      dispatch(action({ type, loading: false, payload: { error } }));
+    }
+};
+
+
+export async function signin({ username, password } = {}, [store, dispatch]) {
+    if (!username || !password) return;
+
+    const type = SAVE_JWT;
+
+    try {
+      dispatch(action({ type, loading: true }))
+
+      const token = await services.signin({ username, password });
+
+      dispatch(action({ type, loading: false, payload: { token } }))
+      cookies.set('shokkothJWT', token, '.shokkoth.tk');
 
     }
     catch (error) {
@@ -47,10 +62,25 @@ export function login({ username, password } = {}, [store, dispatch]) {
     }
 };
 
-export function logout([store, dispatch]) {
-    if (!username || !password) return;
 
-    const type = SAVE_JWT;
-    dispatch(action({ type, loading: false, token: undefined }))
-
+export async function logout([store, dispatch]) {
+    dispatch(action({ type: SAVE_JWT, loading: false, payload: { token: undefined } }));
+    cookies.delete('shokkothJWT', '.shokkoth.tk');
 };
+
+export async function fetchCharacters([store, dispatch]) {
+  const jwt = selectors.getJWT(store);
+  if (!jwt) return;
+
+  const type = SAVE_CHARACTERS;
+
+  try {
+    dispatch(action({ type, loading: true }))
+
+    const data = await services.fetchCharacters({ jwt });
+    dispatch(action({ type, loading: false, payload: { data } }))
+  }
+  catch (error) {
+    dispatch(action({ type, loading: false, payload: { error } }));
+  }
+}

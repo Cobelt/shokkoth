@@ -1,8 +1,12 @@
 import React, { createContext, useReducer } from 'react';
 import get from 'lodash.get';
 import set from 'lodash.set';
+import memoize from 'lodash.memoize';
 
 import { EquipmentsReducer } from '../../reducers/equipments';
+
+import * as cookies from '../../../utils/cookies';
+import { VITALITY, WISDOM, STRENGTH, INTELLIGENCE, CHANCE, AGILITY } from '../../../constants/stats';
 
 
 const EquipmentsContext = createContext();
@@ -10,18 +14,12 @@ export default EquipmentsContext;
 
 export const EquipmentsConsumer = EquipmentsContext.Consumer;
 
-export const getInitialState = () => {
+export const getInitialState = memoize(() => {
   const initialState = {};
-
-  const cookies = {};
-  document.cookie.split(';').forEach(cookie => {
-    const [key, value] = cookie.split('=');
-    cookies[key] = value;
-  })
 
   let draft;
   try {
-    const unParsedDraft = get(cookies, 'STUFF_DRAFT');
+    const unParsedDraft = cookies.get('STUFF_DRAFT');
     if (unParsedDraft) {
       draft = JSON.parse(unParsedDraft);
     }
@@ -30,35 +28,17 @@ export const getInitialState = () => {
     console.error(e);
   }
 
-  if (draft) {
-    set(initialState, 'stuff.active', draft);
-  }
-  else {
-    set(initialState, 'stuff.active', {
-      hat: { _id: 18031 },
-      amulet: { _id: 20924 },
-      ringLeft: { _id: 19985 },
-      ringRight: { _id: 12113 },
-      cloak: { _id: 20361 },
-      boots: { _id: 20364 },
-      belt: { _id: 15750 },
-      shield: { _id: 20926 },
-      pet: { _id: 11955 },
-      weapon: { _id: 20353 },
-      "dofus#1": { _id: 20286 },
-      "dofus#2": { _id: 18043 },
-      "dofus#3": { _id: 8698 },
-      "dofus#4": { _id: 16332 },
-      "dofus#5": { _id: 7754 },
-      "dofus#6": { _id: 6980 },
-    })
-  }
+  set(initialState, 'stats.base', { [VITALITY]: 0, [WISDOM]: 0, [STRENGTH]: 0, [INTELLIGENCE]: 0, [CHANCE]: 0, [AGILITY]: 0 })
+  set(initialState, 'stats.parcho', { [VITALITY]: 100, [WISDOM]: 100, [STRENGTH]: 100, [INTELLIGENCE]: 100, [CHANCE]: 100, [AGILITY]: 100 })
 
   return initialState;
-}
+});
 
-export const EquipmentsProvider = ({ initialState = getInitialState(), children }) => (
-  <EquipmentsContext.Provider value={useReducer(EquipmentsReducer, initialState)}>
-    { children }
-  </EquipmentsContext.Provider>
-);
+export const EquipmentsProvider = ({ initialState, children }) => {
+  const reducer = useReducer(EquipmentsReducer, initialState || getInitialState());
+  return (
+    <EquipmentsContext.Provider value={reducer}>
+      { children }
+    </EquipmentsContext.Provider>
+  );
+};

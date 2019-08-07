@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../axios';
 import { WEAPONS, PETS, MOUNTS, EQUIPMENTS, ALL } from '../../constants/equipments';
 
 

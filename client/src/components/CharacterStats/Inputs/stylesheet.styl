@@ -1,0 +1,55 @@
+.stats-inputs-container
+  height auto
+  width 100%
+  z-index 2
+  position absolute
+  overflow hidden
+  right 0
+  top 0
+  transform scale(0)
+  transform-origin top left
+  transition transform 0.6s
+
+  > *
+    opacity 0
+    transition opacity 0.3s
+
+  .grid
+    padding 1rem 2rem 1rem 12.5%
+
+
+    span
+      white-space nowrap
+      text-overflow ellipsis
+      overflow hidden
+
+      &.header
+        font-weight bold
+
+      img, em
+        vertical-align middle
+
+    @media (min-width: 641px) and (max-width: 1040px)
+      span:not(.header) em
+        display none
+
+
+    input
+      width 100%
+      border 0
+      margin-top 1px
+      margin-bottom 1px
+      background-color rgba(255, 255, 255, 0.1)
+      color var(--primary-bg)
+      outline-width 0
+
+      &:active, &:focus
+        background-color rgba(255, 255, 255, 0.3)
+
+
+  &.opened
+    transform scale(1)
+
+    > *
+      opacity 1
+      transition-delay 0.4s

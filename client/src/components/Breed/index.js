@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
 
 import { generateImageLink } from '../../utils/hexGenerator';
+import { arrayToClassName } from '../../utils/common';
 
 import './stylesheet.styl';
 
 
-const Breed = ({ index, breed, gender, active, onClick, ...otherProps }) => {
+const Breed = ({ index, breed, active, onClick, ...otherProps }) => {
   const [loading, setLoading] = useState(true);
 
   return (
     <div
-      className={['breed', loading && 'loading', active && 'active'].filter(e => !!e).join(' ').trim()}
+      className={arrayToClassName(['breed', loading && 'loading', active && 'active'])}
       style={{ '--delay': index ? `${(index+1)*150}ms` : undefined }}
+      onClick={onClick}
       {...otherProps}
     >
       <img
-        src={`//img.shokkoth.tk/assets/breeds/heads/${breed.name}/${gender}-1.png`}
-        onClick={onClick}
+        src={`//img.shokkoth.tk/assets/breeds/heads/${breed.name.toLowerCase()}/avatar.png`}
         onLoad={() => setLoading(false)}
-        onError={(e)=>{ e.target.onerror = null; e.target.src = generateImageLink({ mode: 'head', head: breed[gender].head || breed[gender].heads[0], defaultColors: breed[gender].defaultColors }) }}
       />
     </div>
   );

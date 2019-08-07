@@ -34,14 +34,17 @@
   }
 }
 
+@keyframes scaleTo1 {
+  to{
+    transform scale(1)
+  }
+}
 
-border-item-hover = rgba(#666, 0.20)
-
-@keyframes animate-border-hover-before {
+@keyframes animate-border-before {
   0%{
     width 0
     height 0
-    border-top-color border-item-hover
+    border-top-color var(--bordered-item-bg-hover)
     border-bottom-color transparent
     border-left-color transparent
     border-right-color transparent
@@ -49,37 +52,37 @@ border-item-hover = rgba(#666, 0.20)
   50%{
     width 100%
     height 0
-    border-top-color border-item-hover
-    border-right-color border-item-hover
+    border-top-color var(--bordered-item-bg-hover)
+    border-right-color var(--bordered-item-bg-hover)
   }
   100%{
     width 100%
     height 100%
-    border-top-color border-item-hover
-    border-right-color border-item-hover
+    border-top-color var(--bordered-item-bg-hover)
+    border-right-color var(--bordered-item-bg-hover)
   }
 }
 
-@keyframes animate-border-hover-after {
+@keyframes animate-border-after {
   0%{
     width 0
     height 0
     border-top-color transparent
-    border-bottom-color border-item-hover
+    border-bottom-color var(--bordered-item-bg-hover)
     border-left-color transparent
     border-right-color transparent
   }
   50%{
     width 100%
     height 0
-    border-bottom-color border-item-hover
-    border-left-color border-item-hover
+    border-bottom-color var(--bordered-item-bg-hover)
+    border-left-color var(--bordered-item-bg-hover)
   }
   100%{
     width 100%
     height 100%
-    border-bottom-color border-item-hover
-    border-left-color border-item-hover
+    border-bottom-color var(--bordered-item-bg-hover)
+    border-left-color var(--bordered-item-bg-hover)
   }
 }
 

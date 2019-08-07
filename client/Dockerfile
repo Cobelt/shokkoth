@@ -4,14 +4,14 @@ FROM node:latest
 # creator
 MAINTAINER Cobelt Dierk <cobelt60@gmail.com>
 
-ENV APP_PATH=/app/dofuslab
+ENV APP_PATH=/app/shokkoth
 ENV NODE_MODULES_BIN=$APP_PATH/node_modules/.bin
 
 # set working directory
 RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
 
-# add `/app/dofuslab/node_modules/.bin` to $PATH
+# add `/app/shokkoth/node_modules/.bin` to $PATH
 ENV PATH $NODE_MODULES_BIN:$PATH
 
 # Install vim
@@ -33,9 +33,12 @@ COPY ./package.json $APP_PATH/package.json
 RUN cd $APP_PATH && yarn
 
 # Copy all sources in INSTALL_PATH
-COPY ./ ./
+COPY . .
 
-EXPOSE 80
 
 # start app
-CMD ["yarn", "start"]
+RUN yarn build
+
+CMD ["yarn", "deploy"]
+
+EXPOSE 80

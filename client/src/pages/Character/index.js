@@ -1,28 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import { Route, Switch, Redirect, withRouter } from "react-router";
 
 import MyCharacters from '../../pages/Character/MyCharacters';
 
+import New from './New';
 import Details from './Details';
 import Error404 from './404';
 
-class Character extends Component {
-    constructor(props) {
-        super(props);
-    }
+const Character = ({ showLogin, match: { path } = {} }) => (
+  <Switch>
+    <Route exact path={`${path}/new`} component={New} />
+    <Route exact path={`${path}/:id`} component={Details} />
+    <Route exact path={path} render={() => <MyCharacters showLogin={showLogin} />} />
 
-    render() {
-        const { match: { path } = {} } = this.props;
-        return (
-            <Switch>
-                <Route exact path={`${path}/:id`} component={Details} />
-                <Route exact path={path} component={MyCharacters} />
-
-                <Route component={Error404} />
-            </Switch>
-        );
-    }
-}
+    <Route component={Error404} />
+  </Switch>
+);
 
 export default withRouter(Character);

@@ -1,10 +1,11 @@
 import React, { Fragment } from 'react';
 import { Column } from 'muejs';
 
+import { arrayToClassName } from '../../../utils/common';
 import '../stylesheet.styl';
 
 const StatsColumn = ({ className, statsData, statsValues, suffix, ...otherProps }) => (
-  <Column className={["stats-column", className].filter(e => !!e).join(' ').trim()} {...otherProps}>
+  <Column className={arrayToClassName(["stats-column", className])} {...otherProps}>
     { Object.entries(statsData).map(([stat, imgUrl], index) => (
       <span key={stat} className="character-stat-info" title={stat}>
         <img src={`//img.shokkoth.tk/assets/stats/${imgUrl}`} />

@@ -2,7 +2,7 @@ import produce  from 'immer';
 import set from 'lodash.set';
 import get from 'lodash.get';
 
-import { SAVE_USER, SAVE_JWT } from '../../constants/user';
+import { SAVE_USER, SAVE_JWT, SAVE_CHARACTERS } from '../../constants/user';
 
 
 function getInitialState() {
@@ -25,8 +25,14 @@ export const UserReducer = (store = getInitialState(), { type, payload } = {}) =
         case SAVE_JWT: {
           const { token, error, loading } = payload;
           const currentData = get(store, 'jwt');
-          console.log(payload)
           set(draft, 'jwt', { ...currentData, token, loading, error });
+          break;
+        }
+
+        case SAVE_CHARACTERS: {
+          const { data, error, loading } = payload;
+          const currentData = get(store, 'characters');
+          set(draft, 'characters', { ...currentData, data, loading, error });
           break;
         }
 

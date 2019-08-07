@@ -8,20 +8,57 @@
     position relative
     z-index -1
 
-  .chart-icon, .pseudo, .level
+  .avatar
+    padding-bottom 3rem
+
+  .chart-icon, .name, .level
     color var(--primary-color) !important
     align-self end
 
-  .pseudo, .level
+
+  .name, .level
     font-weight 600
     align-self stretch
     align-content end
+    position relative
 
-  .pseudo
+
+    &:before
+      content attr(data-title)
+      opacity 0
+      position absolute
+      border-bottom var(--primary-color) dashed 3px
+      color var(--primary-color)
+      white-space nowrap
+      right 50%
+      top 0
+      transform translate(50%, -80%)
+      transition opacity 0.4s
+
+
+  .level.over-200
+    cursor help
+
+    &:after
+      content '+'
+      display contents
+
+    &:hover:before
+      opacity 1
+
+
+  .name
+    cursor help
     justify-self stretch
     justify-content center
 
-    font-size 2rem
+    font-size 2em
+
+    &:before
+      font-size 0.8em
+
+    &:hover:before
+      opacity 1
 
   .level
     justify-self right
@@ -37,21 +74,10 @@
   .chart-icon
     transform translateY(0%)
     transition-delay 0.2s
+    z-index 4
   .close-icon
     transform translateY(-100%)
     z-index 3
-
-
-  .avatar
-    justify-self center
-    width 100%
-
-    img
-      object-fit contain
-      height 100%
-      min-width 100%
-      align-self center
-      padding 3rem 0
 
 
 
@@ -61,7 +87,7 @@
       height -moz-fill-available
       height -webkit-fill-available
       height fill-available
-      max-height 4rem
+      max-height 6rem
       width 100%
 
     .hp
@@ -108,69 +134,18 @@
     min-width 2.5rem
     min-height 2.5rem
 
-
-
-
-
-  .stats-inputs-container
-    height auto
-    width 100%
-    z-index 2
-    position absolute
-    overflow hidden
-    right 0
-    top 0
-    transform scale(0)
-    transform-origin top right
-    transition transform 0.6s
-
-    > *
-      opacity 0
-      transition opacity 0.3s
-
-    .grid
-      padding 1rem 16% 1rem 2rem
-
-
-      span
-        white-space nowrap
-        text-overflow ellipsis
-        overflow hidden
-
-        *.header
-          font-weight bold
-
-      @media (min-width: 641px) and (max-width: 1040px)
-        span:not(.header) em
-          display none
-
-
-      input
-        width 100%
-        border 0
-        margin-top 1px
-        margin-bottom 1px
-        background-color rgba(255, 255, 255, 0.1)
-        color var(--primary-bg)
-        outline-width 0
-
-        &:active, &:focus
-          background-color rgba(255, 255, 255, 0.3)
-
+    max-width 7.5rem
+    max-height 7.5rem
 
 
   &.stats-mode
-    .stats-inputs-container
-      transform scale(1)
-
-      > *
-        opacity 1
-        transition-delay 0.4s
-
 
     .chart-icon
+      cursor helper
       transform translateY(100%)
       transition-delay 0s
+      z-index 3
 
     .close-icon
       transform translateY(0%)
+      z-index 4

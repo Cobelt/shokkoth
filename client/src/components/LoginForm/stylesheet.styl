@@ -1,0 +1,67 @@
+.login
+  .login-form
+    width 100%
+    display flex
+    justify-content stretch
+    overflow hidden
+    min-height 20em
+
+    .error-holder:before
+      content attr(data-error)
+      position absolute
+      top -1.5em
+      left 0
+      color var(--error-color)
+      font-size 1.2em
+      text-align left
+
+
+
+    .new-account, .forgot-password
+      background-color unset
+      color var(--font-color-on-primary)
+      transition background-color 0.2s
+      padding 5px
+      position relative
+
+      &.new-account
+        box-shadow inset -2px -2px 0px 2px var(--primary-color)
+
+      &.forgot-password
+        box-shadow inset 2px -2px 0px 2px var(--primary-color)
+
+
+      &:after
+        content ''
+        position absolute
+        left 0
+        right 0
+        top 0
+        bottom 0
+        background-color rgba(#333, 0)
+        transition background-color 0.2s
+
+      &:not(.active):hover:after
+        background-color rgba(#333, 0.05)
+
+      &.active:hover:after
+        background-color rgba(#fafafa, 0.05)
+
+
+      &.active
+        background-color var(--primary-color)
+
+
+    .btn-arrow
+      clip-path polygon(0% 0%, 94% 0%, 100% 50%, 94% 100%, 0% 100%, 6% 50%)
+      transform translateX(0%)
+      transition transform 0.4s
+
+      &:hover
+        transform translateX(5%)
+
+      &.clickDown
+        transform translateX(-10%)
+
+      &.clickUp
+        transform translateX(25%)

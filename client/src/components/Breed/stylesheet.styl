@@ -1,63 +1,54 @@
 .breed
   width 2.5rem
   position relative
+  justify-self center
+  cursor pointer
+  transition filter var(--border-half-animation-duration)
+
+  &:not(.active):not(:hover)
+    filter contrast(45%) brightness(135%)
 
   &.loading
+    transform scale(0)
     display none
 
   &:not(.loading)
-    animation scale0to1 0.25s ease-in-out forwards;
+    animation scaleTo1 0.25s ease-in-out forwards;
     animation-delay var(--delay) ms
 
-  img
-    --scale 1
-    width 100%
-    object-fit contain
-    cursor pointer
-
-    transform scale(var(--scale))
-    filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0))
-    transition transform 0.3s, filter 0.3s
-
-
-  &:after
-    --rotate 0deg
-    content ""
+  &:before, &:after
+    content ''
+    position absolute
     width 0
     height 0
-    border-left 0rem solid transparent
-    border-right 0rem solid transparent
-    border-bottom 0rem solid transparent
-    opacity 0
+    background transparent
+    border 0em solid transparent
+    box-sizing border-box
 
-    position absolute
-    bottom -25%
-    left 50%
-    transform-origin: center -385%
-    transform translateX(-50%) rotate(var(--rotate))
-    transition border 0.4s, opacity 0.4s, transform 0.4s
+  &:before
+    top 0
+    left 0
+
+  &:after
+    bottom 0
+    right 0
 
   &:hover, &.active
-    img
-      --scale 1.35
-      filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.2))
+    &.active
+      --bordered-item-bg-hover var(--bordered-item-bg-active)
 
-  &:hover:after
-    border-left 0.35rem solid transparent
-    border-right 0.35rem solid transparent
-    border-bottom 0.35rem solid var(--primary-color)
-    opacity 0.5
+    &:before, &:after
+      border var(--border-width) solid transparent
 
-  &.active:after
-    --rotate 360deg
-    border-left 0.5rem solid transparent
-    border-right 0.5rem solid transparent
-    border-bottom 0.5rem solid var(--primary-color)
-    opacity 1
+    &:before
+      animation animate-border-before var(--border-half-animation-duration) ease-in forwards;
 
+    &:after
+      animation animate-border-after var(--border-half-animation-duration) ease-out forwards;
+      animation-delay var(--border-half-animation-duration)
 
-@keyframes scaleTo1 {
-  to{
-    transform scale(1)
-  }
-}
+  img
+    width 100%
+    height 100%
+    object-fit contain
+    transition transform 0.3s, filter 0.3s

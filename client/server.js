@@ -8,8 +8,8 @@ const path = require('path');
 const DIST_DIR = path.join(__dirname, 'dist');
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 
-const hostname = 'localhost';
-const port = 3052;
+const hostname = '0.0.0.0';
+const port = 3051;
 
 const app = express();
 

@@ -1,11 +1,6 @@
 @require '../../animations.styl';
 
-background-item = rgba(101, 162, 185, 0.1)
-background-item-hover = rgba(101, 162, 185, 0.2)
-background-item-active = rgba(101, 162, 185, 0.2)
 
-border-width = 2px
-border-half-animation-duration = 0.25s
 
 .equipment-input
   --randomize 0
@@ -39,8 +34,8 @@ border-half-animation-duration = 0.25s
     width 0
     height 0
     background transparent
-    border border-width solid transparent
-    box-sizing: border-box;
+    border 2px solid transparent
+    box-sizing border-box
 
   &:before
     top 0
@@ -51,79 +46,28 @@ border-half-animation-duration = 0.25s
     right 0
 
   &:hover, &.active
+    &.active
+      --bordered-item-bg-hover var(--bordered-item-bg-active)
+
+    &:before, &:after
+      border 2px solid transparent
+
     &:before
-      animation animate-border-hover-before border-half-animation-duration ease-in forwards;
+      animation animate-border-before var(--border-half-animation-duration) ease-in forwards;
 
     &:after
-      animation animate-border-hover-after border-half-animation-duration ease-out forwards;
-      animation-delay border-half-animation-duration
+      animation animate-border-after var(--border-half-animation-duration) ease-out forwards;
+      animation-delay var(--border-half-animation-duration)
 
   &:hover
-    background-color shade(lighten(background-item-active, 5%), 5%)
+    background-color var(--bordered-item-bg-hover)
 
     svg
       filter grayscale(60%) brightness(90%)
 
   &.active
-    background-color shade(lighten(background-item-active, 5%), 5%)
+    background-color var(--bordered-item-bg-active)
 
 
     svg
       filter grayscale(0%) brightness(110%)
-
-
-
-@keyframes animate-border-before {
-  0%{
-    width 0
-    height 0
-    border-top-color border-item-hover
-    border-bottom-color transparent
-    border-left-color transparent
-    border-right-color transparent
-  }
-  50%{
-    width 100%
-    height 0
-    border-top-color border-item-hover
-    border-right-color border-item-hover
-  }
-  100%{
-    width 100%
-    height 100%
-    border-top-color border-item-hover
-    border-right-color border-item-hover
-  }
-}
-
-@keyframes animate-border-after {
-  0%{
-    width 0
-    height 0
-    border-top-color transparent
-    border-bottom-color border-item-hover
-    border-left-color transparent
-    border-right-color transparent
-  }
-  50%{
-    width 100%
-    height 0
-    border-bottom-color border-item-hover
-    border-left-color border-item-hover
-  }
-  100%{
-    width 100%
-    height 100%
-    border-bottom-color border-item-hover
-    border-left-color border-item-hover
-  }
-}
-
-@keyframes animate-entry-from-top {
-  0%{
-    transform translateY(var(--randomize) vh)
-  }
-  100%{
-    transform translateY(0%)
-  }
-}

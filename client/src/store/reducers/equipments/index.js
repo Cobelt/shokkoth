@@ -11,7 +11,9 @@ import {
   SAVE_DISPLAYED,
   SAVE_SEARCH_PARAMS,
   SAVE_LAST_RING_ADDED,
-  SAVE_LAST_DOFUS_ADDED
+  SAVE_LAST_DOFUS_ADDED,
+  SAVE_STAT,
+  SAVE_PARCHO,
 } from '../../constants/equipments';
 
 import * as selectors from '../../selectors/equipments';
@@ -27,7 +29,6 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
         case SAVE_SOME: {
           const { data, loading } = payload;
           if (loading !== undefined) {
-            // console.log('Loading is', loading, 'for new equipments objects');
             set(draft, 'equipments.loading', loading);
           }
           if (data !== undefined) {
@@ -43,7 +44,6 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
           const { params, data = [], loading } = payload;
           const paramKey = createKey(params)
           if (loading !== undefined) {
-            // console.log('Loading is', loading, 'for new ids (with params', paramKey, ')');
             set(draft, `search.${paramKey}.loading`, loading);
           }
           if (data !== undefined) {
@@ -61,14 +61,12 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
 
         case SAVE_ACTIVE: {
           const { data } = payload;
-          // console.log('Stored active stuff');
-          set(draft, 'stuff.active', { data });
+          set(draft, 'stuff.active', data);
           break;
         }
 
         case SAVE_STEP: {
           const { step, types } = payload;
-          // console.log('Stored active step and types');
           set(draft, 'step.active', step);
           set(draft, 'step.types', types);
           break;
@@ -76,7 +74,6 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
 
         case SAVE_DISPLAYED: {
           const { equipment } = payload;
-          // console.log('Stored displayed equipment', equipment.name);
           set(draft, 'equipments.displayed', equipment);
           break;
         }
@@ -85,7 +82,6 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
         case SAVE_LAST_RING_ADDED: {
           const ringToAdd = selectors.getRingToAdd(store);
           const nextRingToAdd = ringToAdd === 'Left' ? 'Right' : 'Left';
-          // console.log('Stored next ring to add', nextRingToAdd);
           set(draft, 'stuff.ringToAdd', nextRingToAdd);
           break;
         }
@@ -93,8 +89,19 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
         case SAVE_LAST_DOFUS_ADDED: {
           const dofusToAdd = selectors.getDofusToAdd(store);
           const nextDofusToAdd = dofusToAdd ? (dofusToAdd % 6) + 1 : 1;
-          // console.log('Stored next dofus to add', nextDofusToAdd);
           set(draft, 'stuff.dofusToAdd', nextDofusToAdd);
+          break;
+        }
+
+        case SAVE_STAT: {
+          const { name, value } = payload;
+          set(draft, `stats.base[${name}]`, value);
+          break;
+        }
+
+        case SAVE_PARCHO: {
+          const { name, value } = payload;
+          set(draft, `stats.parcho[${name}]`, value);
           break;
         }
 

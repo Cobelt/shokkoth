@@ -3,6 +3,7 @@ import { Element } from 'muejs';
 
 import StatLabel from '../../Label';
 
+import { arrayToClassName } from '../../../../utils/common';
 import '../../Stat/stylesheet.styl';
 
 
@@ -15,7 +16,7 @@ const Characteristic = ({ index, stat, className, ...otherProps }) => {
   ]).filter(e => !!e).join(' ').trim();
 
   return (
-    <Element className={['characteristic', className].filter(e => !!e).join(' ')} {...otherProps}>
+    <Element className={arrayToClassName(['characteristic', className])} {...otherProps}>
       <StatLabel index={index} stat={stat} className="marg-r-5" />
       { text }
     </Element>

@@ -1,8 +1,8 @@
 import deepEqual from 'lodash.isequal';
 import get from 'lodash.get';
-import { DateTime } from 'luxon';
-
 import { action } from '../../utils';
+import * as cookies from '../../../utils/cookies';
+
 import { setDefaultStuffValues } from '../../utils/equipments';
 
 import {
@@ -179,12 +179,14 @@ export async function equip({ id, equipment } = {}, [store, dispatch]) {
 
       const idsOfItems = {};
       Object.entries(stuff).forEach(([category, item]) => {
-        idsOfItems[category] = { _id: item._id }
+        if (item._id && category) {
+          idsOfItems[category] = { _id: item._id }
+        }
       })
 
 
       dispatch(action({ type: SAVE_ACTIVE, payload: { data: stuff } }));
-      document.cookie = `STUFF_DRAFT=${JSON.stringify(idsOfItems)}; expires=${DateTime.local().plus({ weeks: 1 }).toHTTP()}`;
+      cookies.set('STUFF_DRAFT', JSON.stringify(idsOfItems));
     }
     catch (error) {
       dispatch(action({ type: SAVE_ACTIVE, payload: { error } }));
@@ -218,9 +220,15 @@ export async function display({ id, equipment } = {}, [store, dispatch]) {
 }
 
 export function setCharacStat({ name, value }, [store, dispatch]) {
-  dispatch(action({ save: SAVE_STAT, payload: { name, value } }));
+  dispatch(action({ type: SAVE_STAT, payload: { name, value } }));
+  cookies.set('STATS', JSON.stringify(selectors.getCharacterStats(store)));
 }
 
 export function setParchoStat({ name, value }, [store, dispatch]) {
-  dispatch(action({ save: SAVE_PARCHO, payload: { name, value } }));
+  dispatch(action({ type: SAVE_PARCHO, payload: { name, value } }));
+  cookies.set('STATS', JSON.stringify(selectors.getCharacterStats(store)));
+}
+
+export function setActiveStuff({ stuff }, [store, dispatch]) {
+  dispatch(action({ type: SAVE_ACTIVE, payload: { data: stuff } }));
 }

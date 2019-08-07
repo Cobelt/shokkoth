@@ -112,6 +112,12 @@ export const OTHERS_PRIMARY_STATS = {
   [WISDOM]:       'sagesse.png',
 }
 
+export const BOOSTABLE_STATS = {
+  [VITALITY]:     'vitalite.png',
+  [WISDOM]:       'sagesse.png',
+  ...ELEMENTS_STATS,
+}
+
 
 // DAMAGES
 export const ELEMENTS_DAMAGES = {

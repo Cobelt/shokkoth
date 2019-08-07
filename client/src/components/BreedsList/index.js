@@ -1,26 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import isEqual from 'lodash.isequal';
+import gql from 'graphql-tag';
+import { useQuery } from 'react-apollo-hooks';
 
 import { Element } from 'muejs';
 
 import Breed from '../Breed';
 import { MaleGenderIcon, FemaleGenderIcon } from '../../assets/svg/genders';
 
-import { BREEDS } from '../../constants/breeds';
+import { arrayToClassName } from '../../utils/common';
+import { getBreeds } from '../../queries';
 
 import './stylesheet.styl';
 
 
-const BreedsList = ({ select, selected, setGender, gender, className, ...otherProps }) => {
-  return (
-    <Element className={["breeds", className].filter(e => !!e).join(' ').trim()} {...otherProps}>
-      <div>
-        <MaleGenderIcon className={`male-icon ${gender === 'm' ? 'active': ''}`} onClick={() => setGender('m')} />
-        <FemaleGenderIcon className={`female-icon ${gender === 'f' ? 'active': ''}`} onClick={() => setGender('f')} />
-      </div>
-      { BREEDS.map((breed, index) => <Breed key={JSON.stringify(breed)} index={index} breed={breed} gender={gender} active={isEqual(breed, selected)} onClick={() => select(breed)} />) }
-    </Element>
-  );
+const BreedsList = ({ select, selected, className, ...otherProps }) => {
+  const { loading, data: { breedMany: breeds = [] } = {}, error } = useQuery(gql(getBreeds));
+  useEffect(() => {
+    if (!selected && breeds.length > 0) {
+      select(breeds[0]);
+    }
+  }, [breeds.length > 0])
+
+  if (error) return `Error! ${error.message}`;
+
+  return breeds.map((breed, index) => <Breed key={JSON.stringify(breed)} breed={breed} active={isEqual(breed, selected)} onClick={() => select(breed)} />);
 }
 
 export default BreedsList;

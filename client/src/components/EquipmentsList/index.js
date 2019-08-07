@@ -3,13 +3,15 @@ import isEqual from 'lodash.isequal';
 import { Grid, Spinner } from 'muejs';
 
 import Equipment from '../Equipment';
+
+import { arrayToClassName } from '../../utils/common';
 import './stylesheet.styl';
 
 const EquipmentsList = ({ equipments, select, selected, equip, className, ...otherProps }) => (
   <Grid
     columnsTemplate={'repeat(auto-fit, minmax(2vw, 4.5rem))'}
     rowsTemplate={'repeat(auto-fit, 1fr)'}
-    className={["equipments-list", "no-scrollbar", "justify-evenly", "align-start", className].filter(e => !!e).join(' ').trim()}
+    className={arrayToClassName(["equipments-list", "no-scrollbar", "justify-evenly", "align-start", className])}
     {...otherProps}
   >
     { equipments.length > 0 ? equipments.map((equipment, index) => (

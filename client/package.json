@@ -1,7 +1,10 @@
 {
   "dependencies": {
+    "apollo-boost": "^0.4.3",
     "axios": "^0.18.0",
     "express": "^4.17.1",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
     "history": "^4.7.2",
     "immer": "^2.1.1",
     "jsonwebtoken": "^8.5.0",
@@ -16,6 +19,8 @@
     "luxon": "^1.13.2",
     "mini-css-extract-plugin": "^0.7.0",
     "react": "^16.8.3",
+    "react-apollo": "^2.5.8",
+    "react-apollo-hooks": "^0.5.0",
     "react-beautiful-dnd": "^11.0.4",
     "react-dom": "^16.8.3",
     "react-motion": "^0.5.2",
@@ -24,7 +29,9 @@
     "react-router-dom": "^4.3.1",
     "reselect": "^4.0.0",
     "uuid": "^3.3.2",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^1.7.2",
+    "muejs": "^1.2.2",
+    "shokkoth-models": "git+https://c55f0fca5835aeb4911750bd4d4a2023991a5cd3:@github.com/Cobelt/shokkoth-models.git"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -51,12 +58,11 @@
     "webpack-dev-server": "^3.1.4"
   },
   "license": "MIT",
-  "name": "dofus-lab-front",
+  "name": "shokkoth-client",
   "scripts": {
     "start": "webpack-dev-server --config webpack/dev.config.babel.js",
     "build": "webpack --config webpack/prod.config.babel.js",
-    "prod": "node ./server.js"
+    "deploy": "node ./server.js"
   },
   "version": "0.0.1",
-  "description": "A professional front-end template for building fast, robust, and adaptable web apps or sites."
 }

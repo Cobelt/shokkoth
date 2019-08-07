@@ -31,7 +31,7 @@ export default ({ look = "half-closed", ...otherProps }) => {
   const eyelid = { fill: '#206d68', cx: 44, cy: 14.7, r: 4.5 }
 
 
-  const iris = { fill: '#ECD55D', className: ["iris", irisState].filter(e => !!e).join(' ').trim() }
+  const iris = { fill: '#ECD55D', d: 'm 41 15 c 0.5 4 5.5 4 6 0 c -1 -2 -5 -2 -6 0', className: ["iris", irisState].filter(e => !!e).join(' ').trim() }
 
   const mouth = { fill: '#dcdbaa', d: "m 50 50 c 4 0 8 0 12 5 c 10 13 -3 11 -6 10 c -4 -1.5 -8 -1.5 -12 0 c -3 1 -16 3 -6 -10 c 4 -5 8 -5 12 -5" }
   const teeth = { fill: '#fafafa', style: { opacity: 0.8 }, d: "m 33 64 l 4 -7 l 4 3 l 4.5 -6 l 4.5 4 l 4.5 -4 l 4.5 6 l 4 -4 l 4 7 c 0.1 0.5 -0.5 1.5 -1 1 l -3 -6 l -4 4 l -4.5 -6 l -4.5 4 l -4.5 -4 l -4.5 6 l -4 -3 l -3 6 c 0 0.2 -0.2 0 -1 -1" }
