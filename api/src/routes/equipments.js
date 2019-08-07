@@ -1,4 +1,5 @@
 import express from 'express';
+import { Equipment, EquipmentsTypes, translateEquipmentsTypes } from 'shokkoth-models';
 
 import * as CommonController from '../controllers/common';
 import * as Controller from '../controllers/equipments';
@@ -11,7 +12,6 @@ import injectSetsRouter from './sets';
 
 const equipmentsRouter = express.Router();
 
-// todoList Routes
 equipmentsRouter.route('/')
     .get(
       Controller.initLocalState,
@@ -36,7 +36,7 @@ equipmentsRouter.route('/types')
 
 
 equipmentsRouter.route('/get/:itemId')
-    .get(Controller.get)
+    .get(Controller.getOne)
     .post(Controller.create)
     .put(Controller.update)
     .delete(Controller.remove);

@@ -9,7 +9,7 @@ stuffsRouter.route('/')
     .get(Controller.getAll);
 
 stuffsRouter.route('/:itemId')
-    .get(Controller.get)
+    .get(Controller.getOne)
     .post(Controller.create)
     .put(Controller.update)
     .delete(Controller.remove);

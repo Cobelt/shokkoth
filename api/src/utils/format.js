@@ -2,7 +2,7 @@ import get from 'lodash.get';
 import set from 'lodash.set';
 
 import { isStat, isPassif, isWeaponCharac, getWeaponCharac, getStatSrcImg, getDefaultPassiveImg } from './stats';
-import { toCategory } from './equipments';
+import { toCategory, toGroupedCategory } from './equipments';
 
 export const formatCharacteristics = toFormat => {
   const toReturn = toFormat;
@@ -91,7 +91,7 @@ export const formatSetBonus = toFormat => {
           }
 
         });
-        
+
         set(toReturn, `bonus[${index}].statistics`, statisticsArray);
         set(toReturn, `bonus[${index}].passives`, passivesArray);
       }
@@ -106,9 +106,9 @@ export const formatRecipe = toFormat => {
     if (get(toFormat, 'recipe.length') > 0) {
         toFormat.recipe.forEach((stat, index) => {
             const statEntry = Object.entries(stat)[0];
-            const { imgUrl, ankamaId: _id, ...infos } = statEntry[1];
+            const { imgUrl, ...infos } = statEntry[1];
             // Todo : new model Resource and just put the _id here
-            toReturn.recipe[index] = { _id, name: statEntry[0], imgUrl: imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.tk'), ...infos };
+            toReturn.recipe[index] = { name: statEntry[0], imgUrl: imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.tk'), ...infos };
         });
     }
     return toReturn;
@@ -123,22 +123,26 @@ export const formatImgUrl = toFormat => {
   return toReturn;
 };
 
+export const formatType = toFormat => {
+  const toReturn = toFormat;
+  toReturn.type = toCategory(toFormat.type);
+  return toReturn;
+}
 
 export const formatTypeToCategory = toFormat => {
   const toReturn = toFormat;
-  toReturn.category = toCategory(toFormat.type);
+  toReturn.category = toGroupedCategory(toFormat.type);
   return toReturn;
 }
 
 
-export const formatId = toFormat => {
+export const formatSetId = toFormat => {
   const toReturn = toFormat;
-  toReturn._id = toFormat.ankamaId || toFormat._id || toFormat.id;
   toReturn.set = toFormat.set || toFormat.setId;
   return toReturn;
 };
 
-export const formatFullEquipment = toFormat => formatId(formatTypeToCategory(formatImgUrl(formatRecipe(formatStatistics(formatCharacteristics(toFormat))))));
+export const formatFullEquipment = toFormat => formatSetId(formatTypeToCategory(formatType(formatImgUrl(formatRecipe(formatStatistics(formatCharacteristics(toFormat)))))));
 
 
-export const formatSet = toFormat => formatId(formatImgUrl(formatSetBonus(toFormat)));
+export const formatSet = toFormat => formatImgUrl(formatSetBonus(toFormat));

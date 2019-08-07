@@ -1,3 +1,4 @@
+export * as BreedsController from './breeds';
 export * as EquipmentsController from './equipments';
 export * as ExtracterController from './extracter';
 export * as StuffsController from './stuffs';

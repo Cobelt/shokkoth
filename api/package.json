@@ -1,8 +1,8 @@
 {
-  "name": "dofuslab-api",
+  "name": "shokkoth-api",
   "version": "0.0.1",
-  "description": "DofusLab REST API",
-  "main": "src/index.js",
+  "description": "Shokkoth REST API",
+  "main": "src/server.js",
   "author": "cobelt",
   "license": "MIT",
   "devDependencies": {
@@ -30,7 +30,8 @@
     "lodash.memoize": "^4.1.2",
     "lodash.set": "^4.3.2",
     "mongoose": "^5.4.16",
-    "mongoose-fuzzy-searching": "^1.1.5"
+    "mongoose-fuzzy-searching": "^1.1.5",
+    "shokkoth-models": "git+https://c55f0fca5835aeb4911750bd4d4a2023991a5cd3:@github.com/Cobelt/shokkoth-models.git"
   },
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",

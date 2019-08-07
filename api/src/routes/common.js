@@ -43,7 +43,7 @@ commonRouter.route('/get/some')
 commonRouter.route('/get/:itemId')
   .get(
     Controller.initLocalState,
-    Controller.get,
+    Controller.getOne,
   )
 
 export default (app) => app.use('/all', commonRouter);

@@ -1,3 +1,5 @@
+import path from 'path';
+
 export const DOFUSBOOK_URI = 'https://www.dofusbook.net/';
 export const DOFUSBOOK_ROUTE_EQUIPMENTS = 'fr/equipements/';
 export const DOFUSBOOK_ROUTE_EQUIPMENTS_END = '/objets';
@@ -9,4 +11,4 @@ export const ALL_MOUNTS_FILE = '/data/external-github/crawlit-dofus-encyclopedia
 
 export const ALL_SETS_FILE = '/data/external-github/crawlit-dofus-encyclopedia-parser/data/dofus/mongo/set_mongo.json';
 
-export const ALL_BREEDS_FILE = '/data/external-github/crawlit-dofus-encyclopedia-parser/data/dofus/mongo/classe_mongo.json';
+export const ALL_BREEDS_FILE = path.resolve(__dirname, '../extractable/breeds.json');

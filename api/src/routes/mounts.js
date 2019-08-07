@@ -30,7 +30,7 @@ mountsRouter.route('/types')
 
 
 mountsRouter.route('/get/:itemId')
-    .get(Controller.get)
+    .get(Controller.getOne)
     .post(Controller.create)
     .put(Controller.update)
     .delete(Controller.remove);

@@ -22,7 +22,7 @@ setsRouter.route('/search/:searchText?')
 
 
 setsRouter.route('/get/:setId')
-    .get(Controller.get)
+    .get(Controller.initLocalState, Controller.getOne)
     .post(Controller.create)
     .put(Controller.update)
     .delete(Controller.remove);

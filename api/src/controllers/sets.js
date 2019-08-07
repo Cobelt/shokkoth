@@ -1,12 +1,12 @@
 import mongoose from 'mongoose';
+import { Sets } from '../models';
 
-const Set = mongoose.model('Sets');
 import { getParam, setLocale, getLocale } from '../utils/common';
 
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { model: Set, toPopulate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } })
+  setLocale(res, { model: Sets })
   next();
 }
 
@@ -14,7 +14,7 @@ export const initLocalState = function(req, res, next) {
 
 
 export const create = function(req, res) {
-    const newEquipment = new Set(getLocale(res, 'set'));
+    const newEquipment = new Sets(getLocale(res, 'set'));
     removeLocale('set');
 
     // do checks here
@@ -26,15 +26,15 @@ export const create = function(req, res) {
 };
 
 
-export const get = function(req, res) {
+export const getOne = async function(req, res) {
+  try {
     const setId = getParam(req, 'setId');
-    const toPopulate = getLocale(res, 'toPopulate');
-    if (!setId) return res.send(new Error('No setId given. Please tell me what I should search for !'));
+    if (!setId) throw new Error('No setId given. Please tell me what I should search for !', { statusCode: '400' });
 
-    Set.findById(setId).populate(toPopulate).exec((err, set) => {
-        if (err) res.send(err);
-        res.json(set);
-    });
+    res.json(await Sets.findById(setId).exec());
+  } catch(e) {
+    res.send(e);
+  }
 };
 
 
@@ -43,7 +43,7 @@ export const update = function(req, res) {
     const setId = getParam(req, 'setId');
     if (!setId) return res.send(new Error('No setId given. Please tell me what I should update !'));
 
-    Set.findOneAndUpdate({_id: setId}, req.body, { new: true }, function(err, set) {
+    Sets.findOneAndUpdate({_id: setId}, req.body, { new: true }, function(err, set) {
         if (err) res.send(err);
         res.json(set);
     });
@@ -54,7 +54,7 @@ export const remove = function(req, res) {
     const setId = getParam(req, 'setId');
     if (!setId) return res.send(new Error('No setId given. Please tell me what I should remove !'));
 
-    Set.remove({ _id: setId
+    Sets.remove({ _id: setId
     }, function(err, set) {
         if (err)
             res.send(err);

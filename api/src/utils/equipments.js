@@ -1,24 +1,28 @@
 import memoize from 'lodash.memoize'
 
-import { EquipmentsTypes, translateEquipmentsTypes } from '../constants/equipments';
-import { PetsTypes } from '../constants/pets';
-import { MountsTypes } from '../constants/mounts';
-import { WeaponsTypes } from '../constants/weapons';
+import { COMMON, WEAPONS, PETS, MOUNTS, EQUIPMENTS } from 'shokkoth-models';
 
 import { WEAPON, PET } from '../constants/categories';
 
 
 export const toCategory = memoize((type) => {
+  return COMMON.getKey(type)
+});
+
+
+export const toGroupedCategory = memoize((type) => {
   let toReturn;
-  if (WeaponsTypes.includes(type)) {
+  if (WEAPONS.getKey(type)) {
     toReturn = WEAPON;
   }
-  else if (MountsTypes.includes(type) || PetsTypes.includes(type)) {
+  else if (MOUNTS.getKey(type) || PETS.getKey(type)) {
     toReturn = PET;
   }
-  else if (EquipmentsTypes.includes(type)) {
-    const [key, value] = Object.entries(translateEquipmentsTypes).find(([key, value]) => type === value)
-    if (key || value) toReturn = key;
+  else if (EQUIPMENTS.getKey(type) === EQUIPMENTS.getKey('trophy')) {
+    toReturn = EQUIPMENTS.translations.DOFUS.en;
+  }
+  else if (EQUIPMENTS.getKey(type)) {
+    toReturn = EQUIPMENTS.translate(type, 'en');
   }
   return toReturn;
 });

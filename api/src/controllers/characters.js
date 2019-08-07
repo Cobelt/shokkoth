@@ -1,44 +1,23 @@
 import axios from 'axios';
 import mongoose from 'mongoose';
-import { EquipmentsTypes } from '../constants/equipments';
+import { Characters, Users } from '../models';
 
-const Equipment = mongoose.model('Equipments');
-
-const _formatExtractedStat = equipment => {
-    const toReturn = equipment;
-    if (equipment.stats.length > 0) {
-        equipment.stats.forEach((stat, index) => {
-            const statEntry = Object.entries(stat)[0];
-            toReturn.stats[index] = { name: statEntry[0], ...statEntry[1] };
-        });
-    }
-    return toReturn;
-};
-
-const _formatExtractedRecipe = equipment => {
-    const toReturn = equipment;
-    if (equipment.recipe.length > 0) {
-        equipment.recipe.forEach((stat, index) => {
-            const statEntry = Object.entries(stat)[0];
-            toReturn.recipe[index] = { name: statEntry[0], ...statEntry[1] };
-        });
-    }
-    return toReturn;
-};
+import { getParam, setLocale, getLocale } from '../utils/common';
 
 
-const _update = function(itemId, newEquipment) {
+
+const _update = function(itemId, newCharacter) {
     let toReturn;
-    Equipment.findOneAndUpdate({ _id: itemId }, newEquipment, { returnNewDocument: true }, function(err, equipment) {
+    Characters.findOneAndUpdate({ _id: itemId }, newCharacter, { returnNewDocument: true }, function(err, character) {
         if (err) toReturn = err;
-        else toReturn = equipment;
+        else toReturn = character;
     });
     return toReturn;
 };
 
 const _save = async (toSave) => {
     let toReturn;
-    toSave.save(await function(err, equipment) {
+    toSave.save(await function(err, character) {
         if(err) {
             if (err.code === 11000) {
                 toReturn = _update(toSave._id, toSave);
@@ -47,7 +26,7 @@ const _save = async (toSave) => {
                 throw err;
             }
         }
-        else toReturn = equipment;
+        else toReturn = character;
     });
     return toReturn;
 };
@@ -55,118 +34,34 @@ const _save = async (toSave) => {
 
 
 export const getAll = function(req, res) {
-    Equipment.find({}, 'pseudo', function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
+    Characters.find({}, 'pseudo', function(err, character) {
+        if (err) return res.send(err);
+        res.json(character);
     });
 };
 
-export const getDetailed = function(req, res) {
-    const { perPage = 100, page = 0 } = req.params || {};
-    Equipment
-        .find({ })
-        .skip(perPage * page)
-        .limit(perPage)
-        .exec(function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
-    });
-};
+export const getMine = function(req, res) {
+  const decoded = getLocale(res, 'decoded');
+  const { _id } = decoded || {};
 
-
-export const extractAll = async function(req, res) {
-    const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments`);
-
-    if (!data) return res.send(new Error('Got no data from the API for https://dofapi2.herokuapp.com/equipments/'));
-
-    console.log('=> Extracting', data.length, 'equipments !....');
-
-    const extracted = [];
-    data.map((equipmentFromAPI, index) => {
-        const formattedEquipment = _formatExtractedRecipe(_formatExtractedStat(equipmentFromAPI));
-
-        const newEquipment = new Equipment(formattedEquipment);
-        try {
-            const saved = _save(newEquipment);
-            extracted.push(saved);
-        }
-        catch (e) {
-            res.send(err);
-        }
-    });
-    res.send(`Done for ${extracted.length} equipments`);
-};
-
-export const extract = async function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should extract !'));
-
-    const { data } = await axios.get(`https://dofapi2.herokuapp.com/equipments/${itemId}`);
-    if (!data) return res.send(new Error(`Got no data from the API for https://dofapi2.herokuapp.com/equipments/${itemId}`));
-
-    const newEquipment = new Equipment(response.data);
-    newEquipment.save(function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
-    });
-};
-
-
-export const create = function(req, res) {
-    const newEquipment = new Equipment(req.body);
-
-    // do checks here
-
-    newEquipment.save(function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
-    });
-};
-
-
-export const get = function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should search for !'));
-
-    Equipment.findById(itemId, function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
-    });
-};
-
-
-export const searchByType = function(req, res) {
-    const { type } = req.params || {};
-    console.log('=>', type);
-    if (!type) return res.send(new Error('No type given. Please tell me what I should search for !'));
-
-    Equipment.find({ type: new RegExp(type, 'i') }, 'name', function(err, equipments) {
-        if (err) res.send(err);
-        else res.json(equipments);
-    });
+  Users
+    .findOne({ _id })
+    .select('characters')
+    .populate({ path: 'characters', populate: { path: 'stuffs' } })
+    .exec((err, { characters } = {}) => {
+      if (err) return res.status(500).send(err);
+      if (!characters) return res.status(400).send('No character found');
+      res.json(characters);
+    })
 }
 
 
-
-export const update = function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should update !'));
-
-    Equipment.findOneAndUpdate({_id: itemId}, req.body, { new: true }, function(err, equipment) {
-        if (err) res.send(err);
-        res.json(equipment);
-    });
-};
-
-
-export const remove = function(req, res) {
-    const { itemId } = req.params || {};
-    if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should remove !'));
-
-    Equipment.remove({ _id: itemId
-    }, function(err, equipment) {
-        if (err)
-            res.send(err);
-        res.json({ message: `We successfully removed ${itemId}`});
-    });
+export const getDetailed = function(req, res) {
+    Characters
+      .find({ })
+      .populate('stuffs')
+      .exec(function(err, character) {
+        if (err) return res.send(err);
+        res.json(character);
+      });
 };

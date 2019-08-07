@@ -4,6 +4,9 @@ import set from 'lodash.set';
 import mongoose from 'mongoose';
 import fs from 'fs';
 
+import { Equipments, Sets, Breeds } from '../models';
+
+
 import { _save } from './common';
 
 import { formatFullEquipment as format, formatSet } from '../utils/format';
@@ -23,23 +26,21 @@ import {
 } from '../constants/extracter';
 
 
-const Equipment = mongoose.model('Equipments');
-const Set = mongoose.model('Sets');
-const Breed = mongoose.model('Breeds');
+export const getDataFromFile = async function(req, res, next) {
+  const toRead = getLocale(res, 'file');
 
-
-const getDataFromFile = (file) => {
-  const unparsedData = fs.readFileSync(file);
   try {
-    return JSON.parse(unparsedData);
+    const unparsedData = fs.readFileSync(toRead);
+    setLocale(res, { dataFromFile: JSON.parse(unparsedData) });
+    return next();
   }
-  catch (error) {
-    return;
+  catch (e) {
+    return res.status(500).send('Error when grabbing data from file', file);
   }
-}
+};
 
 
-export const getTruthfulURL = function (req, res, next) {
+export const getTruthfulURL = async function (req, res, next) {
   const dofusBookURL = get(req, 'query.url');
   if (!dofusBookURL) return next(new Error('No URL given'));
 
@@ -96,99 +97,87 @@ export const initBreedsExtraction = async function(req, res, next) {
 
 
 export const extractEquipements = async function(req, res, next) {
-  const file = getLocale(res, 'file');
-  const data = getDataFromFile(file);
+  const data = getLocale(res, 'dataFromFile');
   if (!data) return next(new Error('Got no data from the file'));
 
   console.log('[==>] Extracting', data.length, 'items.');
 
   const promises = data.map(equipment => new Promise((resolve, reject) => {
-    const formatted = format(equipment);
+    let formatted = format(equipment);
     if (!formatted) reject("Error from formatting");
 
-    const toSave = new Equipment(formatted);
-    if (!toSave) reject("Error from Model");
+    const ankamaId = formatted.set
+    delete formatted.set;
 
-    _save(Equipment, toSave).then(saved => resolve(saved)).catch(err => reject(err));
+    if (ankamaId) {
+      Sets.findOne({ ankamaId }).then(set => {
+        if (set) {
+          formatted.set = get(set, '_id');
+        }
+
+        const toSave = new Equipments(formatted);
+        if (!toSave) reject("Error from Model");
+
+        _save(Equipments, toSave).then(saved => resolve(saved)).catch(err => reject(err));
+      }).catch(err => reject(err));
+    }
+    else {
+      const toSave = new Equipments(formatted);
+      if (!toSave) reject("Error from Model");
+
+      _save(Equipments, toSave).then(saved => resolve(saved)).catch(err => reject(err));
+    }
   }));
 
   Promise.all(promises).then(items => {
-    setLocale(res, { extracted: items.map(i => i && i._id) });
+    setLocale(res, { extracted: items.map(i => i && i._id).filter(e => !!e) });
     console.log('[==>] Done.');
     return next();
   }).catch(err => {
     return next(err);
-  });
-};
-
-
-export const extractEquipement = async function(req, res) {
-  const { itemId } = req.params || {};
-  if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should extract !'));
-
-  const file = getLocale(res, 'file');
-  const data = getDataFromFile(file);
-  if (!data) return next(new Error('Got no data from the file'));
-
-  const equipmentToSave = data.find(equip => equi._id === itemId);
-
-  const newEquipment = new Equipment(equipmentToSave);
-  newEquipment.save(function(err, equipment) {
-      if (err) return res.send(err);
-      res.json(equipment);
   });
 };
 
 
 
 export const extractSets = async function(req, res, next) {
-  const file = getLocale(res, 'file');
-  const data = getDataFromFile(file);
-  if (!data) return next(new Error('Got no data from the file'));
+  try {
+    const data = getLocale(res, 'dataFromFile');
+    if (!data) return next(new Error('Got no data from the file'));
+    console.log('[==>] Extracting', data.length, 'items.');
 
-  console.log('[==>] Extracting', data.length, 'items.');
 
-  const promises = data.map(equipmentsSet => new Promise((resolve, reject) => {
-    const formatted = formatSet(equipmentsSet);
-    if (!formatted) reject("Error from formatting");
+    const items = await Promise.all(data.map(async equipmentsSet => {
+      const formatted = formatSet(equipmentsSet);
+      if (!formatted) reject("Error from formatting");
 
-    const toSave = new Set(formatted);
-    if (!toSave) reject("Error from Model");
+      const ankamaIds = formatted.equipments;
+      formatted.equipments = [];
 
-    _save(Set, toSave).then(saved => resolve(saved)).catch(err => reject(err));
-  }));
+      if (ankamaIds) {
+        const equipments = await Promise.all(ankamaIds.map(async ankamaId => await Equipments.findOne({ ankamaId })));
+        formatted.equipments = equipments.map(i => i && i._id).filter(e => !!e);
+      }
+      console.log('from:', ankamaIds, 'to:', formatted.equipments);
 
-  Promise.all(promises).then(items => {
+      return await Sets.findOneAndUpdate({ ankamaId: formatted.ankamaId }, formatted, { new: true, upsert: true });
+    }));
+
     setLocale(res, { extracted: items.map(i => i && i._id) });
+
+
     console.log('[==>] Done.');
     return next();
-  }).catch(err => {
+  }
+  catch (err) {
     return next(err);
-  });
+  }
 };
 
-
-export const extractSet = async function(req, res) {
-  const { setId } = req.params || {};
-  if (!setId) return res.send(new Error('No setId given. Please tell me what I should extract !'));
-
-  const file = getLocale(res, 'file');
-  const data = getDataFromFile(file);
-  if (!data) return next(new Error('Got no data from the file'));
-
-  const equipmentToSave = data.find(setInFile => setInFile._id === setId || setInFile.ankamaId === setId);
-
-  const newEquipment = new Equipment(equipmentToSave);
-  newEquipment.save(function(err, equipment) {
-      if (err) return res.send(err);
-      res.json(equipment);
-  });
-};
 
 
 export const extractBreeds = async function(req, res, next) {
-  const file = getLocale(res, 'file');
-  const data = getDataFromFile(file);
+  const data = getLocale(res, 'dataFromFile');
   if (!data) return next(new Error('Got no data from the file'));
 
   console.log('[==>] Extracting', data.length, 'items.');
@@ -196,11 +185,11 @@ export const extractBreeds = async function(req, res, next) {
   const promises = data.map(breed => new Promise((resolve, reject) => {
     // to remove
     delete breed.spells;
-    
-    const toSave = new Breed(breed);
+
+    const toSave = new Breeds(breed);
     if (!toSave) reject("Error from Model");
 
-    _save(Set, toSave).then(saved => resolve(saved)).catch(err => reject(err));
+    _save(Sets, toSave).then(saved => resolve(saved)).catch(err => reject(err));
   }));
 
   Promise.all(promises).then(items => {

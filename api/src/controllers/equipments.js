@@ -1,24 +1,24 @@
 import mongoose from 'mongoose';
-import { EquipmentsTypes, translateEquipmentsTypes } from '../constants/equipments';
+import { EquipmentsTypes, translateEquipmentsTypes } from 'shokkoth-models';
+import { EQUIPMENTS } from 'shokkoth-models';
+import { Equipments } from '../models';
 
-const Equipment = mongoose.model('Equipments');
 import { getParam, setLocale, getLocale } from '../utils/common';
 
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { typesList: EquipmentsTypes, model: Equipment, translations: translateEquipmentsTypes, toPopulate: { path: 'set', select: '_id name level bonus equipments', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
+  setLocale(res, { CONSTANTS: EQUIPMENTS, model: Equipments, toPopulate: { path: 'set', select: '-createdAt -updatedAt', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
   next();
 }
 
 
 
 export const create = function(req, res) {
-    const newEquipment = new Equipment(getLocale(res, 'equipment'));
+    const newEquipment = new Equipments(getLocale(res, 'equipment'));
     removeLocale('equipment');
 
     // do checks here
-
     newEquipment.save(function(err, equipment) {
         if (err) res.send(err);
         res.json(equipment);
@@ -26,11 +26,11 @@ export const create = function(req, res) {
 };
 
 
-export const get = function(req, res) {
+export const getOne = function(req, res) {
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should search for !'));
 
-    Equipment.findById(itemId).populate('set').exec((err, equipment) => {
+    Equipments.findById(itemId).populate('set').exec((err, equipment) => {
         if (err) res.send(err);
         res.json(equipment);
     });
@@ -42,7 +42,7 @@ export const update = function(req, res) {
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should update !'));
 
-    Equipment.findOneAndUpdate({_id: itemId}, req.body, { new: true }, function(err, equipment) {
+    Equipments.findOneAndUpdate({ _id: itemId }, req.body, { new: true }, function(err, equipment) {
         if (err) res.send(err);
         res.json(equipment);
     });
@@ -53,8 +53,7 @@ export const remove = function(req, res) {
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should remove !'));
 
-    Equipment.remove({ _id: itemId
-    }, function(err, equipment) {
+    Equipments.remove({ _id: itemId }, function(err, equipment) {
         if (err)
             res.send(err);
         res.json({ message: `We successfully removed ${itemId}`});

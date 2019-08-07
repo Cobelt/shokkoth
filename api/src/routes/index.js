@@ -1,5 +1,8 @@
 export useUsersRouter, { getUsersRouter } from './users';
 
+export useBreedsRouter, { getBreedsRouter } from './breeds';
+export useCharactersRouter, { getCharactersRouter } from './characters';
+
 export useCommonRouter, { getCommonRouter } from './common';
 // Common to all equipments types
   export useEquipmentsRouter, { getEquipmentsRouter } from './equipments';

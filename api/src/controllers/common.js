@@ -1,10 +1,9 @@
 import mongoose from 'mongoose';
+import get from 'lodash.get';
+import { COMMON } from 'shokkoth-models';
+import { Equipments } from '../models';
+
 import { getParam, setLocale, getLocale, toURLValid } from '../utils/common';
-
-import { AllTypes, allTranslations } from '../constants/common';
-
-
-const Equipment = mongoose.model('Equipments');
 
 
 export const _save = (model, toSave) => new Promise((resolve, reject) => {
@@ -12,19 +11,34 @@ export const _save = (model, toSave) => new Promise((resolve, reject) => {
 
   toSave.save(function(err, saved) {
     if(err) {
-        if (err.code === 11000) {
-          Model.findOneAndUpdate({ _id: toSave._id }, toSave, { returnNewDocument: true }, (updateError, updated) => {
-            if (updateError) {
-              return reject(updateError)
-            }
-            else {
-              return resolve(updated);
-            }
-          });
-        }
-        else {
-          return reject(err);
-        }
+      if (err.code === 11000) {
+        toSave._id;
+        console.log(toSave);
+        Model.findOneAndUpdate({ ankamaId: toSave.ankamaId }, toSave, { new: true }, (updateError, updated) => {
+          if (updateError) {
+            Model.findOneAndUpdate({ _id: toSave._id }, toSave, { new: true }, (updateError2, updated2) => {
+              if (updateError2) {
+                return reject(updateError2)
+              }
+              else if (!updated2) {
+                return resolve();
+              }
+              else {
+                return resolve(updated2);
+              }
+            });
+          }
+          else if (!updated) {
+            return reject(updateError)
+          }
+          else {
+            return resolve(updated);
+          }
+        });
+      }
+      else {
+        return reject(err);
+      }
     }
     // if (!saved) reject('Error on document with _id', toSave._id, ': Nothing saved', saved, err);
     return resolve(saved);
@@ -35,14 +49,17 @@ export const _save = (model, toSave) => new Promise((resolve, reject) => {
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { typesList: AllTypes, model: Equipment, translations: allTranslations, toPopulate: { path: 'set', select: '_id name level bonus equipments', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
+  setLocale(res, { CONSTANTS: COMMON, model: Equipments, toPopulate: { path: 'set', select: '-createdAt -updatedAt', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
   next();
 }
 
 
 
-export const createTypesRegex = ({ chosenTypes, TYPES, translations }) => {
-  const types = chosenTypes.split(',').map(type => TYPES.some(t => toURLValid(type) === toURLValid(t)) ? type : translations[type]).filter(e => !!e);
+export const createTypesRegex = ({ chosenTypes, CONSTANTS }) => {
+  const types = chosenTypes.split(',').map(type => {
+    const foundKey = CONSTANTS.getKey(chosenTypes);
+    return foundKey ? foundKey : type;
+  }).filter(e => !!e);
   return `(${types.join('|')})`;
 }
 
@@ -55,7 +72,7 @@ export const getIdsParam = function(req, res, next) {
 
 
 export const getSearchParams = function(req, res, next) {
-    const { typesList: TYPES, translations } = getLocale(res, ['typesList', 'translations']);
+    const CONSTANTS = getLocale(res, 'CONSTANTS');
 
     const {
       levelMin = 1,
@@ -69,15 +86,15 @@ export const getSearchParams = function(req, res, next) {
 
     let regexTypes = '';
 
-    if (TYPES && translations) {
-      regexTypes = createTypesRegex({ chosenTypes: types, TYPES, translations });
+    if (CONSTANTS) {
+      regexTypes = createTypesRegex({ chosenTypes: types, CONSTANTS });
 
       if (regexTypes.match(/\(\|?\)/)) {
         if (types !== '') {
           return next('Sorry but the type(s) you mentioned doesn\'t match anything of this route.')
         }
         else {
-          regexTypes = createTypesRegex({ chosenTypes: TYPES.join(','), TYPES, translations });
+          regexTypes = createTypesRegex({ chosenTypes: CONSTANTS.ENUM.join(','), CONSTANTS });
         }
       }
     }
@@ -125,22 +142,22 @@ export const search = function(req, res, next) {
 
 
 export const getAll = function(req, res) {
-  const { typesList: TYPES, model: Model, translations } = getLocale(res, ['typesList', 'model', 'translations']);
+  const { model: Model, CONSTANTS } = getLocale(res, ['model', 'CONSTANTS']);
 
-  const filters = {};
-  if (TYPES && translations) {
-    const types = createTypesRegex({ chosenTypes: TYPES.join(','), TYPES, translations });
+  const filters = {}
+  if (CONSTANTS) {
+    const types = createTypesRegex({ chosenTypes: CONSTANTS.ENUM.join(','), CONSTANTS });
     if (types) filters.type = new RegExp(types, 'i');
   }
 
   Model.find(filters).select('name').exec((err, result) => {
-      if (err) res.send(err);
-      res.json(result);
+    if (err) res.send(err);
+    res.json(result);
   });
 };
 
 
-export const get = function(req, res) {
+export const getOne = function(req, res) {
     const { model: Model, toPopulate } = getLocale(res, ['model', 'toPopulate']);
 
     const itemId = getParam(req, 'itemId');

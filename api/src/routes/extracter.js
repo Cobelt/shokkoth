@@ -13,18 +13,23 @@ extracterRouter.route('/dofusbook/iframe')
 extracterRouter.route('/everything/')
   .get(
     Controller.initEquipmentsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
 
     Controller.initWeaponsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
 
     Controller.initWeaponsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
 
     Controller.initPetsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
 
     Controller.initMountsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
 
     // Controller.initSetsExtraction,
@@ -35,6 +40,7 @@ extracterRouter.route('/everything/')
 extracterRouter.route('/equipments')
   .get(
     Controller.initEquipmentsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
     Controller.sendExtracted
   );
@@ -42,6 +48,7 @@ extracterRouter.route('/equipments')
 extracterRouter.route('/weapons')
   .get(
     Controller.initWeaponsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
     Controller.sendExtracted
   );
@@ -49,6 +56,7 @@ extracterRouter.route('/weapons')
 extracterRouter.route('/pets')
   .get(
     Controller.initPetsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
     Controller.sendExtracted
   );
@@ -56,6 +64,7 @@ extracterRouter.route('/pets')
 extracterRouter.route('/mounts')
   .get(
     Controller.initMountsExtraction,
+    Controller.getDataFromFile,
     Controller.extractEquipements,
     Controller.sendExtracted
   );
@@ -63,6 +72,7 @@ extracterRouter.route('/mounts')
 extracterRouter.route('/sets')
   .get(
     Controller.initSetsExtraction,
+    Controller.getDataFromFile,
     Controller.extractSets,
     Controller.sendExtracted
   );
@@ -70,15 +80,10 @@ extracterRouter.route('/sets')
 extracterRouter.route('/breeds')
   .get(
     Controller.initBreedsExtraction,
+    Controller.getDataFromFile,
     Controller.extractBreeds,
     Controller.sendExtracted,
   );
-
-extracterRouter.route('/equipments/:itemId')
-    .get(Controller.initEquipmentsExtraction, Controller.extractEquipement);
-
-extracterRouter.route('/weapons/:itemId')
-    .get(Controller.initWeaponsExtraction, Controller.extractEquipement);
 
 
 // extracterRouter.route('/dofapi2/')

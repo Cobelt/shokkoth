@@ -30,6 +30,24 @@ usersRouter.route('/login/:username?/:password?')
       Controller.sendToken,
     );
 
+usersRouter.route('/signin/:username?/:password?')
+  .post(
+    Controller.getLogIds,
+    Controller.findByUsername,
+    Controller.signIn,
+    Controller.comparePassword,
+    Controller.login,
+    Controller.sendToken
+  )
+  .get(
+    Controller.getLogIds,
+    Controller.findByUsername,
+    Controller.signIn,
+    Controller.comparePassword,
+    Controller.login,
+    Controller.sendToken,
+  );
+
 usersRouter.route('/decode')
   .get(
     Controller.getJWT,

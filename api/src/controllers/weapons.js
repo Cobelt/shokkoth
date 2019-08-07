@@ -1,13 +1,12 @@
 import mongoose from 'mongoose';
-import { WeaponsTypes, translateWeaponsTypes } from '../constants/weapons';
+import { WEAPONS } from 'shokkoth-models';
+import { Equipments } from '../models';
 
-const Equipment = mongoose.model('Equipments');
 import { getParam, setLocale, getLocale } from '../utils/common';
-
 
 // // ENTRY POINTS
 export const initLocalState = function(req, res, next) {
-  setLocale(res, { typesList: WeaponsTypes, model: Equipment, translations: translateWeaponsTypes, toPopulate: { path: 'set', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
+  setLocale(res, { CONSTANTS: WEAPONS, model: Equipments, toPopulate: { path: 'set', populate: { path: 'equipments', select: '-recipe -createdAt -updatedAt' } } })
   next();
 }
 
@@ -15,7 +14,7 @@ export const initLocalState = function(req, res, next) {
 
 
 export const create = function(req, res) {
-    const newEquipment = new Equipment(getLocale(res, 'weapon'));
+    const newEquipment = new Equipments(getLocale(res, 'weapon'));
     removeLocale('weapon');
 
     // do checks here
@@ -27,11 +26,11 @@ export const create = function(req, res) {
 };
 
 
-export const get = function(req, res) {
+export const getOne = function(req, res) {
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should search for !'));
 
-    Equipment.findById(itemId).populate('set').exec((err, weapon) => {
+    Equipments.findById(itemId).populate('set').exec((err, weapon) => {
         if (err) res.send(err);
         res.json(weapon);
     });
@@ -43,7 +42,7 @@ export const update = function(req, res) {
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should update !'));
 
-    Equipment.findOneAndUpdate({_id: itemId}, req.body, { new: true }, function(err, weapon) {
+    Equipments.findOneAndUpdate({_id: itemId}, req.body, { new: true }, function(err, weapon) {
         if (err) res.send(err);
         res.json(weapon);
     });
@@ -54,7 +53,7 @@ export const remove = function(req, res) {
     const itemId = getParam(req, 'itemId');
     if (!itemId) return res.send(new Error('No itemId given. Please tell me what I should remove !'));
 
-    Equipment.remove({ _id: itemId
+    Equipments.remove({ _id: itemId
     }, function(err, weapon) {
         if (err)
             res.send(err);
