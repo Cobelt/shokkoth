@@ -3,14 +3,13 @@
 
 
 ### Current tasks
-- Create account
+- Create character (linked to an account)
 
 
 ### TODO before first release : 
 - Drag 'n' drop
 - Searching item
 - Modifying equipped item stats
-- Create character (linked to an account)
 - Save stuff (linked to a character except for draft in cookies)
 
 
