@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { updateLastModifDate } from '../utils';
 
-const LikesSchema = new mongoose.Schema({
+export const LikesSchema = new mongoose.Schema({
     _id: Number,
     user: {
       type: Number,

@@ -25,11 +25,11 @@ export const UsersSchema = new mongoose.Schema({
       default: []
     },
 
-    role: {
+    roles: [{
       type: String,
       enum: USERS.ENUM,
-      default: USERS.DEFAULT,
-    },
+      default: [USERS.DEFAULT],
+    }],
 
     email: String,
 

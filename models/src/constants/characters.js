@@ -1,4 +1,4 @@
-import { findKey, translatetype, validate } from '../utils';
+import { findKey, translateType, validate } from '../utils';
 
 const MALE = 'Male';
 const FEMALE = 'Female';
@@ -18,6 +18,6 @@ export const ENUM = Object.keys(translations);
 export const DEFAULT = Object.keys(translations)[0];
 
 export const getKey = (type) => findKey(type, translations);
-export const translate = (type, lang) => translatetype(type, translations, lang);
+export const translate = (type, lang) => translateType(type, translations, lang);
 
 export const validateType = (type, translationName) => validate(type, translationName, translations);

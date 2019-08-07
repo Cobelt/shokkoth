@@ -1,12 +1,15 @@
 import mongoose from 'mongoose';
 import { updateLastModifDate } from '../utils';
 
+import Equipments from '../equipments';
 
 export const SetsSchema = new mongoose.Schema({
-    _id: {
+    ankamaId: {
       type: Number,
-      required: 'I need an _id',
+      unique: true,
+      required: 'I need an ankamaId',
     },
+
     name: {
       type: String,
       required: 'I need a name',
@@ -26,10 +29,9 @@ export const SetsSchema = new mongoose.Schema({
     },
 
     equipments: [{
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Equipments',
     }],
-
 
     updatedAt: {
         type: Date,

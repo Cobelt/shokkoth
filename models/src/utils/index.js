@@ -33,9 +33,8 @@ export const translateType = (type, translations, lang) => {
   if (found.length > 0) return found[0];
 }
 
-export const validateype = (type, translationName, translations) => {
-  if (!get(translations, translationName)) return false;
-
+export const validate = (type, translationName, translations = {}) => {
+  if (!translations[translationName]) return false;
   if (translationName === findKey(type, translations)) return true;
   return false;
 }

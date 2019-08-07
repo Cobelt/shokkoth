@@ -2,13 +2,17 @@ import mongoose from 'mongoose';
 import { updateLastModifDate } from '../utils';
 import * as COMMON from '../constants/common';
 
+import { SetsSchema } from '../sets';
+
 const prefixError = ({ _id }, errorString) => `Error on an Equipment#${_id}: ${errorString}`;
 
 export const EquipmentsSchema = new mongoose.Schema({
-    _id: {
+    ankamaId: {
       type: Number,
+      unique: true,
       required: 'I need an _id',
     },
+
     name: {
       type: String,
       required: 'I need a name',
@@ -53,8 +57,8 @@ export const EquipmentsSchema = new mongoose.Schema({
     },
 
     set: {
-        type: Number,
-        ref: 'Sets',
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Sets',
     },
 
     imgUrl: String,

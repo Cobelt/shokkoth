@@ -6,11 +6,11 @@ import * as CHARACTERS from '../constants/characters';
 import Stuffs from '../stuffs';
 
 export const CharactersSchema = new mongoose.Schema({
-    pseudo: {
+    name: {
         type: String,
-        required: 'Please give me a pseudo',
+        required: 'Please give me a name',
     },
-    lvl: {
+    level: {
         type: Number,
         min: 1,
         default: 200,
@@ -21,7 +21,7 @@ export const CharactersSchema = new mongoose.Schema({
       default: CHARACTERS.DEFAULT,
     },
 
-    classe: {
+    breed: {
         type: Number,
         ref: 'Breeds',
         required: 'Pas de classe définie',
