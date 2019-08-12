@@ -11,7 +11,7 @@ import Error404 from './404';
 const Character = ({ showLogin, match: { path } = {} }) => (
   <Switch>
     <Route exact path={`${path}/new`} component={New} />
-    <Route exact path={`${path}/:id`} component={Details} />
+    <Route exact path={`${path}/:_id`} component={Details} />
     <Route exact path={path} render={() => <MyCharacters showLogin={showLogin} />} />
 
     <Route component={Error404} />

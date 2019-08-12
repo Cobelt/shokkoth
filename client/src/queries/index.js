@@ -46,11 +46,12 @@ export const getStuffEquipments = `
 
 
 export const getMyCharacters = `
-  query MyCharacters {
-    myCharacters {
+  query MyCharacters($filter: FilterFindManyCharactersInput, $limit: Int, $skip: Int) {
+    myCharacters(filter: $filter, limit: $limit, skip: $skip) {
+      _id
       name
       level
-      genre
+      gender
       breed {
         _id
         name
@@ -76,7 +77,7 @@ export const getCharacter = `
     characterOne(filter: { _id: $id }) {
       name
       level
-      genre
+      gender
       stuffs {
         ...stuffEquipments
       }

@@ -14,6 +14,12 @@ export const JS = {
     use: "babel-loader"
 };
 
+export const MJS = {
+    test: /\.(mjs)$/,
+    exclude: /node_modules\/(?!graphql)/,
+    type: "javascript/auto"
+};
+
 export const STYL = {
     test: /\.styl$/,
     exclude: /node_modules\/(?!muejs)/,

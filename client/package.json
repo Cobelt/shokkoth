@@ -18,6 +18,8 @@
     "lodash.setwith": "^4.3.2",
     "luxon": "^1.13.2",
     "mini-css-extract-plugin": "^0.7.0",
+    "mongoose": "^5.6.9",
+    "muejs": "^1.2.2",
     "react": "^16.8.3",
     "react-apollo": "^2.5.8",
     "react-apollo-hooks": "^0.5.0",
@@ -28,10 +30,9 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "reselect": "^4.0.0",
+    "shokkoth-models": "git+https://7a25c1fe1f9504dbf3b0942c3067c42fef09b21d:@github.com/Cobelt/shokkoth-models.git",
     "uuid": "^3.3.2",
-    "webpack-node-externals": "^1.7.2",
-    "muejs": "^1.2.2",
-    "shokkoth-models": "git+https://c55f0fca5835aeb4911750bd4d4a2023991a5cd3:@github.com/Cobelt/shokkoth-models.git"
+    "webpack-node-externals": "^1.7.2"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",
@@ -64,5 +65,5 @@
     "build": "webpack --config webpack/prod.config.babel.js",
     "deploy": "node ./server.js"
   },
-  "version": "0.0.1",
+  "version": "0.0.1"
 }

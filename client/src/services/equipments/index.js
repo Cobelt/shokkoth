@@ -1,21 +1,21 @@
 import axios from '../axios';
+import { API_URI } from '../../constants/URIs';
 import { WEAPONS, PETS, MOUNTS, EQUIPMENTS, ALL } from '../../constants/equipments';
 
-
 export async function fetchTypes() {
-  const response = await axios.get('//api.shokkoth.tk/equipments/all/types');
+  const response = await axios.get(API_URI + '/equipments/all/types');
   return response.data;
 }
 
 
 export async function fetchOne({ id }) {
-  const response = await axios.get(`//api.shokkoth.tk/equipments/all/get/${id}`);
+  const response = await axios.get(API_URI + `/equipments/all/get/${id}`);
   return response.data;
 }
 
 export async function fetchSome({ ids }) {
   const idsParam = ids.map(id => `ids[]=${id}`).join('&')
-  const response = await axios.get(`//api.shokkoth.tk/equipments/all/get/some?${idsParam}`);
+  const response = await axios.get(API_URI + `/equipments/all/get/some?${idsParam}`);
   return response.data;
 }
 
@@ -55,7 +55,7 @@ export async function fetchEquipments({ perPage, page, types, order, searchText,
   }
 
   const response = await axios.get(
-    `//api.shokkoth.tk/equipments/${typesGroup ? `${typesGroup}/` : ''}search${searchText ? `/${searchText}` : ''}?${params.join('&')}`
+    API_URI + `/equipments/${typesGroup ? `${typesGroup}/` : ''}search${searchText ? `/${searchText}` : ''}?${params.join('&')}`
   );
   return response.data;
 }

@@ -18,6 +18,10 @@ export function asciiToHexa(source) {
   return array.join('');
 }
 
+export function decimalToHexa(color) {
+	return `#${parseInt(color, 10).toString(16)}`;
+}
+
 export function getLookHex({ head, body, hat, cloak, color1, color2, color3, color4, color5, height, defaultColors = '' }) {
 	// TODO keep ',' if there is something at the end
 	const mainIds = [body, head, hat, cloak].filter(e => !!e).join(',');

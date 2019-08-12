@@ -27,7 +27,7 @@ import EquipmentsContext from '../../store/context/equipments';
 import * as selectors from '../../store/selectors/equipments';
 import * as actions from '../../store/actions/equipments';
 
-import Avatar from '../Avatar';
+import AvatarWithArrows from '../AvatarWithArrows';
 import ItemReceiver from '../ItemReceiver';
 import StatsInputs from '../CharacterStats/Inputs';
 
@@ -43,7 +43,6 @@ import './stylesheet.styl';
 
 
 const Stuff = ({ className, elementClassName, character = {}, stuff = {}, ...otherProps }) => {
-  const [rotation, setRotation] = useState(1);
   const [showStats, setShowStats] = useState(false);
 
   const [store, dispatch] = useContext(EquipmentsContext);
@@ -82,11 +81,7 @@ const Stuff = ({ className, elementClassName, character = {}, stuff = {}, ...oth
           { Math.min(parseInt(level, 10), 200) }
         </Element>
 
-        <Element row={2} col={2} height={5} className="rotation-arrow left">
-          <Icon icon="keyboard_arrow_left" onClick={() => setRotation((rotation+1)%8)} />
-        </Element>
-
-        <Avatar row={2} col={2} width={4} height={5} breed={breed} gender={gender} rotation={rotation} />
+        <AvatarWithArrows row={2} col={2} width={4} height={5} breed={breed} gender={gender} />
 
         <Row className="stat" row={6} col={2} width={2} show={stats}>
           <span className="ap">{ stats[AP] }</span>
@@ -101,10 +96,6 @@ const Stuff = ({ className, elementClassName, character = {}, stuff = {}, ...oth
         <Element className="life-points relative" row={6} col={3} width={2} show={stats && stats[VITALITY]}>
           <HPIcon />
           <span className="absolute hp">{ stats[VITALITY] }</span>
-        </Element>
-
-        <Element row={2} col={5} height={5} className="rotation-arrow right">
-          <Icon icon="keyboard_arrow_right" onClick={() => setRotation(rotation <= 0 ? 7 : rotation-1)} />
         </Element>
 
         {/* Left side */}

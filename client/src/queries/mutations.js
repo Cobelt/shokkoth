@@ -18,3 +18,16 @@ export const createEmptyStuff = `
     }
   }
 `;
+
+export const createCharacter = `
+  mutation CreateCharacter($name: String!, $level: Float, $gender: EnumCharactersGender, $breed: Float!) {
+    createCharacter(record: { name: $name, level: $level, gender: $gender, breed: $breed }) {
+  	  name
+      level
+      breed {
+        name
+      }
+      gender
+    }
+  }
+`;
