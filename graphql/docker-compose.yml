@@ -8,6 +8,7 @@ services:
     environment:
       - MONGO_SERVER=mongodb
       - MONGO_PORT=27017
+      - PORT=4000
     networks:
       - shokkoth-universe
 

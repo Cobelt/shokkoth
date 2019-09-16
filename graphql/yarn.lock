@@ -3188,8 +3188,9 @@ shebang-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
-"shokkoth-models@file:../models":
-  version "0.0.1"
+"shokkoth-models@git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git":
+  version "0.0.2"
+  resolved "git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git#59b063c862f1bc70de6cf0d624ef32325a2bfcf6"
   dependencies:
     lodash.deburr "^4.1.0"
     lodash.get "^4.4.2"
