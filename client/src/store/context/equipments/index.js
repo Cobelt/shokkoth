@@ -19,10 +19,7 @@ export const getInitialState = memoize(() => {
 
   let draft;
   try {
-    const unParsedDraft = cookies.get('STUFF_DRAFT');
-    if (unParsedDraft) {
-      draft = JSON.parse(unParsedDraft);
-    }
+    set(initialState, 'draft', cookies.get('STUFF_DRAFT'))
   }
   catch (e) {
     console.error(e);

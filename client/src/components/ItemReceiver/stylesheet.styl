@@ -3,7 +3,6 @@
 
 
 .equipment-input
-  --randomize 0
   width 100%
   height 100%
 
@@ -12,12 +11,15 @@
   justify-content center
 
   cursor pointer
-  background-color background-item
+  background-color #efefef
   transition background-color 0.5s, border 0.5s
 
   position relative
-  animation animate-entry-from-top 0.5s ease-out infinite;
-  transform translateY(var(--randomize) vh)
+
+  z-index 2
+
+  &.filled
+    background-color var(--bordered-item-bg)
 
   svg
     max-width 75%

@@ -12,11 +12,11 @@ const Characteristic = ({ index, stat, className, ...otherProps }) => {
     stat.min,
     stat.min && stat.max && stat.min !== stat.max && 'à',
     stat.max !== stat.min && stat.max,
-    stat.shortType
+    stat.name
   ]).filter(e => !!e).join(' ').trim();
 
   return (
-    <Element className={arrayToClassName(['characteristic', className])} {...otherProps}>
+    <Element className={arrayToClassName(['characteristic', 'flex', className])} {...otherProps}>
       <StatLabel index={index} stat={stat} className="marg-r-5" />
       { text }
     </Element>

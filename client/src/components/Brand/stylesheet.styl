@@ -2,41 +2,33 @@
   margin 0
   font-family 'Amatic SC', cursive, Rubik, Karla, Ubuntu, Poppins, Oswald
   place-content stretch center
+  color var(--primary-color)
+  overflow hidden
+  display inline-flex
+  align-items center
 
-  a
-    overflow hidden
-    display inline-flex
-    align-items center
+  > span
+    margin 0
+    font-weight bold
+    transition transform 0.6s
 
-    h2
-      margin 0
-      font-size 5rem
-      font-weight bold
+    &#shok, &#koth, &#dot-tk
+      transform translate(0, 0)
+
+    &#shok span
+      display inline
       transition transform 0.6s
+      // transition-delay 1s
 
-      &#shok, &#koth, &#dot-tk
-        transform translate(0, 0)
+      &#sh, &#o
+        transform translateX(0)
 
-      &#shok span
-        font-size 5rem
-        display inline
-        transition transform 0.6s
-        // transition-delay 1s
+  &:hover
+    > span
 
-        &#sh, &#o
-          transform translateX(0)
-
-    &:hover
-      h2
-        &#shok
-          transform translate(26%, -30%)
-          span
-            &#sh
-              transform translateX(106%)
-            &#o
-              transform translateX(26%)
-
-        &#koth
-          transform translate(0%, 30%)
-        &#dot-tk
-          transform translateX(175%)
+      &#shok
+        transform translate(12.5%, -1rem)
+      &#koth
+        transform translate(-12.5%, 1rem)
+      &#dot-tk
+        transform translateX(175%)

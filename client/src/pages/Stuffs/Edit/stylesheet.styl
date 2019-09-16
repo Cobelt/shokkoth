@@ -1,0 +1,37 @@
+.stuff-editor
+  width 100%
+
+  .equipments-search
+    grid-template-rows 7rem fit-content(100%)
+
+  .stuff-preview
+    grid-template-rows repeat(2, fit-content(100%))
+
+  .items-details-container
+    height fit-content
+
+
+  @media (min-width: 841px) and (max-width: 1540px)
+    grid-template-rows 3.5rem 4.5rem repeat(3, fit-content(100%)) !important
+
+
+
+  @media (min-width: 641px) and (max-width: 840px)
+    grid-template-columns 6vw 1fr 6vw !important
+    grid-template-rows 3.5rem 4.5rem fit-content(100%) !important
+
+
+  @media (max-width: 640px)
+    grid-column-gap unset !important
+    grid-template-columns 6vw 1fr 6vw !important
+    grid-template-rows 2.5rem 4.5rem fit-content(100%) !important
+    padding-bottom 3rem
+
+    .stats-container .grid
+      grid-template-columns 1fr !important
+
+    .nav-icons
+      grid-auto-flow column
+
+    .brand
+      align-content end

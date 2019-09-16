@@ -15,7 +15,7 @@ const Equipment = ({ index, className, style, equipment, equip = () => undefined
       onDoubleClick={() => equip({ equipment })}
       style={{ ...style, '--delay': index ? `${(index+1)*150}ms` : undefined }}
     >
-      <img alt={equipment.name} src={equipment.imgUrl} onLoad={() => setLoading(false)} />
+      <img alt={equipment.name} src={`https://img.shokkoth.tk/assets/equipments/${equipment.ankamaId}.png`} onLoad={() => setLoading(false)} />
     </Element>
   );
 }

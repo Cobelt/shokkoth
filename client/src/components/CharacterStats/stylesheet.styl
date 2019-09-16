@@ -1,9 +1,29 @@
+.stats-line
+  margin-bottom 3rem
+  padding 1em
+  background-color: var(--primary-color)
+  color: var(--font-color-on-primary)
+
+  &:before
+    content attr(data-title)
+    position absolute
+    top -1.4em
+    left 0
+    color var(--primary-color)
+    font-size 1.3rem
+    text-align left
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
+
+
 .stats-line, .stats-column
   display flex
   justify-content space-around
   position relative
 
  .character-stat-info
+   align-self center
    text-align center
    padding 2px
 

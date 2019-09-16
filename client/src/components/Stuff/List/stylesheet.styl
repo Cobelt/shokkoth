@@ -1,0 +1,54 @@
+.link-to-watch
+  --border-half-animation-duration 0.35s
+  padding 2em
+  transition background-color 0.4s, box-shadow 0.4s
+  transition-delay 0s, 0s
+
+  > *
+    pointer-events none
+
+  @media (max-width: 1040px)
+    padding 0.5em
+
+  &:before, &:after
+    content ''
+    position absolute
+    width 0
+    height 0
+    background transparent
+    border 2px solid transparent
+    box-sizing border-box
+    z-index 0
+
+  &:before
+    top 0
+    left 0
+
+  &:after
+    bottom 0
+    right 0
+
+  &:hover, &.active
+    box-shadow 0px 0px 3em -1.5em var(--bordered-item-bg-hover)
+    transition-delay 0s, calc(var(--border-half-animation-duration) * 2)
+
+    &.active
+      --bordered-item-bg-hover var(--bordered-item-bg-active)
+
+    &:before, &:after
+      border 2px solid transparent
+
+    &:before
+      animation animate-border-before var(--border-half-animation-duration) ease-in forwards;
+
+    &:after
+      animation animate-border-after var(--border-half-animation-duration) ease-out forwards;
+      animation-delay var(--border-half-animation-duration)
+
+
+  .stuff-preview
+    .stuff > *
+      z-index 2
+
+    .avatar
+      padding 4rem 0

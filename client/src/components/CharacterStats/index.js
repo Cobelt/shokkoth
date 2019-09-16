@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useReducer, useContext, useEffect } from 'react';
 import get from 'lodash.get';
-import { Element, Column } from 'muejs';
 
 import EquipmentsContext from '../../store/context/equipments';
 
@@ -8,9 +7,13 @@ import * as selectors from '../../store/selectors/equipments';
 import * as actions from '../../store/actions/equipments';
 
 import {
-  PRIMARY_STATS,
+  BOOSTABLE_STATS,
+  OTHERS_PRIMARY_STATS,
+
+  ELEMENTS_DAMAGES,
+  OTHERS_DAMAGES,
+
   SECONDARY_STATS,
-  DAMAGES_STATS,
   RESISTANCES_STATS,
 
   MELEE_DAMAGE,
@@ -20,6 +23,8 @@ import {
   RANGED_RESISTANCE,
 
   PERCENTS_RES_STATS,
+  STATIC_RES_STATS,
+  OTHERS_RES,
 } from '../../constants/stats';
 
 import StatsLine from './StatsLine';
@@ -48,14 +53,19 @@ const CharacterStats = (otherProps) => {
 
 
     return (
-      <Element {...otherProps}>
-        <Column className="stats">
-          <StatsLine className="primary-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(PRIMARY_STATS).length }} statsData={PRIMARY_STATS} statsValues={stats} data-title="Stats primaires" />
-          <StatsLine className="secondary-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(SECONDARY_STATS).length }} statsData={SECONDARY_STATS} statsValues={stats} data-title="Stats secondaires" />
-          <StatsLine className="damages-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(DAMAGES_STATS).length }} statsData={DAMAGES_STATS} statsValues={stats} suffix={suffixForDamages} data-title="Dommages" />
-          <StatsLine className="resistances-stats pad pad-1-rem bg-primary" style={{ flex: Object.keys(RESISTANCES_STATS).length }} statsData={RESISTANCES_STATS} statsValues={stats} suffix={suffixForResistance} data-title="Résistances" />
-        </Column>
-      </Element>
+      <>
+        <StatsLine style={{ flex: Object.keys(BOOSTABLE_STATS).length }} statsData={BOOSTABLE_STATS} statsValues={stats} data-title="Stats élémentaires" {...otherProps} />
+        <StatsLine style={{ flex: Object.keys(OTHERS_PRIMARY_STATS).length }} statsData={OTHERS_PRIMARY_STATS} statsValues={stats} data-title="Stats primaires" {...otherProps} />
+
+        <StatsLine style={{ flex: Object.keys(ELEMENTS_DAMAGES).length }} statsData={ELEMENTS_DAMAGES} statsValues={stats} data-title="Dommages élémentaires" {...otherProps} />
+        <StatsLine style={{ flex: Object.keys(OTHERS_DAMAGES).length }} statsData={OTHERS_DAMAGES} statsValues={stats} suffix={suffixForDamages} data-title="Dommages autres" {...otherProps} />
+
+        <StatsLine style={{ flex: Object.keys(PERCENTS_RES_STATS).length }} statsData={PERCENTS_RES_STATS} statsValues={stats} suffix={suffixForResistance} data-title="Résistances %" {...otherProps} />
+        <StatsLine style={{ flex: Object.keys(STATIC_RES_STATS).length }} statsData={STATIC_RES_STATS} statsValues={stats} data-title="Résistances fixes" {...otherProps} />
+        <StatsLine style={{ flex: Object.keys(OTHERS_RES).length }} statsData={OTHERS_RES} statsValues={stats} suffix={suffixForResistance} data-title="Résistances autres" {...otherProps} />
+
+        <StatsLine style={{ flex: Object.keys(SECONDARY_STATS).length }} statsData={SECONDARY_STATS} statsValues={stats} data-title="Stats secondaires" {...otherProps} />
+      </>
     );
 }
 

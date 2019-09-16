@@ -1,38 +1,54 @@
 import React, { useContext } from 'react';
 
-import { Navbar, NavBrand, NavIcon, NavLabel, Spinner } from 'muejs';
-import { withRouter, NavLink } from 'react-router-dom';
+import { Navbar, NavItem, Spinner, Icon } from 'muejs';
+import { withRouter, NavLink, Switch, Route } from 'react-router-dom';
 
-import { isJWTLoading, getJWT } from '../../store/selectors/user';
+import { useUser } from '../../hooks/useUser';
+import { useDarkMode } from '../../hooks/darkmode';
+
+import { getJWT } from '../../store/selectors/user';
 import UserContext from '../../store/context/user';
+
+import Shokkoth from '../../assets/svg/shokkoth-login';
+import Brand from '../Brand';
 
 import './stylesheet.styl';
 
-const NavbarComponent = ({ row }) => {
-  const [store, dispatch] = useContext(UserContext);
 
-  const isLogged = !!getJWT(store);
+const copyUrlToClipboard = () => {
+  if (confirm("Vous vous apprêtez à copier l'url actuelle !")) {
+    const urlReceiver = document.createElement('input');
+    document.body.appendChild(urlReceiver);
+    urlReceiver.value = window.location.href;
+    urlReceiver.select();
+    document.execCommand('copy');
+    document.body.removeChild(urlReceiver);
+  }
+};
+
+
+const NavbarComponent = () => {
+  const context = useContext(UserContext);
+
+  const [darkMode, toggleDarkMode] = useDarkMode();
+  const { isLogged } = useUser(context);
+
   return (
-      <Navbar row={row} position="fixed">
-          <NavBrand justify="left" className="animate-brand">
-              <NavLink to="/">
-                <span id="shok">shok</span>
-                <span id="koth">koth</span>
-                <span id="dot-tk">.tk</span>
-              </NavLink>
-          </NavBrand>
+    <Navbar position="fixed" style={{ top: 0 }}>
+      <NavLink to="/"><NavItem brand justify="left" icon="home" ><Brand /></NavItem></NavLink>
 
-          <NavLabel justify="right">
-              <NavLink to="/stuffs" activeClassName="active">Mes stuffs</NavLink>
-          </NavLabel>
-          <NavLabel justify="right">
-              <NavLink to="/characters" activeClassName="active">Mes persos</NavLink>
-          </NavLabel>
+      <div className="flex-1" />
 
-          <NavLabel justify="right">
-            { isJWTLoading() ? "Loading" : <NavLink to={isLogged ? "/logout" : "/login"}>{isLogged ? "Logout" : "Login"}</NavLink> }
-          </NavLabel>
-      </Navbar>
+      <Icon className="font-primary hide-until-md" icon="share" onClick={copyUrlToClipboard} />
+      <Icon className={`font-primary dark-mode ${darkMode ? 'is-dark' : 'is-light'}`} icon={darkMode ? 'wb_sunny' : 'brightness_3'} onClick={toggleDarkMode} />
+
+      <div style={{ borderRight: 'solid 2px var(--primary-color)' }} className="marg-v-15" />
+
+      <NavLink to="/stuffs/mines"><NavItem justify="right" icon="filter_none">Mes stuffs</NavItem></NavLink>
+      <NavLink to="/characters/mines"><NavItem justify="right" icon="supervisor_account">Mes persos</NavItem></NavLink>
+
+      <NavLink to={isLogged ? "/account" : "/login"}><NavItem justify="right" icon={isLogged ? "account_circle" : "power_settings_new"} style={{ color: isLogged && 'var(--danger-color)' }}>{isLogged ? "Mon compte" : "Se connecter"}</NavItem></NavLink>
+    </Navbar>
   );
 }
 

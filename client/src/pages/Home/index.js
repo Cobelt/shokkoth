@@ -1,31 +1,37 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
+import { Grid } from 'muejs';
+import gql from 'graphql-tag';
 import get from 'lodash.get';
-import debounce from 'lodash.debounce';
-import isEqual from 'lodash.isequal';
-import { Grid, Element, Icon, Column } from 'muejs';
-import { withRouter, Link } from "react-router-dom";
+import { useQuery } from '@apollo/react-hooks';
 
-import StuffCreator from '../../components/StuffCreator';
+import { getStuffs } from '../../queries';
 
-import EquipmentsSearch from '../../components/EquipmentsSearch';
-import BreedsList from '../../components/BreedsList';
-import CharacterStats from '../../components/CharacterStats';
 import Brand from '../../components/Brand';
+import StuffsSearch from '../../components/Stuff/Search';
 
 import './stylesheet.styl';
 
 
 const Home = () => {
-  const [shouldShow, showLogin] = useState(false);
+  const variables = { filter: { notDraft: true, notEmpty: true } };
+  const { data: { stuffMany: stuffs = [] } = {}, error, loading, fetchMore, refetch } = useQuery(gql(getStuffs), { variables });
 
   return (
-    <Grid className="home-container" gap="3rem" rowsTemplate="2.5rem 2.5rem repeat(3, fit-content(100%))" columnsTemplate={`10vw 1fr 10vw`}>
+    <Grid className="home-container stuffs-list" gap="3rem" columnsTemplate={{ xs: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)', xxxl: 'repeat(4, 1fr)' }}>
 
-      <Brand row={1} col={1} width={3} height={2} className="align-stretch" />
-
-      <StuffCreator row={3} col={2} />
+      <StuffsSearch
+        searchBarPosition={{ row: 1, width: { md: 2, xl: 3, xxxl: 4 } }}
+        spinnerPosition={{ row: 2, width: { md: 2, xl: 3, xxxl: 4 } }}
+        stuffs={stuffs}
+        refetch={refetch}
+        variables={variables}
+        error={error}
+        loading={loading}
+        defaultSmall={true}
+      />
 
     </Grid>
   );
-}
+};
+
 export default Home;

@@ -7,12 +7,7 @@ import Login from '../../components/Login';
 import './stylesheet.styl';
 
 
-const LoginPage = ({ match, location, history, staticContext, className, ...props }) => {
-  return (
-    <div className="page-login">
-      <Login />
-    </div>
-  );
-}
+const LoginPage = () => <Login className="page-login" />;
 
-export default withRouter(LoginPage);
+
+export default LoginPage;

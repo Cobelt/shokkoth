@@ -1,0 +1,28 @@
+.stats-details
+  span
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
+
+    &.header
+      font-weight bold
+
+    img, em
+      vertical-align middle
+
+  @media (min-width: 641px) and (max-width: 1040px)
+    span:not(.header) em
+      display none
+
+
+  input
+    width 100%
+    border 0
+    margin-top 1px
+    margin-bottom 1px
+    background-color rgba(255, 255, 255, 0.1)
+    color var(--primary-bg)
+    outline-width 0
+
+    &:active, &:focus
+      background-color rgba(255, 255, 255, 0.3)

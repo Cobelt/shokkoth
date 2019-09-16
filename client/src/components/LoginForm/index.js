@@ -17,18 +17,16 @@ const getUsernameAndPwd = (formData) => formData && formData instanceof FormData
 
 const LoginForm = ({ setLook, submitted, setSubmitted, loading, context, ...props }) => {
   const [step, setStep] = useState('login');
-  const { login, signin, loginError } = useUser(context);
+  const { login, signin, loginError, error } = useUser(context);
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
     switch (step) {
       case 'login': {
-        console.log('should login')
         login(getUsernameAndPwd(formData));
         break;
       }
       case 'signin': {
-        console.log('should create')
         signin(getUsernameAndPwd(formData));
         break;
       }

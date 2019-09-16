@@ -104,12 +104,10 @@ export const ELEMENTS_STATS = {
 }
 
 export const OTHERS_PRIMARY_STATS = {
-  [VITALITY]:     'vitalite.png',
   [SUMMONS]:      'invocation.png',
   [CRITICAL]:     'crit.png',
   [INITIATIVE]:   'initiative.png',
   [PUISSANCE]:    'puissance.png',
-  [WISDOM]:       'sagesse.png',
 }
 
 export const BOOSTABLE_STATS = {
@@ -194,7 +192,7 @@ export const OTHERS_SECONDARY = {
 export const PRIMARY_STATS = {
   ...ESSENTIAL_STATS,
   ...OTHERS_PRIMARY_STATS,
-  ...ELEMENTS_STATS,
+  ...BOOSTABLE_STATS,
 }
 
 

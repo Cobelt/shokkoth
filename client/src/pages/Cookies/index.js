@@ -11,8 +11,6 @@ import Brand from '../../components/Brand';
 const Cookies = () => (
   <Grid gap="3rem" rowsTemplate="2.5rem 2.5rem repeat(3, fit-content(100%))" columnsTemplate={`10vw 1fr 10vw`}>
 
-    <Links className="nav-icons" row={1} col={1} height={{ xs: 1, sm: 2 }} width={{ xs: 2, sm: 1 }} />
-
     <Brand row={1} col={1} width={3} height={2} className="align-stretch" />
 
     <Element type="span" row={3} col={2} className="font-primary">

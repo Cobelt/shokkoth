@@ -1,9 +1,7 @@
 import deepEqual from 'lodash.isequal';
 import get from 'lodash.get';
-import { action } from '../../utils';
+import { action, setDefaultStuffValues } from '../../utils';
 import * as cookies from '../../../utils/cookies';
-
-import { setDefaultStuffValues } from '../../utils/equipments';
 
 import {
   SAVE_SOME,
@@ -113,7 +111,7 @@ export async function fetchStuffItems([store, dispatch]) {
     if (selectors.areEquipmentsLoading(store) || selectors.isStuffFullyFetched(store)) return;
 
     // for Each item of the stuff, need to fetch if doesn't have in equipments
-    const stuff = selectors.getStuffActive(store);
+    const stuff = selectors.getActiveStuff(store);
     if (!stuff) return;
 
     try {
@@ -138,15 +136,14 @@ export async function equip({ id, equipment } = {}, [store, dispatch]) {
     if (!equipment && !id) return;
     const toAddEquipment = equipment || selectors.getEquipment(store, id);
 
-    const stuff = selectors.getStuffActive(store);
+    const stuff = selectors.getActiveStuff(store);
     if (!stuff) return;
 
     try {
       const { _id, name: equipName, category: equipmentCategory } = toAddEquipment;
       const activeStep = selectors.getActiveStep(store);
-      const activeTypes = selectors.getActiveTypes(store);
       let category;
-      if (!activeStep.match(equipmentCategory) && !activeTypes.match(equipmentCategory)) {
+      if (!activeStep.match(equipmentCategory)) {
         // todo use "last ring added" and "last dofus added"
         if (equipmentCategory) {
           if (['hat', 'weapon', 'belt', 'amulet', 'boots', 'shield'].includes(equipmentCategory)) {
@@ -177,16 +174,34 @@ export async function equip({ id, equipment } = {}, [store, dispatch]) {
 
       stuff[category] = equipementToAdd;
 
-      const idsOfItems = {};
-      Object.entries(stuff).forEach(([category, item]) => {
-        if (item._id && category) {
-          idsOfItems[category] = { _id: item._id }
-        }
-      })
+      // const idsOfItems = {};
+      // Object.entries(stuff).forEach(([category, item]) => {
+      //   if (item._id && category) {
+      //     idsOfItems[category] = { _id: item._id }
+      //   }
+      // })
 
 
       dispatch(action({ type: SAVE_ACTIVE, payload: { data: stuff } }));
-      cookies.set('STUFF_DRAFT', JSON.stringify(idsOfItems));
+      // cookies.set('STUFF_DRAFT', JSON.stringify(idsOfItems));
+    }
+    catch (error) {
+      dispatch(action({ type: SAVE_ACTIVE, payload: { error } }));
+    }
+};
+
+export async function unequip({ id, equipment } = {}, [store, dispatch]) {
+    if (!equipment && !id) return;
+    const toAddEquipment = equipment || selectors.getEquipment(store, id);
+
+    const stuff = selectors.getActiveStuff(store);
+    if (!stuff || stuff.equipments.length <= 0) return;
+
+    stuff.equipments.splice(stuff.equipments.findIndex(equip => equip.id), 1)
+
+    try {
+      dispatch(action({ type: SAVE_ACTIVE, payload: { data: stuff } }));
+      // cookies.set('STUFF_DRAFT', JSON.stringify(idsOfItems));
     }
     catch (error) {
       dispatch(action({ type: SAVE_ACTIVE, payload: { error } }));
@@ -195,12 +210,10 @@ export async function equip({ id, equipment } = {}, [store, dispatch]) {
 
 
 
-export async function changeStep({ step, types = step }, [store, dispatch]) {
-  console.log('CHANGE STEP', step, 'TYPES', types);
-  if (step === undefined) return;
-  // console.log('CHANGE STEP')
 
-  dispatch(action({ type: SAVE_STEP, payload: { step, types } }));
+export async function changeStep({ category, index }, [store, dispatch]) {
+  dispatch(action({ type: SAVE_STEP, payload: { category, index } }));
+  return true;
 }
 
 

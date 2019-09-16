@@ -13,9 +13,9 @@ const AvatarWithArrows = ({ breed, gender = 'male', ...otherProps }) => {
 
   return (
     <Element className="avatar-with-arrows relative" {...otherProps}>
-      <Icon className="rotation-arrow left" size="lg" icon="keyboard_arrow_left" onClick={() => setRotation((rotation+1)%8)} />
+      <Icon className="rotation-arrow left" size="md" icon="keyboard_arrow_left" onClick={() => setRotation((rotation+1)%8)} />
       <Avatar breed={breed} gender={gender} rotation={rotation} />
-      <Icon className="rotation-arrow right" size="lg" icon="keyboard_arrow_right" onClick={() => setRotation(rotation <= 0 ? 7 : rotation-1)} />
+      <Icon className="rotation-arrow right" size="md" icon="keyboard_arrow_right" onClick={() => setRotation(rotation <= 0 ? 7 : rotation-1)} />
     </Element>
   );
 };

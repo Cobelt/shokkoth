@@ -1,0 +1,34 @@
+.edit-character
+  min-width unset
+  margin-left 6vw
+  margin-right 6vw
+
+  .breed
+    --border-width 0.15em
+    width 1.5em
+    height 1.5em
+    margin 0.275em 0.11em
+
+  .save-btn, .trash-btn, .visibility
+    transition filter 0.4s, color 0.25s, opacity 0.4s
+    cursor pointer
+    opacity 0.75
+
+    &:hover
+      opacity 1
+      filter saturate(120%)
+
+    &.disabled
+      opacity 0.5
+      cursor not-allowed
+      filter grayscale(90%) brightness(80%)
+
+
+  @media (max-width: 1540px)
+    grid-template-columns 1fr 1fr 1fr !important
+
+  @media (max-width: 1280px)
+    grid-template-columns 1fr 1fr !important
+
+  @media (max-width: 1040px)
+    grid-template-columns 1fr !important

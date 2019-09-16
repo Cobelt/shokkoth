@@ -1,6 +1,8 @@
 {
   "dependencies": {
+    "@apollo/react-hooks": "^3.0.1",
     "apollo-boost": "^0.4.3",
+    "apollo-cache-inmemory": "^1.6.3",
     "axios": "^0.18.0",
     "express": "^4.17.1",
     "graphql": "^14.4.2",
@@ -13,6 +15,7 @@
     "lodash.get": "^4.4.2",
     "lodash.isequal": "^4.5.0",
     "lodash.memoize": "^4.1.2",
+    "lodash.pick": "^4.4.0",
     "lodash.pickby": "^4.6.0",
     "lodash.set": "^4.3.2",
     "lodash.setwith": "^4.3.2",
@@ -22,7 +25,6 @@
     "muejs": "^1.2.2",
     "react": "^16.8.3",
     "react-apollo": "^2.5.8",
-    "react-apollo-hooks": "^0.5.0",
     "react-beautiful-dnd": "^11.0.4",
     "react-dom": "^16.8.3",
     "react-motion": "^0.5.2",
@@ -30,7 +32,7 @@
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "reselect": "^4.0.0",
-    "shokkoth-models": "git+https://7a25c1fe1f9504dbf3b0942c3067c42fef09b21d:@github.com/Cobelt/shokkoth-models.git",
+    "shokkoth-models": "git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git",
     "uuid": "^3.3.2",
     "webpack-node-externals": "^1.7.2"
   },
@@ -44,6 +46,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.3.1",
+    "apollo-client-devtools": "^2.2.3",
     "babel-loader": "^8.0.5",
     "clean-webpack-plugin": "^1.0.0",
     "copy-webpack-plugin": "^5.0.0",

@@ -9,64 +9,46 @@
     z-index -1
 
   .avatar
-    padding-bottom 3rem
+    padding-bottom 3em
 
   .chart-icon, .name, .level
     color var(--primary-color) !important
     align-self end
 
 
-  .name, .level
-    font-weight 600
-    align-self stretch
-    align-content end
-    position relative
+  .stuff-infos
+    .icon
+      transform rotate(0deg)
+      transition color 0.4s, transform 0.4s
 
-
-    &:before
-      content attr(data-title)
-      opacity 0
-      position absolute
-      border-bottom var(--primary-color) dashed 3px
-      color var(--primary-color)
-      white-space nowrap
-      right 50%
-      top 0
-      transform translate(50%, -80%)
-      transition opacity 0.4s
-
-
-  .level.over-200
-    cursor help
-
-    &:after
-      content '+'
-      display contents
-
-    &:hover:before
-      opacity 1
+      &.visibility.font-primary
+        transform rotate(360deg)
 
 
   .name
-    cursor help
-    justify-self stretch
-    justify-content center
+    justify-self left
 
-    font-size 2em
-
-    &:before
-      font-size 0.8em
-
-    &:hover:before
-      opacity 1
+  .breed-icon
+    justify-self right
+    max-width 2em
+    max-height 2em
 
   .level
     justify-self right
-    font-size 1.5rem
+
+
+  .name, .level, .breed-icon
+    align-self end
+
+    font-size 1.3em
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
+
 
   .chart-icon, .close-icon
     justify-self left
-    font-size 1.5rem
+    font-size 1.5em
     margin 0
     padding-bottom 0
     transition transform 0.4s
@@ -87,7 +69,8 @@
       height -moz-fill-available
       height -webkit-fill-available
       height fill-available
-      max-height 6rem
+      min-height 3em
+      max-height 6em
       width 100%
 
     .hp
@@ -100,8 +83,8 @@
     margin auto
 
     .pa-icon, .pm-icon
-      max-height 2rem
-      min-width 2rem
+      max-height 2em
+      min-width 2em
       align-self end
 
     .mp, .ap
@@ -110,18 +93,15 @@
 
     .mp, .ap
       color var(--primary-color)
-      padding 0 0.5rem
+      padding 0 0.5em
       text-align right
       align-self center
     // end
 
-
   .equipment-input
-    min-width 2.5rem
-    min-height 2.5rem
-
-    max-width 7.5rem
-    max-height 7.5rem
+    width 4em
+    height 4em
+    justify-self center
 
 
   &.stats-mode

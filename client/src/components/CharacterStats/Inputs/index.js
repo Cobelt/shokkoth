@@ -16,12 +16,6 @@ import './stylesheet.styl';
 const StatsInputs = ({ isOpened, setOpened, ...otherProps }) => {
   const [store, dispatch] = useContext(EquipmentsContext);
 
-  const characterStats = selectors.getCharacterStats(store);
-  const pointsToDispatch = selectors.getPointsToDispatch(store);
-
-  const setCharacStat = debounce((name, value) => actions.setCharacStat({ name, value }, [store, dispatch]), 200);
-  const setParchoStat = debounce((name, value) => actions.setParchoStat({ name, value }, [store, dispatch]), 200);
-
   return (
     <Element className={`stats-inputs-container bg-primary ${isOpened ? 'opened' : ''}`.trim()} {...otherProps}>
       <Grid columnsTemplate="max-content repeat(2, minmax(2rem, 1fr))" rowsTemplate="repeat(6, 1fr)" colGap="1.5rem">

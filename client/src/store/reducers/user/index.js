@@ -16,16 +16,14 @@ export const UserReducer = (store = getInitialState(), { type, payload } = {}) =
       switch (type) {
 
         case SAVE_USER: {
-          const { user, error, loading } = payload;
-          const currentData = get(store, 'user');
-          set(draft, 'user', { ...currentData, user, loading, error } );
+          const { user } = payload;
+          set(draft, 'user', user);
           break;
         }
 
         case SAVE_JWT: {
           const { token, error, loading } = payload;
-          const currentData = get(store, 'jwt');
-          set(draft, 'jwt', { ...currentData, token, loading, error });
+          set(draft, 'jwt', token);
           break;
         }
 

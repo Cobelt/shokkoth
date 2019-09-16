@@ -3,7 +3,7 @@ import pickBy from 'lodash.pickby';
 import memoize from 'lodash.memoize';
 import { createSelector } from 'reselect';
 
-import { createKey } from '../../utils/equipments';
+import { createKey } from '../../utils';
 
 import { ALL } from '../../../constants/equipments';
 import {
@@ -18,7 +18,6 @@ import {
 } from '../../../constants/stats';
 
 
-export const getStepSore = (store) => get(store, 'step');
 export const getEquipmentsStore = (store) => get(store, 'equipments');
 export const getStuffStore = store => get(store, 'stuff');
 export const getStatStore = store => get(store, 'stats');
@@ -28,11 +27,10 @@ export const getRingToAdd = createSelector(getStuffStore, stuff => get(stuff, 'r
 export const getDofusToAdd = createSelector(getStuffStore, stuff => get(stuff, 'dofusToAdd') || 1);
 
 
-export const getActiveStep = createSelector(getStepSore, store => get(store, 'active') || '');
-export const getActiveTypes = createSelector(getStepSore, store => get(store, 'types') || ALL);
+export const getActiveStep = (store) => get(store, 'step');
+export const getActiveCategory = createSelector(getActiveStep, step => get(step, 'category'));
+export const getActiveIndex = createSelector(getActiveStep, step => get(step, 'index'));
 
-// deprecated
-export const getStuffActive = console.warn('Deprecated: Please use getActiveStuff instead of getStuffActive') || createSelector(getStuffStore, stuff => get(stuff, 'active'));
 export const getActiveStuff = createSelector(getStuffStore, stuff => get(stuff, 'active'));
 export const getDemoStuff = createSelector(getStuffStore, stuff => get(stuff, 'demo'));
 
@@ -158,7 +156,7 @@ export const getPointsToDispatch = createSelector(
 export const getStats = createSelector(
   getInitStats,
   getCharacterStats,
-  getActiveStuff,
+  (store, { stuff = {} } = {}) => Object.keys(stuff).length > 0 ? stuff : getActiveStuff(store),
   getCurrentSetsBonus,
   (initStats, characterStats, stuff, setsBonuses) => {
     const { level, equipments } = stuff || {};

@@ -28,6 +28,29 @@ export const mainEquipmentsData = `
   }
 `;
 
+export const stuffStats = `
+  fragment stuffStats on Stuffs {
+    stats {
+      attributed {
+        VITALITY
+        WIDSDOM
+        STRENGTH
+        INTELLIGENCE
+        CHANCE
+        AGILITY
+      }
+      parchment {
+        VITALITY
+        WIDSDOM
+        STRENGTH
+        INTELLIGENCE
+        CHANCE
+        AGILITY
+      }
+    }
+  }
+`;
+
 export const stuffEquipments = `
   fragment stuffEquipments on Stuffs {
     equipments {
@@ -35,4 +58,42 @@ export const stuffEquipments = `
     }
   }
   ${mainEquipmentsData}
+`;
+
+export const stuffFragment = `
+  fragment stuffFragment on Stuffs {
+    _id
+    name
+    public
+    level
+    ...stuffStats
+    ...stuffEquipments
+  }
+  ${stuffStats}
+  ${stuffEquipments}
+`;
+
+export const breedFragment = `
+  fragment breedFragment on Breeds {
+    _id
+    name
+    skins {
+      male
+      female
+    }
+  }
+`;
+
+export const characterWithoutStuffs = `
+  fragment characterWithoutStuffs on Characters {
+    _id
+    name
+    level
+    gender
+    public
+    breed {
+      ...breedFragment
+    }
+  }
+  ${breedFragment}
 `;

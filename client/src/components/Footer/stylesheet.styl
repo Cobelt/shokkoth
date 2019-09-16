@@ -1,4 +1,7 @@
 .footer
+  margin-top auto
+  grid-row-gap 0
+
   > *
     transition color 0.4s
 
@@ -6,14 +9,18 @@
     align-items center
     display flex
 
+    span
+      margin-right 5px
+      white-space nowrap
+
     img
       margin-left 1rem
       max-height 2rem
       width auto
 
 
-  .about-me, .donation, .social
-    padding 1vw
+  .partenaire, .donation, .social
+    padding-top 1vw
 
   .footer-separator
     margin-left 15%
@@ -23,23 +30,12 @@
       margin-left 25%
       margin-right 25%
 
-  @media (max-width: 640px)
-    .display-on-lg
-      display none
+  .vertical-separator
+    margin-top 1em
+    margin-bottom 1em
+    width 0
+    border-left 1px solid var(--font-color-on-primary)
 
-  @media (min-width: 641px)
-
-    .display-on-sm
-      display none
-
-  @media (max-width: 640px)
-    .about-me
-      display none !important
-    .social
-      display none !important
-    .donation
-      --col 1 !important
-      --width 3 !important
-
-      p
-        text-align center !important
+    &.sm
+      margin-top 1.5em
+      margin-bottom 1.5em

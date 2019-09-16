@@ -1,0 +1,25 @@
+.stuffs-list
+  font-size calc(0.6em + 0.3vw)
+
+.stuff-searchbar
+  margin-left 20%
+  margin-right 20%
+
+  .input
+    flex 1
+    width unset
+    text-overflow ellipsis
+    overflow hidden
+    white-space nowrap
+
+@media (max-width: 840px)
+  .stuff-searchbar
+    margin-left 0
+    margin-right 0
+
+    .input
+      order 1
+      min-width 100%
+
+    .icon
+      order 2

@@ -1,37 +1,29 @@
-import { mainEquipmentsData, stuffEquipments } from './fragments';
+import { mainEquipmentsData, stuffFragment, stuffEquipments, breedFragment, characterWithoutStuffs } from './fragments';
 
 export const getBreeds = `
   query getBreeds {
     breedMany(sort: _ID_ASC) {
       _id
       name
+      imgUrl
+      url
+      roles
+      description
       skins {
         male
         female
       }
-      roles
     }
   }
 `;
 
 export const equipmentsList = `
-  query equipmentsList($perPage: Int, $skip: Int) {
-    equipmentMany(limit: $perPage, skip: $skip) {
+  query equipmentsList($filter: FilterFindManyEquipmentsInput, $perPage: Int, $skip: Int) {
+    equipmentMany(filter: $filter, limit: $perPage, skip: $skip) {
       ...mainEquipmentsData
     }
   }
   ${mainEquipmentsData}
-`;
-
-export const getStuff = `
-  query Stuff($id: MongoID!) {
-    stuffById(_id: $id) {
-      _id
-      name
-      ...stuffEquipments
-    }
-  }
-  ${stuffEquipments}
 `;
 
 
@@ -44,25 +36,43 @@ export const getStuffEquipments = `
   ${mainEquipmentsData}
 `;
 
+export const getMyStuffs = `
+  query MyStuffs($filter: FilterFindManyStuffsInput, $limit: Int, $skip: Int) {
+    myStuffs(filter: $filter, limit: $limit, skip: $skip) {
+      ...stuffFragment
+      character {
+        ...characterWithoutStuffs
+      }
+    }
+  }
+  ${stuffFragment}
+  ${characterWithoutStuffs}
+`;
+
+export const getStuffs = `
+  query Stuffs($filter: FilterFindManyStuffsInput, $limit: Int, $skip: Int) {
+    stuffMany(filter: $filter, limit: $limit, skip: $skip) {
+      ...stuffFragment
+      character {
+        ...characterWithoutStuffs
+      }
+    }
+  }
+  ${stuffFragment}
+  ${characterWithoutStuffs}
+`;
 
 export const getMyCharacters = `
   query MyCharacters($filter: FilterFindManyCharactersInput, $limit: Int, $skip: Int) {
     myCharacters(filter: $filter, limit: $limit, skip: $skip) {
-      _id
-      name
-      level
-      gender
-      breed {
-        _id
-        name
-        imgUrl
-      }
+      ...characterWithoutStuffs
       stuffs {
-        ...stuffEquipments
+        ...stuffFragment
       }
     }
   }
-  ${stuffEquipments}
+  ${stuffFragment}
+  ${characterWithoutStuffs}
 `;
 
 export const getMyRoles = `
@@ -71,29 +81,40 @@ export const getMyRoles = `
   }
 `;
 
+export const getStuff = `
+  query Stuff($id: MongoID!) {
+    stuffOne(filter: { _id: $id }) {
+      ...stuffFragment
+      character {
+        ...characterWithoutStuffs
+      }
+    }
+  }
+  ${stuffFragment}
+  ${characterWithoutStuffs}
+`;
+
 
 export const getCharacter = `
   query Character($id: MongoID!) {
     characterOne(filter: { _id: $id }) {
-      name
-      level
-      gender
+      ...characterWithoutStuffs
       stuffs {
-        ...stuffEquipments
-      }
-      breed {
-        _id
-        name
-        skins {
-          male
-          female
-        }
+        ...stuffFragment
       }
     }
   }
-  ${stuffEquipments}
+  ${stuffFragment}
+  ${characterWithoutStuffs}
 `;
 
-export const searchCharacters = `
-
+export const getDecodedToken = `
+query DecodeToken {
+  decodeToken {
+    _id
+    username
+    email
+    roles
+  }
+}
 `;

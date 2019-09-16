@@ -14,7 +14,7 @@ export const getInitialState = () => {
   const initialState = {};
 
   const token = cookies.get('shokkothJWT')
-  if (token) initialState.jwt = { token };
+  if (token) initialState.jwt = token;
 
   return initialState;
 }

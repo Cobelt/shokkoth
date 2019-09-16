@@ -4,39 +4,60 @@ import get from 'lodash.get';
 
 import EquipmentDetails from './EquipmentDetails';
 import SetDetails from './SetDetails';
-
-import { DETAIL_EQUIPMENT, DETAIL_SET } from '../../constants/equipments';
+import StatsDetails from './StatsDetails';
 
 import { arrayToClassName } from '../../utils/common';
 import './stylesheet.styl';
 
-const ShowDetails = ({ equipment, selectEquipment, equip, className, ...otherProps }) => {
+const DETAIL_EQUIPMENT = 'equipments-details';
+const DETAIL_SET = 'set-details';
+const DETAIL_STATS = 'stats-details';
+
+const ShowDetails = ({
+  showStats, setShowStats, stats, setCharacStat, setParchoStat,
+  equipment, selectEquipment, equip,
+  className,
+  ...otherProps
+}) => {
+
   const [display, setDisplay] = useState(DETAIL_EQUIPMENT);
-  // const [lastEquipment, setLastEquipment] = useState(equipment);
+  const [lastEquipment, setLastEquipment] = useState(equipment);
 
   // when changing item, return to item and not set
   useEffect(() => {
-    setDisplay(DETAIL_EQUIPMENT)
-    // setLastEquipment(equipment);
-  }, [equipment]);
+    if (equipment) {
+      setDisplay(DETAIL_EQUIPMENT)
+      setLastEquipment(equipment);
+    }
+  }, [get(equipment, '_id')]);
 
-  // if (!lastEquipment) return null;
+  if (!lastEquipment && !showStats) return null;
 
   return (
-    <Element className={arrayToClassName(['show-details', display === DETAIL_EQUIPMENT ? 'equipments-details' : 'set-details', 'align-start', 'bg-primary', 'relative', 'pad-1-rem', equipment ? 'show' : 'hide', className])} {...otherProps}>
-      <Grid columnsTemplate="4rem 1fr 2.5rem" colGap="1rem">
+    <Element className={arrayToClassName(['show-details', display, 'align-start', 'bg-primary', 'relative', 'pad-1-rem', (equipment || showStats) ? 'show' : 'hide', className])} {...otherProps}>
+      <Grid columnsTemplate="20% 1fr 10%" gap="0.5em">
         <Icon col={3} row={1} className="align-start" style={{ margin: 0, justifySelf: 'right' }} icon="close" size="xs" onClick={() => selectEquipment()} />
+
+        { showStats && !lastEquipment && (
+          <StatsDetails
+            active={display === DETAIL_STATS}
+            stats={stats}
+            setShowStats={setShowStats}
+            setCharacStat={setCharacStat}
+            setParchoStat={setParchoStat}
+          />
+        )}
 
         <EquipmentDetails
           active={display === DETAIL_EQUIPMENT}
-          equipment={equipment}
+          equipment={lastEquipment}
           displaySet={() => setDisplay(DETAIL_SET)}
           equip={equip}
         />
 
         <SetDetails
           active={display === DETAIL_SET}
-          set={get(equipment, 'set')}
+          set={get(lastEquipment, 'set')}
           displayEquipment={() => setDisplay(DETAIL_EQUIPMENT)}
           selectEquipment={selectEquipment}
           equip={equip}

@@ -1,17 +1,17 @@
 import React, { useState, useContext } from 'react';
 import ReactDOM from 'react-dom';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
-import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
+import { ApolloProvider } from '@apollo/react-hooks';
 import { Redirect, Router, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import { Column, Element } from 'muejs';
 
-import * as cookies from './utils/cookies';
-import { useUser } from './hooks/useUser';
+import * as selectors from './store/selectors/user';
 
 import UserContext, { UserProvider } from './store/context/user';
 import { EquipmentsProvider } from './store/context/equipments';
+// import { DataProvider } from './store/context/data';
 
 
 import Navbar from './components/Navbar';
@@ -29,21 +29,15 @@ import './app.styl';
 
 const history = createBrowserHistory();
 
-
 const App = () => {
   const [shouldShow, showLogin] = useState(false);
   const [acceptCookie, setAcceptCookie] = useState(undefined);
 
   return (
     <Column className="page">
-      <Links className="flex nav-icons absolute" style={{ flexDirection: 'column', top: 0, left: 0 }} showLogin={showLogin} />
+      <Navbar />
 
-      <Puddle className={`puddle ${shouldShow ? "expand" : ""}`} onClick={() => showLogin(!shouldShow)} />
-      <Login className={shouldShow ? "visible" : ''} />
-
-      <Element className="main" style={{ placeContent: 'normal', maxHeight: shouldShow ? '100vh' : 'inherit' }}>
-        <Content showLogin={showLogin} />
-      </Element>
+      <Content showLogin={showLogin} />
 
       <AcceptCookie row={0} />
 
@@ -53,20 +47,20 @@ const App = () => {
 };
 
 
-const ApolloProviders = ({ children }) => {
-  const context = useContext(UserContext);
-  const { token } = useUser(context);
+const ConfiguredApolloProvider = ({ children }) => {
+  const [store] = useContext(UserContext);
+  const token = selectors.getJWT(store);
+  const cache = new InMemoryCache();
 
   const apollo = new ApolloClient({
-    uri: '//gql.shokkoth.tk/',
-    headers: {'Authorization': `Bearer ${token}`}
+    uri: process.env.NODE_ENV === 'development' ? '//graphql.dev.shokkoth.tk' : '//graphql.shokkoth.tk/',
+    headers: token && {'Authorization': `Bearer ${token}`},
+    cache,
   });
 
   return (
     <ApolloProvider client={apollo}>
-      <ApolloHooksProvider client={apollo}>
-        { children }
-      </ApolloHooksProvider>
+      { children }
     </ApolloProvider>
   )
 }
@@ -74,11 +68,13 @@ const ApolloProviders = ({ children }) => {
 ReactDOM.render((
     <Router history={history}>
       <UserProvider>
-        <ApolloProviders>
-          <EquipmentsProvider>
-            <App />
-          </EquipmentsProvider>
-        </ApolloProviders>
+        <ConfiguredApolloProvider>
+
+            <EquipmentsProvider>
+                <App />
+            </EquipmentsProvider>
+
+        </ConfiguredApolloProvider>
       </UserProvider>
     </Router>
 ), document.getElementById('root'));

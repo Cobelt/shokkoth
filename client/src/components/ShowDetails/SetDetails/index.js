@@ -22,6 +22,8 @@ import './stylesheet.styl';
         { set.name }
       </Element>
 
+      {/* TODO same panels for every bonuses */}
+
 
       { bonus && (
         <Row

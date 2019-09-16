@@ -1,18 +1,6 @@
 @require './variables.styl';
 @require './animations.styl';
 
-.nav-icons
-  justify-content start
-  z-index 10
-
-  .icon
-    font-size 2em
-    max-width 2.6em
-    filter brightness(140%)
-    transition filter 0.2s
-
-    &:hover, &:focus
-      filter brightness(120%)
 
 .btn.circle
   background-color var(--primary-color)
@@ -29,9 +17,15 @@
   position relative
 
   &.page
+    --navbar-height-mobile 64px
+    padding-top calc(var(--navbar-height-mobile) + 1.2em)
+
     min-width 100vw
     min-height 100vh
     overflow hidden
+
+    > :not(.navbar):not(.footer)
+      flex 1
 
     > .grid-element:not(.navbar):not(.footer):not(.article-list)
       place-content center
@@ -46,18 +40,28 @@
         align-self end
 
 
+
     .login
+      margin-left auto
+      margin-right auto
+
+      .shokkoth
+        max-height 30vh
+        min-height 5em
+
+
+
+    .login:not(.page-login)
       position absolute
-      top 1.5em
       left 50%
-      width 80%
-      min-height 20em
       flex-wrap nowrap
       opacity 0
       z-index 101
       transform translateX(-50%)
       transition opacity 0.25s ease-in, top 0.25s
-
+      min-height 20em
+      top 1.5em
+      width 80%
 
       @media (min-width: 641px)
         top 3em
@@ -72,12 +76,6 @@
 
       @media (min-width: 1541px)
         width 30%
-
-
-      .shokkoth
-        max-height 30vh
-        min-height 5em
-
 
       &:not(.visible)
         display none
@@ -96,12 +94,13 @@
       transform-origin top right
 
       width calc(1.5vw * var(--width))
-      max-width unset
+      max-width 7vw
+      min-width 7em
 
+      transition width 0.45s, max-width 0s
+      transition-delay 0s, 0.45s
       fill var(--primary-color)
-      transition width 0.45s
       z-index 100
-      min-width 5em
 
       @media (max-width: 640px)
         transition width 0.9s
@@ -123,6 +122,9 @@
 
 
       &.expand
+        max-width unset
+        transition width 0.45s, max-width 0s
+        transition-delay 0s, 0s
         filter brightness(120%)
         --width 300
 
@@ -144,46 +146,10 @@
 
 
         path
-          // todo : new path when expands (with keyframes and forwards ?)
           --path "M 100 50 V 0 H 30 c -57 1 -12 10 -20 25 c -11 20 15 3 20 10 c 11 14 -29 10 -20 40 c 4 15 30 -5 50 10 			c 4 4 -16 -3 -17 7 	C 41 106 100 100 100 90 v -40" !important
           transition-delay unset
 
 
-
-.top-right-corner
-  position absolute
-  right 0
-  top 0
-
-  &.with-radius
-    border-bottom-left-radius 15%
-
-
-.top-left-corner
-  position absolute
-  left 0
-  top 0
-
-  &.with-radius
-    border-bottom-right-radius 15%
-
-
-.bottom-right-corner
-  position absolute
-  right 0
-  bottom 0
-
-  &.with-radius
-    border-top-left-radius 15%
-
-
-.bottom-left-corner
-  position absolute
-  left 0
-  bottom 0
-
-  &.with-radius
-    border-top-right-radius 15%
 
 
 .navbar
@@ -233,18 +199,3 @@
 
   &.clickUp
     transform translateX(25%)
-
-
-/*
-@keyframes puddle-idle {
-  0% {
-    d: path("m 100 50   v -50 h -70   c -57 1 2 15 0 21       c 0 2 -37 49 13 29    c 15 -7 -1 10 -2 16     c 0 10 12 -4 10 3     c -2 7 -3 51 23 14    c 8 -11 22 24 26 7        v -40")
-  }
-  50% {
-    d: path("m 100 50   v -50 h -70   c -37 1 0 21 0 21       c -7 0 -59 45 13 29   c 6 -2 -6 9 -6 9        c -9 8 -6 12 14 10    c -6 7 -30 51 23 14   c 0 0 22 24 26 7          v -40")
-  }
-  100% {
-    d: path("m 100 50   v -50 h -70   c -57 1 2 15 0 21       c 0 2 -37 49 13 29    c 15 -7 -1 10 -2 16     c 0 10 12 -4 10 3     c -2 7 -3 51 23 14    c 8 -11 22 24 26 7        v -40")
-  }
-}
-*/

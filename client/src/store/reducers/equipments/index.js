@@ -18,7 +18,7 @@ import {
 
 import * as selectors from '../../selectors/equipments';
 
-import { createKey } from '../../utils/equipments';
+import { createKey } from '../../utils';
 
 
 export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
@@ -66,9 +66,8 @@ export const EquipmentsReducer = (store, { type, payload = {} } = {}) => {
         }
 
         case SAVE_STEP: {
-          const { step, types } = payload;
-          set(draft, 'step.active', step);
-          set(draft, 'step.types', types);
+          const { category, index } = payload;
+          set(draft, 'step', { category, index });
           break;
         }
 
