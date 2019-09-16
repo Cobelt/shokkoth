@@ -1,8 +1,6 @@
-export function setCookie(res, { name, value, expiresIn = 60 }) {
+export function setCookie(res, { name, value, expiresIn = 7 }) { // expiresIn days
   if (!name || !value) return;
-
-  const expirationDt = new Date(Date.now() + (expiresIn*24*60*60*1000)).toUTCString();
-  // set cookie, need cookie-parser https://stackoverflow.com/questions/16209145/how-to-set-cookie-in-node-js-using-express-framework
+  res.cookie(name, value, { maxAge: expiresIn*24*60*60*1000, path: '/', domain: '.shokkoth.tk' });
 }
 
 function getCookie({ name }) {
@@ -14,6 +12,4 @@ function getCookie({ name }) {
 function checkCookie({ name, value, expiresIn }) {
   const cookie = getCookie({ name });
   if (cookie) return true;
-
-  setCookie({ name, value, expiresIn });
 }

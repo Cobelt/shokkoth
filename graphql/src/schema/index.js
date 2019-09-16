@@ -3,6 +3,8 @@ import { schemaComposer } from 'graphql-compose';
 import createRelations from './relations';
 
 import useBreeds from './breeds';
+import useRecipes from './recipes';
+import useResources from './resources';
 import useSets from './sets';
 import useEquipments from './equipments';
 import useStuffs from './stuffs';
@@ -16,6 +18,8 @@ const customizationOptions = {
 };
 
 const BreedsTC = useBreeds(schemaComposer, customizationOptions);
+const RecipesTC = useRecipes(schemaComposer, customizationOptions);
+const ResourcesTC = useResources(schemaComposer, customizationOptions);
 const SetsTC = useSets(schemaComposer, customizationOptions);
 const EquipmentsTC = useEquipments(schemaComposer, customizationOptions);
 const StuffsTC = useStuffs(schemaComposer, customizationOptions);

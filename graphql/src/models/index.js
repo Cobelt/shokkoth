@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
-import { BreedsSchema, SetsSchema, EquipmentsSchema, CharactersSchema, UsersSchema } from 'shokkoth-models';
+import { BreedsSchema, SetsSchema, EquipmentsSchema, StuffsSchema, CharactersSchema, UsersSchema, RecipesSchema, ResourcesSchema } from 'shokkoth-models';
 
-const Breeds = mongoose.model('Breeds', BreedsSchema);
-const Equipments = mongoose.model('Equipments', EquipmentsSchema);
-const Sets = mongoose.model('Sets', SetsSchema);
-const Characters = mongoose.model('Characters', CharactersSchema);
-const Users = mongoose.model('Users', UsersSchema);
-
-export { Breeds, Sets, Equipments, Characters, Users };
-export Stuffs from './stuffs';
+export Stuffs from './stuffs'; // validation is added in file
+export const Breeds = mongoose.model('Breeds', BreedsSchema);
+export const Recipes = mongoose.model('Recipes', RecipesSchema);
+export const Resources = mongoose.model('Resources', ResourcesSchema);
+export const Sets = mongoose.model('Sets', SetsSchema);
+export const Equipments = mongoose.model('Equipments', EquipmentsSchema);
+export const Characters = mongoose.model('Characters', CharactersSchema);
+export const Users = mongoose.model('Users', UsersSchema);

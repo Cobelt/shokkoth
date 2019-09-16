@@ -11,9 +11,3 @@ export const setAnkamaIdIn = {
   type: '[Float]',
   query: (query, value) => set(query, 'set.ankamaId', { $in: value }),
 };
-
-export const setIdIn = {
-  name: 'setIdIn',
-  type: '[MongoID]',
-  query: (query, value) => set(query, 'set', { $in: value }),
-};

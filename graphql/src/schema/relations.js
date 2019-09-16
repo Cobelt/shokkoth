@@ -1,4 +1,27 @@
 export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, StuffsTC, CharactersTC, UsersTC }) {
+  // RecipesTC.addRelation(
+  //   'create',
+  //   {
+  //     resolver: () => EquipmentsTC.get('$findByIds'),
+  //     prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
+  //       _ids: (source) => source.create,
+  //     },
+  //     projection: { create: 1, createModel: 1 },
+  //   }
+  // )
+
+  StuffsTC.addRelation(
+    'character',
+    {
+      resolver: () => CharactersTC.get('$findOne'),
+      prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
+        filter: (source) => ({
+          hasStuffIn: source._id,
+        }),
+      },
+      projection: { _id: 1 },
+    }
+  );
 
   StuffsTC.addRelation(
     'equipments',
@@ -7,7 +30,7 @@ export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, Stuffs
       prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
         _ids: (source) => source.equipments,
       },
-        projection: { equipments: 1 },
+      projection: { equipments: 1 },
     }
   );
 
@@ -25,11 +48,13 @@ export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, Stuffs
   EquipmentsTC.addRelation(
     'set',
     {
-      resolver: () => SetsTC.get('$findById'),
+      resolver: () => SetsTC.get('$findOne'),
       prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
-        _id: (source) => source.set,
+        filter: (source) => ({
+          equipments: source._id,
+        }),
       },
-      projection: { set: 1 },
+      projection: { _id: 1 },
     }
   );
 

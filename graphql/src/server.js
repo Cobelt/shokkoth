@@ -15,7 +15,7 @@ import schema from './schema';
 
 import { PORT, ALLOWED_ORIGINS } from './env';
 const hostname = '0.0.0.0';
-const port = PORT || 4000;
+const port = process.env.PORT || PORT || 4000;
 
 const DB_HOSTNAME = process.env.MONGO_SERVER || 'localhost';
 const DB_PORT = process.env.MONGO_PORT || '27018';
@@ -53,20 +53,22 @@ app.use(cookieParser());
 
 app.use(async (req, res, next) => {
   try {
-    setLocale(res, { token: await findJWT(req) });
+    const token = await findJWT(req);
+    if (token) setLocale(res, { token });
     return next();
-  }
-  catch (e) {
+  } catch (e) {
     return next(e);
   }
 });
 
 app.use(async (req, res, next) => {
   try {
-    setLocale(res, { decoded: await decodeToken(getLocale(res, 'token')) });
+    const token = getLocale(res, 'token');
+    if (token) {
+      setLocale(res, { decoded: await decodeToken(token) });
+    }
     return next();
-  }
-  catch (e) {
+  } catch (e) {
     return next(e);
   }
 });

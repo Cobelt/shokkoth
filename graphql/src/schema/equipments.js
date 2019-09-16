@@ -3,6 +3,7 @@ import { Equipments } from '../models';
 import { adminAccess } from '../utils/auth';
 import * as resolvers from '../resolvers/equipments';
 import * as filters from '../filters';
+import * as filtersEquip from '../filters/equipments';
 
 export default function useEquipments(schemaComposer, customizationOptions = {}) {
   const EquipmentsTC = composeWithMongoose(Equipments, customizationOptions);
@@ -10,7 +11,25 @@ export default function useEquipments(schemaComposer, customizationOptions = {})
   EquipmentsTC.setResolver('findMany', EquipmentsTC.get('$findMany')
     .addFilterArg(filters.ankamaIdIn)
     .addFilterArg(filters.setAnkamaIdIn)
-    .addFilterArg(filters.setIdIn)
+    .addFilterArg(filtersEquip.fromOneOfThoseSets)
+    .addFilterArg(filtersEquip.withCharacters)
+    .addFilterArg(filtersEquip.search)
+    .addFilterArg(filtersEquip.searchName)
+    .addFilterArg(filtersEquip.levelMin)
+    .addFilterArg(filtersEquip.levelMax)
+    .addFilterArg(filtersEquip.categoryIn)
+    .addFilterArg(filtersEquip.typeIn)
+  );
+
+  EquipmentsTC.setResolver('findOne', EquipmentsTC.get('$findOne')
+    .addFilterArg(filters.ankamaIdIn)
+    .addFilterArg(filters.setAnkamaIdIn)
+    .addFilterArg(filtersEquip.fromSet)
+    .addFilterArg(filtersEquip.withCharacters)
+    .addFilterArg(filtersEquip.search)
+    .addFilterArg(filtersEquip.searchName)
+    .addFilterArg(filtersEquip.categoryIn)
+    .addFilterArg(filtersEquip.typeIn)
   );
 
   schemaComposer.Query.addFields({

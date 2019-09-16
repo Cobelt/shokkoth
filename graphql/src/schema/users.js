@@ -1,6 +1,6 @@
 import { composeWithMongoose } from 'graphql-compose-mongoose';
 import { Users } from '../models';
-import { adminAccess } from '../utils/auth';
+import { adminAccess, getJWTDecoded } from '../utils/auth';
 import * as resolvers from '../resolvers/users';
 
 export default function useUsers(schemaComposer, customizationOptions = {}) {
@@ -11,38 +11,81 @@ export default function useUsers(schemaComposer, customizationOptions = {}) {
     type: UsersTC,
     args: { userId: 'MongoID!', characterId: 'MongoID!' },
     resolve: resolvers.addCharacter,
-  })
+  });
 
   UsersTC.addResolver({
     name: 'updateSelf',
     type: UsersTC,
     args: { email: 'String', username: 'String', password: 'String', newPassword: 'String' },
     resolve: resolvers.updateSelf,
-  })
+  });
 
   UsersTC.addResolver({
     name: 'myRoles',
     type: '[String]',
     args: { limit: 'Int', skip: 'Int' },
     resolve: resolvers.myRoles,
-  })
+  });
+
+  UsersTC.addResolver({
+    name: 'signin',
+    type: 'String',
+    args: { username: 'String!', password: 'String!' },
+    resolve: resolvers.signin,
+  });
+
+  UsersTC.addResolver({
+    name: 'login',
+    type: 'String',
+    args: { email: 'String', username: 'String', password: 'String!' },
+    resolve: resolvers.login,
+  });
+
+  UsersTC.addResolver({
+    name: 'logout',
+    type: 'Boolean',
+    args: { },
+    resolve: resolvers.logout,
+  });
+
+  UsersTC.addResolver({
+    name: 'decodeToken',
+    type: UsersTC,
+    args: {},
+    resolve: rp => getJWTDecoded(rp),
+  });
+
+  UsersTC.addResolver({
+    name: 'self',
+    type: UsersTC.getType(),
+    args: {},
+    resolve: resolvers.getSelf,
+  });
 
   schemaComposer.Query.addFields({
+    self: UsersTC.get('$self'),
     myRoles: UsersTC.get('$myRoles'),
-    userById: UsersTC.get('$findById'),
-    userByIds: UsersTC.get('$findByIds'),
-    userOne: UsersTC.get('$findOne'),
-    userMany: UsersTC.get('$findMany'),
-    userCount: UsersTC.get('$count'),
-    userConnection: UsersTC.get('$connection'),
-    userPagination: UsersTC.get('$pagination'),
+    decodeToken: UsersTC.get('$decodeToken'),
+
+    ...adminAccess({
+      userById: UsersTC.get('$findById'),
+      userByIds: UsersTC.get('$findByIds'),
+      userOne: UsersTC.get('$findOne'),
+      userMany: UsersTC.get('$findMany'),
+      userCount: UsersTC.get('$count'),
+      userConnection: UsersTC.get('$connection'),
+      userPagination: UsersTC.get('$pagination'),
+    }),
   });
 
   schemaComposer.Mutation.addFields({
-    addCharacterToUser: UsersTC.getResolver('addCharacter'),
-    userCreateOne: UsersTC.get('$createOne'),
-    userUpdateSelf: UsersTC.getResolver('updateSelf'),
+    addCharacterToUser: UsersTC.get('$addCharacter'),
+    userUpdateSelf: UsersTC.get('$updateSelf'),
+    signin: UsersTC.get('$signin'),
+    login: UsersTC.get('$login'),
+
     ...adminAccess({
+      userCreateOne: UsersTC.get('$createOne'),
       userCreateMany: UsersTC.get('$createMany'),
       userUpdateById: UsersTC.get('$updateById'),
       userUpdateMany: UsersTC.get('$updateMany'),
