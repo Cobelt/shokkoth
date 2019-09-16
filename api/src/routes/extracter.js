@@ -12,6 +12,10 @@ extracterRouter.route('/dofusbook/iframe')
 
 extracterRouter.route('/everything/')
   .get(
+    Controller.initSetsExtraction,
+    Controller.getDataFromFile,
+    Controller.extractSets,
+
     Controller.initEquipmentsExtraction,
     Controller.getDataFromFile,
     Controller.extractEquipements,
@@ -32,8 +36,9 @@ extracterRouter.route('/everything/')
     Controller.getDataFromFile,
     Controller.extractEquipements,
 
-    // Controller.initSetsExtraction,
-    // Controller.extractSets,
+    Controller.initSetsExtraction,
+    Controller.getDataFromFile,
+    Controller.extractSets,
     Controller.sendExtracted
   )
 
@@ -82,6 +87,14 @@ extracterRouter.route('/breeds')
     Controller.initBreedsExtraction,
     Controller.getDataFromFile,
     Controller.extractBreeds,
+    Controller.sendExtracted,
+  );
+
+extracterRouter.route('/resources')
+  .get(
+    Controller.initResourcesExtraction,
+    Controller.getDataFromFile,
+    Controller.extractResources,
     Controller.sendExtracted,
   );
 

@@ -3110,6 +3110,13 @@ shebang-regex@^1.0.0:
   resolved "https://registry.npmjs.org/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
+"shokkoth-models@git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git":
+  version "0.0.2"
+  resolved "git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git#af2186c2e3c8f29f518a9c6ac7920328561b877e"
+  dependencies:
+    lodash.deburr "^4.1.0"
+    lodash.get "^4.4.2"
+
 sift@7.0.1:
   version "7.0.1"
   resolved "https://registry.npmjs.org/sift/-/sift-7.0.1.tgz#47d62c50b159d316f1372f8b53f9c10cd21a4b08"

@@ -4,12 +4,12 @@ import set from 'lodash.set';
 import mongoose from 'mongoose';
 import fs from 'fs';
 
-import { Equipments, Sets, Breeds } from '../models';
+import { Equipments, Sets, Breeds, Resources, Recipes } from '../models';
 
 
 import { _save } from './common';
 
-import { formatFullEquipment as format, formatSet } from '../utils/format';
+import { formatFullEquipment as format, formatSet, formatResource } from '../utils/format';
 import { getParam, setLocale, getLocale } from '../utils/common';
 
 import {
@@ -23,6 +23,7 @@ import {
   ALL_MOUNTS_FILE,
   ALL_SETS_FILE,
   ALL_BREEDS_FILE,
+  ALL_RESOURCES_FILE,
 } from '../constants/extracter';
 
 
@@ -35,7 +36,7 @@ export const getDataFromFile = async function(req, res, next) {
     return next();
   }
   catch (e) {
-    return res.status(500).send('Error when grabbing data from file', file);
+    return res.status(500).send(e);
   }
 };
 
@@ -95,6 +96,11 @@ export const initBreedsExtraction = async function(req, res, next) {
   next();
 };
 
+export const initResourcesExtraction = async function(req, res, next) {
+  setLocale(res, { file: ALL_RESOURCES_FILE })
+  next();
+};
+
 
 export const extractEquipements = async function(req, res, next) {
   const data = getLocale(res, 'dataFromFile');
@@ -102,40 +108,23 @@ export const extractEquipements = async function(req, res, next) {
 
   console.log('[==>] Extracting', data.length, 'items.');
 
-  const promises = data.map(equipment => new Promise((resolve, reject) => {
-    let formatted = format(equipment);
-    if (!formatted) reject("Error from formatting");
+  try {
+    const items = await Promise.all(data.map(async equipment => {
+      let formatted = format(equipment);
+      if (!formatted) return "Error from formatting";
 
-    const ankamaId = formatted.set
-    delete formatted.set;
+      return await Equipments.findOneAndUpdate({ ankamaId: formatted.ankamaId }, formatted, { new: true, upsert: true });
+    }));
 
-    if (ankamaId) {
-      Sets.findOne({ ankamaId }).then(set => {
-        if (set) {
-          formatted.set = get(set, '_id');
-        }
-
-        const toSave = new Equipments(formatted);
-        if (!toSave) reject("Error from Model");
-
-        _save(Equipments, toSave).then(saved => resolve(saved)).catch(err => reject(err));
-      }).catch(err => reject(err));
-    }
-    else {
-      const toSave = new Equipments(formatted);
-      if (!toSave) reject("Error from Model");
-
-      _save(Equipments, toSave).then(saved => resolve(saved)).catch(err => reject(err));
-    }
-  }));
-
-  Promise.all(promises).then(items => {
     setLocale(res, { extracted: items.map(i => i && i._id).filter(e => !!e) });
+
+
     console.log('[==>] Done.');
     return next();
-  }).catch(err => {
+  }
+  catch (err) {
     return next(err);
-  });
+  }
 };
 
 
@@ -149,7 +138,7 @@ export const extractSets = async function(req, res, next) {
 
     const items = await Promise.all(data.map(async equipmentsSet => {
       const formatted = formatSet(equipmentsSet);
-      if (!formatted) reject("Error from formatting");
+      if (!formatted) throw "Error from formatting";
 
       const ankamaIds = formatted.equipments;
       formatted.equipments = [];
@@ -158,7 +147,6 @@ export const extractSets = async function(req, res, next) {
         const equipments = await Promise.all(ankamaIds.map(async ankamaId => await Equipments.findOne({ ankamaId })));
         formatted.equipments = equipments.map(i => i && i._id).filter(e => !!e);
       }
-      console.log('from:', ankamaIds, 'to:', formatted.equipments);
 
       return await Sets.findOneAndUpdate({ ankamaId: formatted.ankamaId }, formatted, { new: true, upsert: true });
     }));
@@ -182,25 +170,49 @@ export const extractBreeds = async function(req, res, next) {
 
   console.log('[==>] Extracting', data.length, 'items.');
 
-  const promises = data.map(breed => new Promise((resolve, reject) => {
-    // to remove
-    delete breed.spells;
+  try {
+    const breeds = await Promise.all(data.map(async breed => {
+      // to remove
+      delete breed.spells;
 
-    const toSave = new Breeds(breed);
-    if (!toSave) reject("Error from Model");
+      return await Breeds.findOneAndUpdate({ _id: formatted._id }, formatted, { new: true, upsert: true });
+    }));
 
-    _save(Sets, toSave).then(saved => resolve(saved)).catch(err => reject(err));
-  }));
+    setLocale(res, { extracted: breeds.map(i => i && i._id) });
 
-  Promise.all(promises).then(items => {
-    setLocale(res, { extracted: items.map(i => i && i._id) });
+
     console.log('[==>] Done.');
     return next();
-  }).catch(err => {
+  }
+  catch (err) {
     return next(err);
-  });
+  }
 };
 
+
+export const extractResources = async function(req, res, next) {
+  const data = getLocale(res, 'dataFromFile');
+  if (!data) return next(new Error('Got no data from the file'));
+
+  console.log('[==>] Extracting', data.length, 'items.');
+
+  try {
+    const resources = await Promise.all(data.map(async resource => {
+      const formatted = formatResource(resource);
+
+      return await Resources.findOneAndUpdate({ ankamaId: formatted.ankamaId }, formatted, { new: true, upsert: true });
+    }));
+
+    setLocale(res, { extracted: resources.map(i => i && i._id) });
+
+
+    console.log('[==>] Done.');
+    return next();
+  }
+  catch (err) {
+    return next(err);
+  }
+};
 
 
 // // SENDERS

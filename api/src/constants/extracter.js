@@ -12,3 +12,4 @@ export const ALL_MOUNTS_FILE = '/data/external-github/crawlit-dofus-encyclopedia
 export const ALL_SETS_FILE = '/data/external-github/crawlit-dofus-encyclopedia-parser/data/dofus/mongo/set_mongo.json';
 
 export const ALL_BREEDS_FILE = path.resolve(__dirname, '../extractable/breeds.json');
+export const ALL_RESOURCES_FILE = '/data/external-github/crawlit-dofus-encyclopedia-parser/data/dofus/resource.json';

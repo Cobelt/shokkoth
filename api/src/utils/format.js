@@ -2,7 +2,8 @@ import get from 'lodash.get';
 import set from 'lodash.set';
 
 import { isStat, isPassif, isWeaponCharac, getWeaponCharac, getStatSrcImg, getDefaultPassiveImg } from './stats';
-import { toCategory, toGroupedCategory } from './equipments';
+import * as equipments from './equipments';
+import * as resources from './resources';
 
 export const formatCharacteristics = toFormat => {
   const toReturn = toFormat;
@@ -123,17 +124,29 @@ export const formatImgUrl = toFormat => {
   return toReturn;
 };
 
-export const formatType = toFormat => {
+export const formatEquipmentType = toFormat => {
   const toReturn = toFormat;
-  toReturn.type = toCategory(toFormat.type);
+  toReturn.type = equipments.getRealType(toFormat.type);
   return toReturn;
 }
 
-export const formatTypeToCategory = toFormat => {
+export const formatResourceType = toFormat => {
   const toReturn = toFormat;
-  toReturn.category = toGroupedCategory(toFormat.type);
+  toReturn.type = resources.getRealType(toFormat.type);
   return toReturn;
 }
+
+export const formatEquipmentCategory = toFormat => {
+  const toReturn = toFormat;
+  toReturn.category = equipments.toCategory(toFormat.type);
+  return toReturn;
+}
+
+export const formatResourceCategory = toFormat => {
+  const toReturn = toFormat;
+  toReturn.category = toFormat.type;
+  return toReturn;
+};
 
 
 export const formatSetId = toFormat => {
@@ -142,7 +155,23 @@ export const formatSetId = toFormat => {
   return toReturn;
 };
 
-export const formatFullEquipment = toFormat => formatSetId(formatTypeToCategory(formatType(formatImgUrl(formatRecipe(formatStatistics(formatCharacteristics(toFormat)))))));
+export const formatIdToAnkamaId = toFormat => {
+  const toReturn = toFormat;
+  toReturn.ankamaId = toFormat._id || toFormat.ankamaId;
+  delete toReturn._id;
+  return toReturn;
+};
+
+export const formatLvlToLevel = toFormat => {
+  const toReturn = toFormat;
+  toReturn.level = toFormat.lvl || toFormat.level;
+  return toReturn;
+};
 
 
-export const formatSet = toFormat => formatImgUrl(formatSetBonus(toFormat));
+
+export const formatFullEquipment = toFormat => formatSetId(formatEquipmentCategory(formatEquipmentType(formatImgUrl(formatRecipe(formatStatistics(formatCharacteristics(formatLvlToLevel(toFormat))))))));
+
+export const formatSet = toFormat => formatImgUrl(formatSetBonus(formatLvlToLevel(toFormat)));
+
+export const formatResource = toFormat => formatResourceCategory(formatResourceType(formatImgUrl(formatIdToAnkamaId(formatLvlToLevel(toFormat)))));

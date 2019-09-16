@@ -15,7 +15,7 @@ import {
 
 import { PORT, ALLOWED_ORIGINS } from './env';
 const hostname = '0.0.0.0';
-const port = PORT || 5013;
+const port = process.env.PORT || PORT || 5013;
 
 const DB_HOSTNAME = process.env.MONGO_SERVER || 'localhost';
 const DB_PORT = process.env.MONGO_PORT || '27018';

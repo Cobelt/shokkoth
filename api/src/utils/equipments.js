@@ -5,12 +5,12 @@ import { COMMON, WEAPONS, PETS, MOUNTS, EQUIPMENTS } from 'shokkoth-models';
 import { WEAPON, PET } from '../constants/categories';
 
 
-export const toCategory = memoize((type) => {
+export const getRealType = memoize((type) => {
   return COMMON.getKey(type)
 });
 
 
-export const toGroupedCategory = memoize((type) => {
+export const toCategory = memoize((type) => {
   let toReturn;
   if (WEAPONS.getKey(type)) {
     toReturn = WEAPON;
