@@ -8,7 +8,6 @@ import cors from 'cors';
 
 import { getParam, setLocale, getLocale } from './utils';
 import { decodeToken, findJWT, generateHash } from './utils/auth';
-import * as UserController from './controllers/users';
 
 import './models';
 import schema from './schema';
@@ -79,6 +78,5 @@ app.use('/', expressGraphQL({
   graphiql: true,
 }));
 
-// app.use(UserController.refreshToken);
 
 app.listen(port, hostname, () => console.log(`Shokkoth-Server started on http://${hostname}:${port}`));

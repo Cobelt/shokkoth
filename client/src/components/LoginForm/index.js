@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import get from 'lodash.get';
 import memoize from 'lodash.memoize';
 
@@ -12,22 +12,33 @@ import { login, signin } from '../../store/actions/user';
 import './stylesheet.styl';
 
 
-const getUsernameAndPwd = (formData) => formData && formData instanceof FormData && ({ username: formData.get('username'), password: formData.get('password') });
+const getUsernameAndPwd = (formData) => formData && formData instanceof FormData && ({ username: formData.get('username'), password: formData.get('password'), confirmedPassword: formData.get('confirmed-password') });
 
 
 const LoginForm = ({ setLook, submitted, setSubmitted, loading, context, ...props }) => {
   const [step, setStep] = useState('login');
-  const { login, signin, loginError, error } = useUser(context);
+  let { login, signin, loginError, error } = useUser(context);
+  const formRef = useRef(null);
+
+  console.log(formRef);
+
+  // const formData = new FormData(formRef.current);
 
   const handleSubmit = (e, formData) => {
     e.preventDefault();
+    const { username, password, confirmedPassword } = getUsernameAndPwd(formData);
     switch (step) {
       case 'login': {
-        login(getUsernameAndPwd(formData));
+        login({ username, password });
         break;
       }
       case 'signin': {
-        signin(getUsernameAndPwd(formData));
+        if (password !== confirmedPassword) {
+          error = 'Les deux mots de passes ne correspondent pas.';
+        }
+        else {
+          signin({ username, password });
+        }
         break;
       }
       case 'forgot': {
@@ -46,7 +57,8 @@ const LoginForm = ({ setLook, submitted, setSubmitted, loading, context, ...prop
       onSubmit={handleSubmit}
       gridClassName="align-center justify-center" colGap="1rem"
       columnsTemplate={'0.5fr 1fr 1fr 0.5fr'}
-      rowsTemplate={'fit-content(100%)'.repeat(5)}
+      rowsTemplate={'repeat(5, fit-content(100%))'}
+      ref={formRef}
       {...props}
     >
       <Element type="h2" className="marg-v-20 font-over-primary align-end" col={1} width={4}>
@@ -54,11 +66,16 @@ const LoginForm = ({ setLook, submitted, setSubmitted, loading, context, ...prop
       </Element>
 
       <Label className="error-holder relative" col={1} width={4} onClick={(e) => setLook(`fully-opened#${get(e, 'target.value.length') || 0}`)} data-error={get(loginError, 'message')}>
-        <Input name="username" autoComplete="true" type="text" placeholder="username *" required onChange={e => { setSubmitted(false); setLook(`fully-opened#${get(e, 'target.value.length') || 0}`); }} />
+        <Input name="username" autoComplete="true" type="text" placeholder="Nom d'utilisateur *" required onChange={e => { setSubmitted(false); setLook(`fully-opened#${get(e, 'target.value.length') || 0}`); }} />
       </Label>
       <Label style={{ opacity: step === 'forgot' && 0 }} col={1} width={4} onClick={() => setLook('almost-closed')}>
-        <Input name="password" autoComplete="true" type="password" placeholder="password *" required={step !== 'forgot'} disabled={step === 'forgot'} onChange={e => { setSubmitted(false); setLook('almost-closed'); }} />
+        <Input name="password" autoComplete="true" type="password" placeholder="Mot de passe *" required={step !== 'forgot'} disabled={step === 'forgot'} onChange={e => { setSubmitted(false); setLook('almost-closed'); }} />
       </Label>
+      { step === 'signin' && (
+        <Label col={1} width={4} onClick={() => setLook('almost-closed')}>
+          <Input name="confirmed-password" autoComplete="true" type="password" placeholder="Confirmez votre mot de passe *" required onChange={e => { setSubmitted(false); setLook('almost-closed'); }} />
+        </Label>
+      ) }
       <Button
         col={2}
         width={2}

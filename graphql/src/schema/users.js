@@ -49,6 +49,13 @@ export default function useUsers(schemaComposer, customizationOptions = {}) {
   });
 
   UsersTC.addResolver({
+    name: 'acceptCookies',
+    type: 'String',
+    args: { value: 'Boolean!' },
+    resolve: resolvers.acceptCookies,
+  });
+
+  UsersTC.addResolver({
     name: 'decodeToken',
     type: UsersTC,
     args: {},
@@ -83,6 +90,8 @@ export default function useUsers(schemaComposer, customizationOptions = {}) {
     userUpdateSelf: UsersTC.get('$updateSelf'),
     signin: UsersTC.get('$signin'),
     login: UsersTC.get('$login'),
+
+    acceptCookies: UsersTC.get('$acceptCookies'),
 
     ...adminAccess({
       userCreateOne: UsersTC.get('$createOne'),

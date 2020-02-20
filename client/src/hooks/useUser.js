@@ -28,10 +28,17 @@ export const useUser = ([store, dispatch] = []) => {
     const token = selectors.getJWT(store);
     const user = selectors.getUser(store);
 
-    const decoded = jwt.decode(token);
+    let decoded;
     let isLogged = false;
-    if (Date.now() < get(decoded, 'exp') * 1000) {
-      isLogged = true;
+    if (token) {
+      decoded = jwt.decode(token);
+      if (Date.now() < get(decoded, 'exp') * 1000) {
+        isLogged = true;
+      }
+      else {
+        // remove token
+        actions.saveJWT({ token: null }, [store, dispatch])
+      }
     }
 
     const [signin, { data: { signin: tokenFromSignin } = {}, error: signinError }] = useMutation(gql(mutations.signin));

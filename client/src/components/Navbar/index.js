@@ -34,7 +34,7 @@ const NavbarComponent = () => {
   const { isLogged } = useUser(context);
 
   return (
-    <Navbar position="fixed" style={{ top: 0 }}>
+    <Navbar primaryBG={false} position="fixed" style={{ top: 0 }}>
       <NavLink to="/"><NavItem brand justify="left" icon="home" ><Brand /></NavItem></NavLink>
 
       <div className="flex-1" />
@@ -44,8 +44,8 @@ const NavbarComponent = () => {
 
       <div style={{ borderRight: 'solid 2px var(--primary-color)' }} className="marg-v-15" />
 
-      <NavLink to="/stuffs/mines"><NavItem justify="right" icon="filter_none">Mes stuffs</NavItem></NavLink>
-      <NavLink to="/characters/mines"><NavItem justify="right" icon="supervisor_account">Mes persos</NavItem></NavLink>
+      { isLogged && <NavLink to="/stuffs/mines"><NavItem justify="right" icon="filter_none">Mes stuffs</NavItem></NavLink> }
+      { isLogged && <NavLink to="/characters/mines"><NavItem justify="right" icon="supervisor_account">Mes persos</NavItem></NavLink> }
 
       <NavLink to={isLogged ? "/account" : "/login"}><NavItem justify="right" icon={isLogged ? "account_circle" : "power_settings_new"} style={{ color: isLogged && 'var(--danger-color)' }}>{isLogged ? "Mon compte" : "Se connecter"}</NavItem></NavLink>
     </Navbar>

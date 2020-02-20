@@ -97,3 +97,9 @@ export const login = `
     login(username: $username, email: $email, password: $password)
   }
 `;
+
+export const setAcceptCookies = `
+  mutation AcceptCookies($value: Boolean!){
+    acceptCookies(value: $value)
+  }
+`;

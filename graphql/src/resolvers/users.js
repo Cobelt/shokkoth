@@ -1,4 +1,5 @@
 import set from 'lodash.set';
+import get from 'lodash.get';
 
 import { Users } from '../models';
 import { getLocale } from '../utils';
@@ -32,7 +33,7 @@ export const addCharacter = async ({ source, args, context, info }) => {
     let userFound = await Users.findOne({ characters: { $in: [args.characterId] } });
     if (userFound) throw new Error(`This character is already linked to ${userFound._id == args.userId ? 'this' : 'another'} user`);
 
-    const updated = await Users.updateOne({ _id: args.userId }, { $push: { characters: args.characterId } })
+    const updated = await Users.updateOne({ _id: args.userId }, { $push: { characters: args.characterId } }, { new: true })
     if (!updated) throw new Error('Error on update');
 
     return Users.findOne({ _id: args.userId }) // return the record
@@ -44,7 +45,7 @@ export const addCharacter = async ({ source, args, context, info }) => {
 
 export const getSelf = async (rp) => {
   const userId = getUserId(rp);
-  if (!userId) return [];
+  if (!userId) return {};
   return Users.findOne({ _id: userId });
 }
 
@@ -86,9 +87,26 @@ export const login = async ({ args, context, source, info }) => {
     if (!passwordMatch) throw new Error("Couldn't find this combinaison of username and password in database");
     else {
       const token = await generateJWT(user);
-      setCookie(context.res, { name: 'shokkothJWT', value: token, expiresIn: 1/24 })
+      setCookie(context.res, { name: 'login/TOKEN', value: token, expiresIn: 1/24 })
       return token;
     }
+  } catch (e) {
+    return e;
+  }
+}
+
+export const acceptCookies = async ({ args, context }) => {
+  try {
+    const userId = getUserId({ context });
+    if (!userId) return false;
+    const user = await Users.findOne({ _id: userId }).exec();
+    user.acceptCookies = !!get(args, 'value');
+    await user.save();
+    
+    const token = await generateJWT(user);
+    setCookie(context.res, { name: 'login/TOKEN', value: token, expiresIn: 1/24 })
+    return token;
+
   } catch (e) {
     return e;
   }

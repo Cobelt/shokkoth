@@ -11,14 +11,14 @@ import * as selectors from './store/selectors/user';
 
 import UserContext, { UserProvider } from './store/context/user';
 import { EquipmentsProvider } from './store/context/equipments';
-// import { DataProvider } from './store/context/data';
+import { DataProvider } from './store/context/data';
 
 
 import Navbar from './components/Navbar';
 import Links from './components/LinksSwitch';
 import Content from './components/RoutesSwitch';
 import Login from './components/Login';
-import AcceptCookie from './components/AcceptCookie';
+import AcceptCookies from './components/AcceptCookies';
 import Footer from './components/Footer';
 
 import Puddle from './assets/svg/puddle.js';
@@ -39,7 +39,7 @@ const App = () => {
 
       <Content showLogin={showLogin} />
 
-      <AcceptCookie row={0} />
+      <AcceptCookies row={0} />
 
       <Footer />
     </Column>
@@ -69,11 +69,11 @@ ReactDOM.render((
     <Router history={history}>
       <UserProvider>
         <ConfiguredApolloProvider>
-
+          <DataProvider>
             <EquipmentsProvider>
                 <App />
             </EquipmentsProvider>
-
+          </DataProvider>
         </ConfiguredApolloProvider>
       </UserProvider>
     </Router>

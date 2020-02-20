@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react';
 import get from 'lodash.get';
 
 import * as cookies from '../../../utils/cookies';
+import { TOKEN } from '../../../constants/cookies';
 import { UserReducer } from '../../reducers/user';
 
 
@@ -13,7 +14,7 @@ export const UserConsumer = UserContext.Consumer;
 export const getInitialState = () => {
   const initialState = {};
 
-  const token = cookies.get('shokkothJWT')
+  const token = cookies.get(TOKEN)
   if (token) initialState.jwt = token;
 
   return initialState;

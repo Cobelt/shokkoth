@@ -10,7 +10,7 @@ import { SECRET_KEY } from '../env';
 
 
 export const findJWT = async (req) => {
-  let token = get(req, 'headers.authorization') || getParam(req, 'jwt') || getParam(req, 'shokkothJWT') || get(req, 'cookies.shokkothJWT'); // Express headers are auto converted to lowercase
+  let token = get(req, 'headers.authorization') || getParam(req, 'jwt') || getParam(req, 'login/TOKEN') || get(req, 'cookies.login/TOKEN'); // Express headers are auto converted to lowercase
   if (!token || typeof token !== 'string') return;
 
   if (token.startsWith('Bearer ')) {
@@ -22,9 +22,9 @@ export const findJWT = async (req) => {
 
 export async function generateJWT(user) {
   try {
-    const { _id, username, email, roles } = user;
+    const { _id, username, email, roles, acceptCookies } = user;
 
-    const token = await jwt.sign({ _id, username, email, roles }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '7d' });
+    const token = await jwt.sign({ _id, username, email, roles, acceptCookies }, SECRET_KEY, { algorithm: 'HS256', expiresIn: '7d' });
     if (!token) return res.status(500).send('No token created');
     await Users.updateOne({ _id }, { $set: { lastConnection: Date.now() } }, { new: true })
 

@@ -2,12 +2,17 @@ import React, { useContext, useState, useEffect } from 'react';
 import uuid from 'uuid/v4';
 import get from 'lodash.get';
 import gql from 'graphql-tag';
-import { useQuery } from '@apollo/react-hooks';
+import { useLazyQuery } from '@apollo/react-hooks';
 import { Link, Redirect, withRouter } from 'react-router-dom';
 import { Button, Grid, Element, Row, Icon, FullPageSpinner } from 'muejs';
 import { USERS } from 'shokkoth-models';
 
 import UserContext from '../../../store/context/user';
+import DataContext from '../../../store/context/data';
+
+import * as selectors from '../../../store/selectors/data/characters';
+import * as actions from '../../../store/actions/data/characters';
+
 import { useUser } from '../../../hooks/useUser';
 
 import { getMyCharacters } from '../../../queries';
@@ -15,14 +20,29 @@ import { getMyCharacters } from '../../../queries';
 import './stylesheet.styl';
 
 
-const MyCharacters = ({ showLogin, history: { goBack, push } = {} }) => {
+const MyCharacters = ({ history: { goBack, push } = {} }) => {
   const [characterByRow, setCharacterByRow] = useState(5);
+  const [store, dispatch] = useContext(DataContext);
+
   const context = useContext(UserContext);
-
   const { user, token, isLogged } = useUser(context);
-  const { data: { myCharacters = [] } = {}, loading, error } = useQuery(gql(getMyCharacters));
+  const [fetch, { called, data: { myCharacters: fetched = [] } = {}, loading, error }] = useLazyQuery(gql(getMyCharacters));
 
+  const characters = selectors.getMyCharacters(store) || [];
 
+  useEffect(() => {
+    if (user && !called && !loading) {
+      fetch();
+    }
+  }, [get(user, '_id')]);
+
+  // to remove when cache will work
+  useEffect(() => {
+    if (fetched.length > 0) {
+      console.log('fetched those:', fetched);
+      actions.saveMines({ fetched }, [store, dispatch]);
+    }
+  }, [fetched.length])
 
   const mq = window.matchMedia("(max-width: 801px)");
   useEffect(() => {
@@ -45,7 +65,9 @@ const MyCharacters = ({ showLogin, history: { goBack, push } = {} }) => {
     return () => mq.removeListener(widthChange);
   }, [mq])
 
-  if (token && !isLogged) return <Redirect to="/" />
+
+
+  if (!token || (token && !isLogged)) return <Redirect to="/" />
 
   if (loading) return <FullPageSpinner />;
 
@@ -58,7 +80,7 @@ const MyCharacters = ({ showLogin, history: { goBack, push } = {} }) => {
 
       <Element justify="stretch" align={"start"} row={2}>
         <Grid rowGap="2em" className="characters-list" columnsTemplate={ '1fr '.repeat(characterByRow) }>
-          { [null, myCharacters].flat().map((character, index) => {
+          { [null, characters].filter(e => e !== undefined).flat().map((character, index) => {
             const { name, level, stuffs, breed } = character || {};
             const row = Math.trunc(1 + (index / characterByRow));
             const col = 1 + (index % characterByRow);

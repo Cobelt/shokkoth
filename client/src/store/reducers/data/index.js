@@ -9,7 +9,7 @@ import {
   SAVE_CHARACTERS,
 } from '../../constants/data';
 
-import * as selectors from '../../selectors/data';
+import * as selectors from '../../selectors/data/characters';
 
 
 export const DataReducer = (store, { type, payload = {} } = {}) => {
@@ -19,14 +19,16 @@ export const DataReducer = (store, { type, payload = {} } = {}) => {
       switch (type) {
 
         case SAVE_CHARACTERS: {
-          const { data, loading, error } = payload;
-          set(draft, 'characters.all', { data: { ...selectors.getAllCharacters(store), ...data }, loading, error });
+          const { data = {}, loading, error } = payload;
+          const current = selectors.getAllCharacters(store) || {};
+          set(draft, 'characters.all', { data: { ...current, ...data }, loading, error });
           break;
         }
 
         case SAVE_MY_CHARACTERS: {
-          const { ids, params } = payload;
-          set(draft, `characters.mines.${createKey(params)}`, { ...selectors.getMyCharacters(store, { params }), data });
+          const { ids = [], params } = payload;
+          const current = selectors.getMyCharactersIds(store, { params }) || [];
+          set(draft, `characters.mines`, [...current, ...ids]);
           break;
         }
 

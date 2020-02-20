@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import * as cookies from '../utils/cookies';
+import { DARK_MODE } from '../constants/cookies';
 
 export const useDarkMode = () => {
   const root = document.getElementById('root')
@@ -7,7 +8,7 @@ export const useDarkMode = () => {
 
   useEffect(() => {
     if ([true, false].includes(darkMode)) {
-      cookies.set('DARK_MODE', darkMode);
+      cookies.set(DARK_MODE, darkMode);
       root.classList.toggle('dark-mode', darkMode);
     }
 

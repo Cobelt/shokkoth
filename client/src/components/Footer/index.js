@@ -38,7 +38,6 @@ const FooterComponent = ({ row, ...otherProps }) => (
 
         <FooterLine>
             <Element type="a" href="https://www.twitch.tv/huzounet">Huz</Element>
-            <Element type="a" href="https://www.twitch.tv/kapotaque">Kapotaque</Element>
         </FooterLine>
       </FooterList>
 
@@ -57,7 +56,7 @@ const FooterComponent = ({ row, ...otherProps }) => (
       </FooterList>
 
 
-      <Element className="justify-center" col={1} row={2} width={3}>
+      <Element className="justify-center" col={1} row={2} width={5}>
         <span className="ankama-logo pad-1-rem">
           <span>Les images</span>
           <span className="hide-until-sm">d'équipements, ressources et classes</span>
