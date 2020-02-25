@@ -30,7 +30,7 @@ const StatsInputs = ({ isOpened, setOpened, ...otherProps }) => {
           </Fragment>
         )) }
 
-        <Element className="text-center marg-t-5" width={3}>Il vous reste { pointsToDispatch } point{ 995 !== 1 && 's' } à distribuer</Element>
+        <Element className="text-center mt-5" width={3}>Il vous reste { pointsToDispatch } point{ 995 !== 1 && 's' } à distribuer</Element>
       </Grid>
     </Element>
   );

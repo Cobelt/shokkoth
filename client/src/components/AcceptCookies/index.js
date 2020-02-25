@@ -19,7 +19,7 @@ const AcceptCookies = ({ match, location, history, staticContext, className, ...
 
   useEffect(() => {
     if (acceptCookies !== undefined) {
-      setDecision(acceptCookies, { variables: { value: acceptCookies }});
+      setDecision({ variables: { value: acceptCookies } });
     }
   }, [acceptCookies])
 

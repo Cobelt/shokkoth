@@ -53,8 +53,6 @@ const New = ({ match: { params: { characterId } = {} } = {}, location, staticCon
   return (
     <Grid className="stuff-editor" gap="3rem" rowsTemplate="2.5rem 2.5rem repeat(3, fit-content(100%))" columnsTemplate={`10vw 1fr 10vw`}>
 
-      <Brand row={1} col={1} width={3} height={2} className="align-stretch" />
-
       <StuffForm character={character} stuff={stuff} row={3} col={2} />
 
     </Grid>

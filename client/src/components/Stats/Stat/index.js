@@ -17,7 +17,7 @@ const Stat = ({ index, statType, stat, className, ...otherProps }) => {
 
   return (
     <Element className={arrayToClassName([statType ? statType : 'stat', className])} {...otherProps}>
-      <StatLabel statType={statType} index={index} stat={stat} className="marg-r-5" />
+      <StatLabel statType={statType} index={index} stat={stat} className="mr-5" />
       { statType === 'passive' ? stat.name : text }
     </Element>
   );

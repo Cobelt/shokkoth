@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import ReactDOM from 'react-dom';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import ApolloClient from 'apollo-boost';
@@ -12,7 +12,6 @@ import * as selectors from './store/selectors/user';
 import UserContext, { UserProvider } from './store/context/user';
 import { EquipmentsProvider } from './store/context/equipments';
 import { DataProvider } from './store/context/data';
-
 
 import Navbar from './components/Navbar';
 import Links from './components/LinksSwitch';
@@ -39,7 +38,7 @@ const App = () => {
 
       <Content showLogin={showLogin} />
 
-      <AcceptCookies row={0} />
+      {/* <AcceptCookies row={0} /> */}
 
       <Footer />
     </Column>

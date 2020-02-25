@@ -35,7 +35,7 @@ const StuffsSearch = ({ loading, error, stuffs = [], globalCharacter, delete: De
 
       { loading
         ? <Row {...spinnerPosition} className="justify-center"><Spinner /></Row>
-        : <StuffsList stuffs={stuffs} globalCharacter={globalCharacter} error={error} small={small.toString()} delete={DeleteButton} editable={editable} />
+        : <StuffsList stuffs={stuffs} globalCharacter={globalCharacter} error={error} small={small} delete={DeleteButton} editable={editable} />
       }
     </>
   );

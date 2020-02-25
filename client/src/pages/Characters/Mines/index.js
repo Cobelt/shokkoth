@@ -74,7 +74,7 @@ const MyCharacters = ({ history: { goBack, push } = {} }) => {
   const title = error ? `Erreur! ${error.message}` : 'Mes personnages'
 
   return (
-    <Grid className="characters-container marg marg-b-3-rem" gap="3rem" columnsTemplate="1fr">
+    <Grid className="characters-container mb-50" gap="3rem" columnsTemplate="1fr">
 
       <Element type="h3" col={1} row={1} className="main-title text-center font-primary">{ title }</Element>
 
@@ -109,7 +109,7 @@ const MyCharacters = ({ history: { goBack, push } = {} }) => {
                   <div className={avatarClassnames} style={{ backgroundImage }} aria-disabled={true}>
                       { !character && (
                         <div className="new-icon">
-                          <Icon className="pad-0 marg-0" icon="add" style={{ color: "var(--font-color-on-primary)", fontWeight: '900' }} size="xl" />
+                          <Icon className="p-0 m-0" icon="add" style={{ color: "var(--font-color-on-primary)", fontWeight: '900' }} size="xl" />
                         </div>
                       )}
                       { character && (name || level) && (
@@ -118,7 +118,7 @@ const MyCharacters = ({ history: { goBack, push } = {} }) => {
                               {/* level && <span className="level">{ character.level }</span> */}
                               { stuffs && (
                                 <span className="stuffs flex" style={{ alignItems: 'center' }}>
-                                  <Icon icon={`filter_${stuffs.length === 0 ? 'none' : (stuffs.length > 9 ? '9_plus' : stuffs.length)}`} size="sm" className="pad-0 marg-0" />
+                                  <Icon icon={`filter_${stuffs.length === 0 ? 'none' : (stuffs.length > 9 ? '9_plus' : stuffs.length)}`} size="sm" className="p-0 m-0" />
                                 </span>
                               ) }
                           </div>

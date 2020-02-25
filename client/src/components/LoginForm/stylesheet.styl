@@ -23,6 +23,9 @@
       transform translateX(0%)
       transition transform 0.4s
 
+      &:before
+        content unset
+
       &:hover
         transform translateX(5%)
 
@@ -30,14 +33,7 @@
       background-color unset
       color var(--font-color-on-primary)
       transition background-color 0.2s
-      padding 5px
       position relative
-
-      &.new-account
-        box-shadow inset -2px -2px 0px 2px var(--primary-color)
-
-      &.forgot-password
-        box-shadow inset 2px -2px 0px 2px var(--primary-color)
 
 
       &:after

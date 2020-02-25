@@ -34,7 +34,7 @@ const NewCharacter = () => {
   return (
     <Form
       onSubmit={create}
-      className="character-new marg marg-b-3-rem"
+      className="character-new mb-50"
       gap="3em"
       rowsTemplate="2.5em 3.5em"
       columnsTemplate="6vw 1fr 1fr 1fr 6vw"
@@ -58,7 +58,7 @@ const NewCharacter = () => {
       </Column>
 
       {/* <Row col={2} row={{ xs: 6, md: 4 }} width={{ xs: 3, md: 1 }} className="justify-left">
-        <Column className="marg-r-10">
+        <Column className="mr-10">
           <MaleGenderIcon className={`gender-btn pointer ${gender === 'male' ? 'active' : ''}`.trim()} height="2em" width="2em" onClick={() => setGender('male')} />
           <FemaleGenderIcon className={`gender-btn pointer ${gender === 'female' ? 'active' : ''}`.trim()} height="2em" width="2em" onClick={() => setGender('female')} />
         </Column>
@@ -67,7 +67,7 @@ const NewCharacter = () => {
           const colorHex = colorString.charAt(0) === '#' ? colorString : decimalToHexa(colorString);
 
           return (
-            <Label key={`breed#${breed.name}#color#${colorHex}#${index}`} className="marg-10">
+            <Label key={`breed#${breed.name}#color#${colorHex}#${index}`} className="m-10">
               <input type="color" className="hidden" />
               <label style={{ width: '4em', height: '4em', display: 'inline-block', backgroundColor: colorHex }} />
             </Label>

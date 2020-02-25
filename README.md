@@ -6,7 +6,8 @@
 - Create character (linked to an account)
 
 
-### TODO before first release : 
+### TODO before first release :
+- Equipment validation before adding to stuff
 - Drag 'n' drop
 - Searching item
 - Save stuff (linked to a character except for draft in cookies)

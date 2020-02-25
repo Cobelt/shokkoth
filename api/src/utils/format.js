@@ -170,8 +170,8 @@ export const formatLvlToLevel = toFormat => {
 
 
 
-export const formatFullEquipment = toFormat => formatSetId(formatEquipmentCategory(formatEquipmentType(formatImgUrl(formatRecipe(formatStatistics(formatCharacteristics(formatLvlToLevel(toFormat))))))));
+export const formatFullEquipment = toFormat => formatIdToAnkamaId(formatSetId(formatEquipmentCategory(formatEquipmentType(formatImgUrl(formatRecipe(formatStatistics(formatCharacteristics(formatLvlToLevel(toFormat)))))))))
 
-export const formatSet = toFormat => formatImgUrl(formatSetBonus(formatLvlToLevel(toFormat)));
+export const formatSet = toFormat => formatIdToAnkamaId(formatImgUrl(formatSetBonus(formatLvlToLevel(toFormat))))
 
-export const formatResource = toFormat => formatResourceCategory(formatResourceType(formatImgUrl(formatIdToAnkamaId(formatLvlToLevel(toFormat)))));
+export const formatResource = toFormat => formatIdToAnkamaId(formatResourceCategory(formatResourceType(formatImgUrl(formatIdToAnkamaId(formatLvlToLevel(toFormat))))));

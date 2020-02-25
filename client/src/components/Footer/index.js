@@ -11,19 +11,19 @@ const FooterComponent = ({ row, ...otherProps }) => (
           <Element type="h5">Un problème ?</Element>
 
           <FooterLine>
-            <Element className="line-item marg-8 pad-0" type="a" href="https://twitter.com/shokkoth" title="twitter du site">
+            <Element className="line-item m-8 p-0" type="a" href="https://twitter.com/shokkoth" title="twitter du site">
               <Icon icon="twitter" svg />
             </Element>
 
-            <Element className="line-item marg-8 pad-0" type="a" href="https://github.com/cobelt">
+            <Element className="line-item m-8 p-0" type="a" href="https://github.com/cobelt">
               <Icon icon="github" svg />
             </Element>
 
-            <Element className="line-item marg-8 pad-0" type="a" href="mailto:cobelt60@gmail.com">
+            <Element className="line-item m-8 p-0" type="a" href="mailto:cobelt60@gmail.com">
               <Icon icon="gmail" svg />
             </Element>
 
-            <Element className="line-item marg-8 pad-0" type="a" href="https://twitter.com/shokkoth" title="twitter perso">
+            <Element className="line-item m-8 p-0" type="a" href="https://twitter.com/shokkoth" title="twitter perso">
               <Icon icon="twitter" svg />
             </Element>
           </FooterLine>
@@ -57,7 +57,7 @@ const FooterComponent = ({ row, ...otherProps }) => (
 
 
       <Element className="justify-center" col={1} row={2} width={5}>
-        <span className="ankama-logo pad-1-rem">
+        <span className="ankama-logo p-15">
           <span>Les images</span>
           <span className="hide-until-sm">d'équipements, ressources et classes</span>
           <span>appartiennent</span>

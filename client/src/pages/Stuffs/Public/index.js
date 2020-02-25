@@ -34,18 +34,19 @@ const PublicStuff = ({ match: { params: { _id } = {} } = {}, location, staticCon
   const title = error ? `Erreur! ${error.message}` : `[Publique] Stuffs "${get(stuff, 'name')}" de ${get(character, 'name')}`
 
   return (
-    <Grid className="stuff-watcher marg-b-3rem" rowGap="3em" colGap={{ sm: '3em' }} rowsTemplate={{ xs: 'auto auto 1fr', md: 'auto auto 1fr' }} columnsTemplate={{ md: '6vw 1fr 6vw', lg: '30em 1fr 1fr' }}>
+    <Grid className="stuff-watcher mb-50" rowGap="3em" colGap={{ sm: '3em' }} rowsTemplate={{ xs: 'auto auto 1fr', md: 'auto auto 1fr' }} columnsTemplate={{ md: '6vw 1fr 6vw', lg: '30em 1fr 1fr' }}>
 
       <Element type="h3" row={1} col={1} width={{ md: 3, lg: 3 }} className="main-title text-center font-primary">{ title }</Element>
 
       <Stuff character={character} stuff={stuff} row={2} col={{ md: 1 }} editable={false} />
-      <ShowDetails equipment={equipmentToDetail} selectEquipment={select} row={{ xs: 2, md: 1, lg: 2 }} col={{ sm: 2, md: 3, lg: 3 }} height={{ md: 2, lg: 1 }} width={{ md: 2, lg: 1 }}/>
+
+      {/*<ShowDetails equipment={equipmentToDetail} selectEquipment={select} row={{ xs: 2, md: 1, lg: 2 }} col={{ sm: 2, md: 3, lg: 3 }} height={{ md: 2, lg: 1 }} width={{ md: 2, lg: 1 }}/>
 
       <Element className="stats-container" row={{ xs: 3, lg: 2 }} col={{ md: 2, lg: 3 }} width={{ md: 3, lg: 2 }} height={{ md: 2, lg: 1 }}>
         <Grid columnsTemplate={{ xs: '1fr', sm: '1fr 1fr' }} colGap="5em">
           <CharacterStats />
         </Grid>
-      </Element>
+      </Element>*/}
     </Grid>
   );
 }

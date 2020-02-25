@@ -49,7 +49,7 @@ const EquipmentsSearch = ({ select, equip, itemDisplayed, className, ...otherPro
 
   return (
     <Column className={arrayToClassName(['equipments-search', className])} {...otherProps}>
-      <Column className="bg-primary pad-1-rem">
+      <Column className="bg-primary p-15">
         <Input className="searchbar justify-center" type="text" onChange={e => updateSearchBar(e.target.value)} placeholder="Search for an item" />
         <div className="justify-center">
           <label><input type="checkbox" name="strength" />Force</label>

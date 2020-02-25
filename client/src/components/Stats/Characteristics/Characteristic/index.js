@@ -17,7 +17,7 @@ const Characteristic = ({ index, stat, className, ...otherProps }) => {
 
   return (
     <Element className={arrayToClassName(['characteristic', 'flex', className])} {...otherProps}>
-      <StatLabel index={index} stat={stat} className="marg-r-5" />
+      <StatLabel index={index} stat={stat} className="mr-5" />
       { text }
     </Element>
   );

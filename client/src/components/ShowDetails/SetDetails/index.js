@@ -18,7 +18,7 @@ import './stylesheet.styl';
     <>
       <Icon row={1} col={1} height={2} icon="arrow_back_ios" style={{ maxWidth: '4rem', maxHeight: '4rem' }} title="Retourner au détail de l'équipment" onClick={() => displayEquipment()} />
 
-      <Element type="h4" col={2} row={1} className="setdetails-name marg marg-0 align-end" show={set.name} title={set.name}>
+      <Element type="h4" col={2} row={1} className="setdetails-name m-0 align-end" show={set.name} title={set.name}>
         { set.name }
       </Element>
 
@@ -27,7 +27,7 @@ import './stylesheet.styl';
 
       { bonus && (
         <Row
-          className="bonus-arrows align-center justify-center marg-b-15"
+          className="bonus-arrows align-center justify-center mb-15"
           col={2}
           row={2}
           show={bonus}

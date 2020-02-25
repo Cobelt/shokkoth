@@ -29,9 +29,9 @@ const copyUrlToClipboard = () => {
 
 const NavbarComponent = () => {
   const context = useContext(UserContext);
+  const { isLogged } = useUser(context);
 
   const [darkMode, toggleDarkMode] = useDarkMode();
-  const { isLogged } = useUser(context);
 
   return (
     <Navbar primaryBG={false} position="fixed" style={{ top: 0 }}>
@@ -42,7 +42,7 @@ const NavbarComponent = () => {
       <Icon className="font-primary hide-until-md" icon="share" onClick={copyUrlToClipboard} />
       <Icon className={`font-primary dark-mode ${darkMode ? 'is-dark' : 'is-light'}`} icon={darkMode ? 'wb_sunny' : 'brightness_3'} onClick={toggleDarkMode} />
 
-      <div style={{ borderRight: 'solid 2px var(--primary-color)' }} className="marg-v-15" />
+      <div style={{ borderRight: 'solid 2px var(--primary-color)' }} className="mv-15" />
 
       { isLogged && <NavLink to="/stuffs/mines"><NavItem justify="right" icon="filter_none">Mes stuffs</NavItem></NavLink> }
       { isLogged && <NavLink to="/characters/mines"><NavItem justify="right" icon="supervisor_account">Mes persos</NavItem></NavLink> }

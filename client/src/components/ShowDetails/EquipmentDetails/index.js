@@ -35,8 +35,8 @@ const EquipmentDetails = ({ active, equipment, displaySet, equip }) => {
     <>
       <Equipment row={1} col={1} equipment={equipment} title={equipment.description} equip={equip} style={{ maxWidth: '4rem' }}/>
 
-      <Element className="marg-b-15" row={1} col={2} show={equipment.name || get(equipment, 'set.name')}>
-        <h4 className="marg-0 align-end">{ equipment.name }</h4>
+      <Element className="mb-15" row={1} col={2} show={equipment.name || get(equipment, 'set.name')}>
+        <h4 className="m-0 align-end">{ equipment.name }</h4>
         <Element type="span" className="equipmentdetails-set align-start" onClick={() => displaySet()}>{ get(equipment, 'set.name') }</Element>
       </Element>
 
@@ -44,7 +44,7 @@ const EquipmentDetails = ({ active, equipment, displaySet, equip }) => {
         { statsLength > 0 && <img src="//img.shokkoth.tk/assets/stats/PA.png" className={`display-btn ${display === STATS ? 'active' : ''}`} onClick={() => setDisplay(STATS)} /> }
         { characsLength > 0 && <img src="//img.shokkoth.tk/assets/stats/arme.png" className={`display-btn ${display === CHARACS ? 'active' : ''}`} onClick={() => setDisplay(CHARACS)} /> }
         { passivesLength > 0 && <img src="//img.shokkoth.tk/assets/stats/passif.png" className={`display-btn ${display === PASSIVES ? 'active' : ''}`} onClick={() => setDisplay(PASSIVES)} /> }
-        { conditionsLength > 0 && <Icon icon="warning" className={`display-btn marg-0 ${display === PASSIVES ? 'active' : ''}`} onClick={() => setDisplay(CONDITIONS)} /> }
+        { conditionsLength > 0 && <Icon icon="warning" className={`display-btn m-0 ${display === PASSIVES ? 'active' : ''}`} onClick={() => setDisplay(CONDITIONS)} /> }
       </Row>
 
 

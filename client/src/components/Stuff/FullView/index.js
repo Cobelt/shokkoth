@@ -54,7 +54,6 @@ const StuffFull = ({ className, elementClassName, character = {}, stuff = {}, st
   useEffect(() => { if (get(stuff, 'level') !== undefined) setLevel(stuff.level) }, [get(stuff, 'level')])
   useEffect(() => { if (get(stuff, 'public') !== undefined) setVisibility(stuff.public) }, [get(stuff, 'public')])
 
-
   return (
     <Element className={elementClassName} {...otherProps}>
       <Grid
@@ -68,8 +67,8 @@ const StuffFull = ({ className, elementClassName, character = {}, stuff = {}, st
         { editable ? (
           <Row className="stuff-infos" row={1} col={1} width={6}>
             <Icon className={`visibility ${currentVisibility ? 'font-primary' : 'font-error'}`.trim()} icon={currentVisibility ? "visibility" : "visibility_off" } onClick={() => setVisibility(!currentVisibility)} />
-            <Input className="level marg-v-0" style={{ flex: 2 }} value={ currentLevel } onChange={(e) => setLevel(get(e, 'target.value'))} />
-            <Input className="name marg-v-0" style={{ flex: 5 }} value={ currentName } onChange={(e) => setName(get(e, 'target.value'))} />
+            <Input className="level mv-0" style={{ flex: 2 }} value={ currentLevel } onChange={(e) => setLevel(get(e, 'target.value'))} />
+            <Input className="name mv-0" style={{ flex: 5 }} value={ currentName } onChange={(e) => setName(get(e, 'target.value'))} />
 
             <Icon
               className={`save-btn font-primary ${canSave ? '' : 'disabled'}`.trim()}

@@ -55,13 +55,15 @@ const LoginForm = ({ setLook, submitted, setSubmitted, loading, context, ...prop
     <Form
       className={'login-form flex-1'}
       onSubmit={handleSubmit}
-      gridClassName="align-center justify-center" colGap="1rem"
+      gridClassName="align-center justify-center"
+      colGap="1rem"
+      rowGap='0.6rem'
       columnsTemplate={'0.5fr 1fr 1fr 0.5fr'}
       rowsTemplate={'repeat(5, fit-content(100%))'}
       ref={formRef}
       {...props}
     >
-      <Element type="h2" className="marg-v-20 font-over-primary align-end" col={1} width={4}>
+      <Element type="h2" className="mv-20 font-over-primary align-end" col={1} width={4}>
         { step === 'signin' ? 'Créez votre compte' : step === 'forgot' ? 'Mot de passe oublié' : 'Veuillez vous logger' }
       </Element>
 
@@ -76,7 +78,9 @@ const LoginForm = ({ setLook, submitted, setSubmitted, loading, context, ...prop
           <Input name="confirmed-password" autoComplete="true" type="password" placeholder="Confirmez votre mot de passe *" required onChange={e => { setSubmitted(false); setLook('almost-closed'); }} />
         </Label>
       ) }
+
       <Button
+        aspect='filled-primary'
         col={2}
         width={2}
         type="submit"
@@ -85,11 +89,13 @@ const LoginForm = ({ setLook, submitted, setSubmitted, loading, context, ...prop
       >
         { loading ? <Spinner style={{ height: '1em' }}/> : 'Go !' }
       </Button>
-      <Button className={arrayToClassName(['new-account', step === 'signin' && 'active'])} col={1} width={2} onClick={() => setStep(step === 'signin' ? 'login' : 'signin')}>Nouveau compte</Button>
-      <Button className={arrayToClassName(['forgot-password', step === 'forgot' && 'active'])} col={3} width={2} onClick={() => setStep(step === 'forgot' ? 'login' : 'forgot')}>Mot de passe oublié</Button>
+
+      <Button aspect='filled-primary' className={arrayToClassName(['signin', step === 'signin' && 'active'])} col={1} width={2} onClick={() => setStep(step === 'signin' ? 'login' : 'signin')}>Nouveau compte</Button>
+      <Button aspect='filled-primary' className={arrayToClassName(['forgot', step === 'forgot' && 'active'])} col={3} width={2} onClick={() => setStep(step === 'forgot' ? 'login' : 'forgot')}>Mot de passe oublié</Button>
+
       <Element show={step === 'signin'} className="flex" col={1} width={4}>
         <Icon icon="warning" className="font-warning" />
-        <h5 className="flex-1 font-over-primary marg-0" style={{ alignSelf: 'center' }}>N'utilisez PAS le même mot de passe que votre compte Dofus !</h5>
+        <h5 className="flex-1 font-over-primary m-0" style={{ alignSelf: 'center' }}>N'utilisez PAS le même mot de passe que votre compte Dofus !</h5>
       </Element>
     </Form>
   );

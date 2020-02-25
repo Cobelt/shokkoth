@@ -21,7 +21,7 @@ const PublicCharacter = ({ match: { params: { _id } = {} } = {}, history: { push
   const title = error ? `Erreur! ${error.message}` : `[Publique] Stuffs de ${get(character, 'name')}`
 
   return (
-    <Grid className="public-character marg-b-3-rem" gap="3rem" rowsTemplate="2.5rem 3.5rem" columnsTemplate="1fr 1fr 1fr">
+    <Grid className="public-character mb-50" gap="3rem" rowsTemplate="2.5rem 3.5rem" columnsTemplate="1fr 1fr 1fr">
 
       <Element type="h3" row={1} col={1} width={{ md: 2, lg: 3 }} height={2} className="main-title text-center font-primary">{ title }</Element>
 

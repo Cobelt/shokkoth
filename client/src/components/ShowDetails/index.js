@@ -34,7 +34,7 @@ const ShowDetails = ({
   if (!lastEquipment && !showStats) return null;
 
   return (
-    <Element className={arrayToClassName(['show-details', display, 'align-start', 'bg-primary', 'relative', 'pad-1-rem', (equipment || showStats) ? 'show' : 'hide', className])} {...otherProps}>
+    <Element className={arrayToClassName(['show-details align-start bg-primary relative p-15', display, (equipment || showStats) ? 'show' : 'hide', className])} {...otherProps}>
       <Grid columnsTemplate="20% 1fr 10%" gap="0.5em">
         <Icon col={3} row={1} className="align-start" style={{ margin: 0, justifySelf: 'right' }} icon="close" size="xs" onClick={() => selectEquipment()} />
 
