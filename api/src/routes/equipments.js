@@ -35,7 +35,7 @@ equipmentsRouter.route('/types')
   );
 
 
-equipmentsRouter.route('/get/:itemId')
+equipmentsRouter.route('/:itemId')
     .get(Controller.getOne)
     .post(Controller.create)
     .put(Controller.update)

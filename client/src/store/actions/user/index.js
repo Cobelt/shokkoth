@@ -40,7 +40,7 @@ export async function saveJWT({ token }, [store, dispatch]) {
   try {
     if (selectors.getJWT(store) === token) return;
     dispatch(action({ type: SAVE_JWT, payload: { token } }));
-    cookies.set(TOKEN, token, '.shokkoth.tk');
+    cookies.set(TOKEN, token, '.shokkoth.fr');
     return true;
   } catch (e) {
     return e;
@@ -51,7 +51,7 @@ export async function logout([store, dispatch]) {
   try {
     dispatch(action({ type: SAVE_JWT, payload: { token: undefined } }));
     dispatch(action({ type: SAVE_USER, payload: { user: undefined } }));
-    cookies.delete(TOKEN, '.shokkoth.tk');
+    cookies.delete(TOKEN, '.shokkoth.fr');
     return true;
   } catch (e) {
     return e;

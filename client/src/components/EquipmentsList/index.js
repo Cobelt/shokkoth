@@ -13,7 +13,7 @@ const EquipmentsList = ({ equipments = [], select, selected, equip, className, .
     <Grid
       columnsTemplate={'repeat(auto-fit, minmax(2vw, 4.5rem))'}
       rowsTemplate={'repeat(auto-fit, 1fr)'}
-      className={arrayToClassName(["equipments-list", "no-scrollbar", "justify-evenly", "align-start", className])}
+      className={arrayToClassName(["equipments-list", "no-scrollbar", "justify-space-evenly", "align-start", className])}
       {...otherProps}
     >
       { equipments.map((equipment, index) => (

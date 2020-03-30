@@ -52,7 +52,7 @@ const ConfiguredApolloProvider = ({ children }) => {
   const cache = new InMemoryCache();
 
   const apollo = new ApolloClient({
-    uri: process.env.NODE_ENV === 'development' ? '//graphql.dev.shokkoth.tk' : '//graphql.shokkoth.tk/',
+    uri: process.env.NODE_ENV === 'development' ? '//graphql.dev.shokkoth.fr' : '//graphql.shokkoth.fr/',
     headers: token && {'Authorization': `Bearer ${token}`},
     cache,
   });

@@ -24,12 +24,12 @@ const getCookie = (name) => {
   }
 }
 
-const setCookie = (name = undefined, value = undefined, expires = DateTime.local().plus({ weeks: 1 }).toHTTP(), domain = '*.shokkoth.tk', path = '/') => {
+const setCookie = (name = undefined, value = undefined, expires = DateTime.local().plus({ weeks: 1 }).toHTTP(), domain = '*.shokkoth.fr', path = '/') => {
   if ([name, value].includes(undefined)) return;
   document.cookie = `${name}=${value}; expires=${expires}; domain=${domain}; path=${path}`;
 }
 
-const deleteCookie = (name, domain = 'shokkoth.tk', path = '/') => {
+const deleteCookie = (name, domain = 'shokkoth.fr', path = '/') => {
   if (!getCookie(name)) return;
   document.cookie = `${name}=; expires=; domain=${domain}; path=${path}`;
 }

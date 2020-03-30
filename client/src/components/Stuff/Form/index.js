@@ -61,7 +61,7 @@ const StuffForm = ({ character, stuff, refetch = () => undefined, ...otherProps}
     <Element className="stuff-form-container" {...otherProps}>
       <Grid className="stuff-form" columnsTemplate="minmax(30rem, min-content) auto" rowsTemplate="max-content repeat(2, fit-content(100%))" gap="3rem">
 
-        <Stuff elementClassName="stuff-preview align-start" character={character} stuff={stuff} updateStuff={updateStuff} showStats={showStats} setShowStats={setShowStats} row={1} col={1} />
+        <Stuff elementClassName="stuff-preview align-start" character={character} stuff={stuff} updateStuff={updateAndRefetchStuff} showStats={showStats} setShowStats={setShowStats} row={1} col={1} />
         <ShowDetails
           showStats={showStats}
           stats={{ characterStats, pointsToDispatch }}
@@ -75,7 +75,7 @@ const StuffForm = ({ character, stuff, refetch = () => undefined, ...otherProps}
           height={{ md: 2 }}
         />
 
-        <EquipmentsSearch row={{ xs: 3, md: 1 }} col={{ xs: 1, md: 2 }} height={{ md: 2 }} select={select} equip={equip} itemDisplayed={equipmentToDetail} />
+        <EquipmentsSearch row={{ xs: 3, md: 1 }} col={{ xs: 1, md: 2 }} height={{ md: 2 }} width={{ xs: 1, md: 2 }} select={select} equip={equip} itemDisplayed={equipmentToDetail} />
 
         <Element className="stats-container" row={{ xs: 4, md: 3 }} col={{ xs: 1, md: 2 }} width={{ xs: 2, md: 1 }} height={{ md: 2}}>
           <Grid columnsTemplate={`1fr 1fr`} colGap="5em">

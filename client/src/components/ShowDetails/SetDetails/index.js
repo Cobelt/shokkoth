@@ -64,7 +64,7 @@ import './stylesheet.styl';
 
       <Stats key={`set#${set._id}#bonus#${bonus.number}`} statistics={get(bonus, 'statistics')} col={2} />
 
-      <Row className="other-equipments justify-evenly" col={1} width={3}>
+      <Row className="other-equipments justify-space-evenly" col={1} width={3}>
         { get(set, 'equipments') && set.equipments.map((equipment, index) => equipment._id && (
           <Equipment key={`set#${set._id}#equipments#equipment#${equipment._id}`} index={index} equipment={equipment} select={() => selectEquipment({ id: equipment._id })} equip={equip} style={{ maxWidth: '5rem' }} />
         )) }

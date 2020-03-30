@@ -13,7 +13,7 @@ const Brand = ({ history, match, location, staticContext, className, ...otherPro
   <Element className={arrayToClassName(['brand', className])} {...otherProps}>
     <span id="shok">shok</span>
     <span id="koth">koth</span>
-    <span id="dot-tk">.tk</span>
+    <span id="dot-fr">.fr</span>
   </Element>
 );
 

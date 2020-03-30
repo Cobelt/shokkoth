@@ -23,7 +23,7 @@ const New = ({ match: { params: { characterId } = {} } = {}, location, staticCon
 
   const [character, setCharacter] = useState({
     name: 'Nouveau personnage',
-    level: 201,
+    level: 200,
     gender: 'MALE',
   });
 
@@ -48,12 +48,12 @@ const New = ({ match: { params: { characterId } = {} } = {}, location, staticCon
 
 
   if (characterId && loading || !characterId && loadingBreeds) return <FullPageSpinner />;
-  console.log('stuff undefined ????', stuff);
+  //console.log('stuff undefined ????', stuff);
 
   return (
-    <Grid className="stuff-editor" gap="3rem" rowsTemplate="2.5rem 2.5rem repeat(3, fit-content(100%))" columnsTemplate={`10vw 1fr 10vw`}>
+    <Grid className="stuff-editor" gap="3rem" columnsTemplate={`10vw 1fr 10vw`}>
 
-      <StuffForm character={character} stuff={stuff} row={3} col={2} />
+      <StuffForm character={character} stuff={stuff} row={1} col={2} />
 
     </Grid>
   );

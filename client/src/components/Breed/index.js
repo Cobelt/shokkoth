@@ -17,7 +17,7 @@ const Breed = ({ index, breed, active, onClick, ...otherProps }) => {
       {...otherProps}
     >
       <img
-        src={`//img.shokkoth.tk/assets/breeds/heads/${breed.name.toLowerCase()}/avatar.png`}
+        src={`//img.shokkoth.fr/assets/breeds/heads/${breed.name.toLowerCase()}/avatar.png`}
         onLoad={() => setLoading(false)}
       />
     </div>
@@ -26,4 +26,4 @@ const Breed = ({ index, breed, active, onClick, ...otherProps }) => {
 
 export default Breed;
 //generateImageLink({ mode: 'head', head: breed[gender].heads[0], defaultColors: breed[gender].defaultColors })
-//`//img.shokkoth.tk/assets/breeds/heads/${breed.name}/${gender}-1.png`
+//`//img.shokkoth.fr/assets/breeds/heads/${breed.name}/${gender}-1.png`

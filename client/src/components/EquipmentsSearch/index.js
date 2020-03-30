@@ -49,8 +49,8 @@ const EquipmentsSearch = ({ select, equip, itemDisplayed, className, ...otherPro
 
   return (
     <Column className={arrayToClassName(['equipments-search', className])} {...otherProps}>
-      <Column className="bg-primary p-15">
-        <Input className="searchbar justify-center" type="text" onChange={e => updateSearchBar(e.target.value)} placeholder="Search for an item" />
+      <Input className="searchbar justify-center ph-24 pv-20" type="text" onChange={e => updateSearchBar(e.target.value)} placeholder="Écrivez le nom d'un équipement" />
+      <Column className="filters bg-primary p-15">
         <div className="justify-center">
           <label><input type="checkbox" name="strength" />Force</label>
           <label><input type="checkbox" name="intel" />Intel</label>

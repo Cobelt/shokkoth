@@ -102,7 +102,7 @@ const EditCharacter = ({ showLogin, match: { params: { _id } = {} } = {}, histor
               />
             </Row>
 
-            <Row className="justify-between">
+            <Row className="justify-space-between">
               <BreedsList select={setBreed} selected={newBreed} />
             </Row>
           </Column>

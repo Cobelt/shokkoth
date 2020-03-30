@@ -64,19 +64,7 @@ const StuffFull = ({ className, elementClassName, character = {}, stuff = {}, st
       >
 
         {/* Row 1 */}
-        { editable ? (
-          <Row className="stuff-infos" row={1} col={1} width={6}>
-            <Icon className={`visibility ${currentVisibility ? 'font-primary' : 'font-error'}`.trim()} icon={currentVisibility ? "visibility" : "visibility_off" } onClick={() => setVisibility(!currentVisibility)} />
-            <Input className="level mv-0" style={{ flex: 2 }} value={ currentLevel } onChange={(e) => setLevel(get(e, 'target.value'))} />
-            <Input className="name mv-0" style={{ flex: 5 }} value={ currentName } onChange={(e) => setName(get(e, 'target.value'))} />
-
-            <Icon
-              className={`save-btn font-primary ${canSave ? '' : 'disabled'}`.trim()}
-              onClick={() => debounceUpdate()}
-              icon="save"
-            />
-          </Row>
-        ) : (
+        { !editable && (
           <>
             <Element row={1} col={1} className={`level ${parseInt(level, 10) > 200 ? 'over-200' : ''}`.trim()}>
             { Math.min(parseInt(stuff.level || level, 10), 200) }

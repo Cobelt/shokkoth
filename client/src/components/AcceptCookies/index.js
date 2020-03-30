@@ -24,10 +24,10 @@ const AcceptCookies = ({ match, location, history, staticContext, className, ...
   }, [acceptCookies])
 
   return (
-    <Row type="h5" show={acceptCookies === undefined} className={arrayToClassName(['accept-cookies', 'bg-secondary', 'justify-between', className])} {...otherProps}>
+    <Row type="h5" show={acceptCookies === undefined} className={arrayToClassName(['accept-cookies', 'bg-secondary', 'justify-space-between', className])} {...otherProps}>
       Nous avons besoin de votre accord pour utiliser les cookies.
       <span>
-        <Button name="accept-cookies" type="button" onClick={() => setAcceptCookies(true)} title="En cliquant sur accepter, nous créerons un cookie nommé ACCEPT_COOKIES qui ne sera effectif que sur le domaine shokkoth.[fr|tk]">Accepter</Button>
+        <Button name="accept-cookies" type="button" onClick={() => setAcceptCookies(true)} title="En cliquant sur accepter, nous créerons un cookie nommé ACCEPT_COOKIES qui ne sera effectif que sur le domaine shokkoth.fr">Accepter</Button>
         <Button name="reject-cookies" type="button" onClick={() => setAcceptCookies(false)} title="En cliquant sur refuser, vous vous infligez la reconnexion et l'application du mode sombre à chaque fermeture de l'onglet.">Refuser</Button>
       </span>
       <Link to='/cookies'>En savoir plus</Link>

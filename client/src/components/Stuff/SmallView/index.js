@@ -52,7 +52,7 @@ const StuffSmall = ({ className, elementClassName, character = {}, stuff = {}, s
         </Element>
 
         <Element row={1} col={3} width={1} className="breed-icon">
-          <img src={`//img.shokkoth.tk/assets/breeds/heads/${breed.name.toLowerCase()}/${get(gender.toLowerCase(), '[0]')}-1.png`} />
+          <img src={`//img.shokkoth.fr/assets/breeds/heads/${breed.name.toLowerCase()}/${get(gender.toLowerCase(), '[0]')}-1.png`} />
         </Element>
 
         <Element row={1} col={4} width={1} className={`level ${parseInt(level, 10) > 200 ? 'over-200' : ''}`.trim()} data-title={`Omega ${level}`}>

@@ -13,7 +13,7 @@ const StatsDetails = ({ stats, setCharacStat, setParchoStat, ...otherProps }) =>
 
   return (
     <>
-      <Row className="justify-between" col={1} width={3}>
+      <Row className="justify-space-between" col={1} width={3}>
         <div style={{ flex: 3 }} />
         <Element type="span" className="text-center header">Base</Element>
         <div className="flex-1" />
@@ -21,8 +21,8 @@ const StatsDetails = ({ stats, setCharacStat, setParchoStat, ...otherProps }) =>
       </Row>
 
       { Object.entries(BOOSTABLE_STATS).map(([stat, img]) => (
-        <Row key={`charac#stats#${stat}`} className="justify-between" col={1} width={3}>
-          <span style={{ flex: 3 }}><img src={`//img.shokkoth.tk/assets/stats/${img}`} /><em>{ stat }</em></span>
+        <Row key={`charac#stats#${stat}`} className="justify-space-between" col={1} width={3}>
+          <span style={{ flex: 3 }}><img src={`//img.shokkoth.fr/assets/stats/${img}`} /><em>{ stat }</em></span>
           <Input className="small text-right" name={`charac#base#stat#${stat}`} defaultValue={get(characterStats, `[${stat}].base`) || 0} size={4} onChange={v => setCharacStat(stat, v.target.value)} type="number" min="0" max="999" />
           <div className="flex-1" />
           <Input className="small text-right" name={`charac#parcho#stat#${stat}`} defaultValue={get(characterStats, `[${stat}].parcho`) || 0} size={4} onChange={v => setParchoStat(stat, v.target.value)} type="number" min="0" max="100" />

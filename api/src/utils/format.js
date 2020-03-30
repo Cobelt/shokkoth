@@ -109,7 +109,7 @@ export const formatRecipe = toFormat => {
             const statEntry = Object.entries(stat)[0];
             const { imgUrl, ...infos } = statEntry[1];
             // Todo : new model Resource and just put the _id here
-            toReturn.recipe[index] = { name: statEntry[0], imgUrl: imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.tk'), ...infos };
+            toReturn.recipe[index] = { name: statEntry[0], imgUrl: imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.fr'), ...infos };
         });
     }
     return toReturn;
@@ -119,7 +119,7 @@ export const formatRecipe = toFormat => {
 export const formatImgUrl = toFormat => {
   const toReturn = toFormat;
   if (toFormat.imgUrl) {
-    toReturn.imgUrl = toFormat.imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.tk');
+    toReturn.imgUrl = toFormat.imgUrl.replace('https://s.ankama.com/www/static.ankama.com', '//img.shokkoth.fr');
   }
   return toReturn;
 };

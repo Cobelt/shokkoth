@@ -62,7 +62,7 @@ const FooterComponent = ({ row, ...otherProps }) => (
           <span className="hide-until-sm">d'équipements, ressources et classes</span>
           <span>appartiennent</span>
           <span>à</span>
-          <img src="//img.shokkoth.tk/assets/png/Ankama_logo.png" />
+          <img src="//img.shokkoth.fr/assets/png/Ankama_logo.png" />
         </span>
       </Element>
   </Footer>

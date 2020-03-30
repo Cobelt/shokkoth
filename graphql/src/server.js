@@ -13,7 +13,7 @@ import './models';
 import schema from './schema';
 
 import { PORT, ALLOWED_ORIGINS } from './env';
-const hostname = '0.0.0.0';
+const hostname = 'localhost';
 const port = process.env.PORT || PORT || 4000;
 
 const DB_HOSTNAME = process.env.MONGO_SERVER || 'localhost';

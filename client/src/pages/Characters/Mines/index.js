@@ -95,7 +95,7 @@ const MyCharacters = ({ history: { goBack, push } = {} }) => {
                 col === characterByRow && 'last-of-row',
             ].filter(e => !!e).join(' ');
 
-            const backgroundImage = breed && `url(//img.shokkoth.tk/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/bg/breed-${breed._id}.jpg)`;
+            const backgroundImage = breed && `url(//img.shokkoth.fr/dofus/ng/modules/mmorpg/encyclopedia/breeds/assets/bg/breed-${breed._id}.jpg)`;
 
             return (
               <Element

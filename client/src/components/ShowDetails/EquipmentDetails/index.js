@@ -18,13 +18,14 @@ const CONDITIONS = 'details/conditions';
 
 const EquipmentDetails = ({ active, equipment, displaySet, equip }) => {
   const statsLength = get(equipment, 'statistics.length');
-  const characsLength = get(equipment, 'statistics.length');
+  const characsLength = get(equipment, 'characteristics.length');
   const passivesLength = get(equipment, 'passives.length');
   const conditionsLength = get(equipment, 'conditions.length');
 
   const defaultActive = statsLength > 0 ? STATS : characsLength > 0 ? CHARACS : passivesLength > 0 ? PASSIVES : CONDITIONS
   const [display, setDisplay] = useState(defaultActive);
 
+  console.log({ characsLength })
   useEffect(() => {
     if (display !== defaultActive) setDisplay(defaultActive);
   }, [equipment]);
@@ -40,12 +41,14 @@ const EquipmentDetails = ({ active, equipment, displaySet, equip }) => {
         <Element type="span" className="equipmentdetails-set align-start" onClick={() => displaySet()}>{ get(equipment, 'set.name') }</Element>
       </Element>
 
-      <Row className="justify-around" row={2} col={1} width={3}>
-        { statsLength > 0 && <img src="//img.shokkoth.tk/assets/stats/PA.png" className={`display-btn ${display === STATS ? 'active' : ''}`} onClick={() => setDisplay(STATS)} /> }
-        { characsLength > 0 && <img src="//img.shokkoth.tk/assets/stats/arme.png" className={`display-btn ${display === CHARACS ? 'active' : ''}`} onClick={() => setDisplay(CHARACS)} /> }
-        { passivesLength > 0 && <img src="//img.shokkoth.tk/assets/stats/passif.png" className={`display-btn ${display === PASSIVES ? 'active' : ''}`} onClick={() => setDisplay(PASSIVES)} /> }
-        { conditionsLength > 0 && <Icon icon="warning" className={`display-btn m-0 ${display === PASSIVES ? 'active' : ''}`} onClick={() => setDisplay(CONDITIONS)} /> }
-      </Row>
+      { [statsLength, characsLength, passivesLength, conditionsLength].filter(e => e > 0).length > 1 && (
+        <Row className="justify-space-around" row={2} col={1} width={3}>
+          { statsLength > 0 && <img src="//img.shokkoth.fr/assets/stats/PA.png" className={`display-btn ${display === STATS ? 'active' : ''}`} onClick={() => setDisplay(STATS)} /> }
+          { characsLength > 0 && <img src="//img.shokkoth.fr/assets/stats/arme.png" className={`display-btn ${display === CHARACS ? 'active' : ''}`} onClick={() => setDisplay(CHARACS)} /> }
+          { passivesLength > 0 && <img src="//img.shokkoth.fr/assets/stats/passif.png" className={`display-btn ${display === PASSIVES ? 'active' : ''}`} onClick={() => setDisplay(PASSIVES)} /> }
+          { conditionsLength > 0 && <Icon icon="warning" className={`display-btn m-0 ${display === PASSIVES ? 'active' : ''}`} onClick={() => setDisplay(CONDITIONS)} /> }
+        </Row>
+      ) }
 
 
       <Stats

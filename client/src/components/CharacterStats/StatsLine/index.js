@@ -8,7 +8,7 @@ const StatsLine = ({ className, statsData, statsValues, suffix = '', ...otherPro
   <Row className={arrayToClassName(["stats-line", className])} {...otherProps}>
     { Object.entries(statsData).map(([stat, imgUrl], index) => (
       <span key={stat} className="character-stat-info" title={stat}>
-        <img src={`//img.shokkoth.tk/assets/stats/${imgUrl}`} />
+        <img src={`//img.shokkoth.fr/assets/stats/${imgUrl}`} />
         <span>
           { statsValues[stat] }
           { typeof suffix === 'function' ? suffix(stat) : suffix }

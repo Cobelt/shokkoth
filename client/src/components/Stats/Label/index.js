@@ -14,7 +14,7 @@ const Stat = ({ index, statType, stat, children, gender, onClick, className, ...
       style={{ '--delay': index ? `${(index+1)*150}ms` : undefined }}
       {...otherProps}
     >
-      <img src={stat.imgUrl} alt={stat.name} title={statType === 'passive' ? 'Passif' : stat.name} {...imgProps} />
+      <img src={`//img.shokkoth.fr/assets/stats/${stat.imgUrl}`} alt={stat.name} title={statType === 'passive' ? 'Passif' : stat.name} {...imgProps} />
     </div>
   );
 }

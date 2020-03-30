@@ -5,7 +5,6 @@ import nodeExternals from 'webpack-node-externals';
 import { HTML, JS, MJS, STYL } from './rules';
 import { cleanPlugin, copyPlugin, htmlPlugin, HMRPlugin, CSSPlugin } from './plugins';
 
-const HtmlWebPackPlugin = require("html-webpack-plugin")
 module.exports = {
   entry: './src/app.js',
   output: {

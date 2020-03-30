@@ -175,7 +175,7 @@ export const extractBreeds = async function(req, res, next) {
       // to remove
       delete breed.spells;
 
-      return await Breeds.findOneAndUpdate({ _id: formatted._id }, formatted, { new: true, upsert: true });
+      return await Breeds.findOneAndUpdate({ _id: breed._id }, breed, { new: true, upsert: true });
     }));
 
     setLocale(res, { extracted: breeds.map(i => i && i._id) });

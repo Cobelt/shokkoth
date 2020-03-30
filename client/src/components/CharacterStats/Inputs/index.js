@@ -24,7 +24,7 @@ const StatsInputs = ({ isOpened, setOpened, ...otherProps }) => {
 
         { Object.entries(BOOSTABLE_STATS).map(([stat, img]) => (
           <Fragment key={`charac#stats#${stat}`}>
-            <span><img src={`//img.shokkoth.tk/assets/stats/${img}`} /><em>{ stat }</em></span>
+            <span><img src={`//img.shokkoth.fr/assets/stats/${img}`} /><em>{ stat }</em></span>
             <input name={`charac#base#stat#${stat}`} defaultValue={get(characterStats, `[${stat}].base`) || 0} size={4} onChange={v => setCharacStat(stat, v.target.value)} type="number" className="text-right" min="0" max="999" />
             <input name={`charac#parcho#stat#${stat}`} defaultValue={get(characterStats, `[${stat}].parcho`) || 0} size={4} onChange={v => setParchoStat(stat, v.target.value)} type="number" className="text-right" min="0" max="100" />
           </Fragment>
