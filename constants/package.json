@@ -1,0 +1,29 @@
+{
+    "name": "shokkoth-constants",
+    "version": "0.0.1",
+    "description": "Constants for Shokkoth",
+    "main": "dist/index.js",
+    "author": "Cobelt Dierk",
+    "license": "MIT",
+    "devDependencies": {
+      "@babel/cli": "^7.2.3",
+      "@babel/core": "^7.3.4",
+      "@babel/plugin-proposal-class-properties": "^7.3.4",
+      "@babel/plugin-proposal-export-default-from": "^7.2.0",
+      "@babel/plugin-proposal-export-namespace-from": "^7.2.0",
+      "@babel/plugin-syntax-object-rest-spread": "^7.2.0",
+      "@babel/plugin-transform-runtime": "^7.3.4",
+      "@babel/preset-env": "^7.3.4",
+      "@babel/runtime": "^7.3.4"
+    },
+    "dependencies": {
+      "lodash.deburr": "^4.1.0",
+      "lodash.get": "^4.4.2",
+      "lodash.memoize": "^4.1.2",
+      "lodash.set": "^4.3.2"
+    },
+    "scripts": {
+      "transpile": "babel src --out-dir dist --copy-files"
+    }
+  }
+  

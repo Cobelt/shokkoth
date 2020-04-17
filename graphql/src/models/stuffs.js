@@ -1,6 +1,86 @@
 import mongoose from 'mongoose';
-import { StuffsSchema, COMMON, WEAPONS } from 'shokkoth-models';
-import { Equipments } from './index.js';
+
+import { CHARACTERS, COMMON, WEAPONS, utils } from 'shokkoth-constants';
+
+export const StuffsSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: 'Please give me a name',
+    },
+    
+    gender: {
+      type: String,
+      enum: CHARACTERS.ENUM,
+      default: CHARACTERS.DEFAULT,
+    },
+
+    breed: {
+        type: Number,
+        ref: 'Breeds',
+        required: 'Pas de classe définie',
+    },
+    
+    level: {
+        type: Number,
+        min: 1,
+        default: 200,
+    },
+
+    // tags: {
+    //     type: Array,
+    //     default: [],
+    // },
+
+    stats: [{
+      attributed: {
+        VITALITY: { type: Number, default: 0 },
+        WIDSDOM: { type: Number, default: 0 },
+        STRENGTH: { type: Number, default: 0 },
+        INTELLIGENCE: { type: Number, default: 0 },
+        CHANCE: { type: Number, default: 0 },
+        AGILITY: { type: Number, default: 0 },
+      },
+      parchment: {
+        VITALITY: { type: Number, default: 0 },
+        WIDSDOM: { type: Number, default: 0 },
+        STRENGTH: { type: Number, default: 0 },
+        INTELLIGENCE: { type: Number, default: 0 },
+        CHANCE: { type: Number, default: 0 },
+        AGILITY: { type: Number, default: 0 },
+      },
+    }],
+
+    equipments: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Equipments',
+    }],
+
+    public: {
+        type: Boolean,
+        default: true,
+    },
+
+    draft: {
+        type: Boolean,
+        default: true,
+    },
+
+    // likes: [{
+    //   type: [mongoose.Schema.Types.ObjectId],
+    //   ref: 'Likes',
+    //   default: [],
+    // }],
+
+
+    updatedAt: {
+        type: Date,
+        default: Date.now
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now
+    },
+});
 
 export function filterType(equipments, type) {
   return equipments.filter(i => COMMON.validateType(i.type, type));
@@ -57,6 +137,8 @@ export async function verifyBothAreSameCategory(firstEquip, secondEquip) {
 StuffsSchema.pre(['validate', 'updateOne', 'findOneAndUpdate'], async function () {
   await removeSuperfluxElements(this.equipments);
 });
+
+StuffsSchema.pre('save', utils.updateLastModifDate);
 
 const Stuffs = mongoose.model('Stuffs', StuffsSchema);
 export default Stuffs;

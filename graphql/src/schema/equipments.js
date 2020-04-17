@@ -19,6 +19,7 @@ export default function useEquipments(schemaComposer, customizationOptions = {})
     .addFilterArg(filtersEquip.levelMax)
     .addFilterArg(filtersEquip.categoryIn)
     .addFilterArg(filtersEquip.typeIn)
+    .addFilterArg(filtersEquip.statsAll)
   );
 
   EquipmentsTC.setResolver('findOne', EquipmentsTC.get('$findOne')
@@ -30,6 +31,7 @@ export default function useEquipments(schemaComposer, customizationOptions = {})
     .addFilterArg(filtersEquip.searchName)
     .addFilterArg(filtersEquip.categoryIn)
     .addFilterArg(filtersEquip.typeIn)
+    .addFilterArg(filtersEquip.statsAll)
   );
 
   schemaComposer.Query.addFields({

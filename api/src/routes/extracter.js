@@ -24,10 +24,6 @@ extracterRouter.route('/everything/')
     Controller.getDataFromFile,
     Controller.extractEquipements,
 
-    Controller.initWeaponsExtraction,
-    Controller.getDataFromFile,
-    Controller.extractEquipements,
-
     Controller.initPetsExtraction,
     Controller.getDataFromFile,
     Controller.extractEquipements,

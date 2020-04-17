@@ -9,17 +9,16 @@ export const myStuffs = async rp => {
   try {
     let { filter = {}, limit, skip } = rp.args;
     const userId = getUserId(rp);
-    if (!userId) throw new Error('No userId found in access token.', { statusCode: 403 });
-
+    if (!userId) throw new Error('User introuvable.', { statusCode: 403 });
+    
     const user = await Users.findOne({ _id: userId }).exec();
-    if (user.characters.length <= 0) return [];
+    if (!user) throw new Error('User introuvable.', { statusCode: 403 });
 
-    const myCharacters = await Characters.find({ _id: { $in: user.characters } });
+    const { stuffs } = user || {}
+    const stuffsIds = get(stuffs, 'length') > 0 ? stuffs.map(stuff => stuff._id) : []
 
-    const stuffsIds = myCharacters.map(character => character.stuffs).flat().filter(stuff => stuff && (!filter._id || filter._id == stuff) && (!filter._ids || filter._ids.find(id => id == stuff)));
     delete filter._id;
     delete filter._ids;
-
 
     set(filter, '_id', { $in: stuffsIds });
     if (filter.searchName) {
@@ -104,12 +103,13 @@ export const emptyEquipments = async ({ source, args, context, info }) => {
 
 
 
-export const createOne = async ({ source, args, context }) => {
+export const createOne = async rp => {
   try {
-    const { characterId, record } = args;
+    const { record } = rp.args;
+    const userId = getUserId(rp);
 
     const stuff = await Stuffs.create(record);
-    await Characters.updateOne({ _id: characterId }, { $push: { stuffs: stuff._id } }).exec();
+    await Users.updateOne({ _id: userId }, { $push: { stuffs: stuff._id } }).exec();
 
     return Stuffs.findOne({ _id: stuff._id });
   }
@@ -118,39 +118,19 @@ export const createOne = async ({ source, args, context }) => {
   }
 };
 
-export const duplicateOne = async ({ source, args, context }) => {
+export const duplicateOne = async rp => {
   try {
-    const { characterId, stuffId } = args;
+    const { stuffId } = rp.args;
+    const userId = getUserId(rp);
 
     const existing = await Stuffs.findOne({ _id: stuffId }).exec();
     const stuff = await Stuffs.create({ ...existing._doc, _id: undefined, isNew: true })
-    await Characters.updateOne({ _id: characterId }, { $push: { stuffs: stuff._id } }, { new: true }).exec();
+    await Users.updateOne({ _id: userId }, { $push: { stuffs: stuff._id } }).exec();
 
     return Stuffs.findOne({ _id: stuff._id });
   }
   catch (e) {
     console.log(e)
-    return e;
-  }
-};
-
-
-export const createDraft = async ({ source, args, context }) => {
-  try {
-    const { record } = args;
-
-    const userId = getUserId({ context });
-    if (!userId) throw new Error('No userId found in access token.', { statusCode: 403 });
-
-    const stuff = await Stuffs.create(record);
-    const user = await Users.findOne({ _id: userId }).exec();
-    const character = await Characters.updateOne({ name: 'Brouillon', _id: { $in: user.characters } }, { $push: { stuffs: stuff._id } }, { new: true, upsert: true, setDefaultsOnInsert: true }).exec();
-    user.characters.push(character._id);
-    user.save()
-
-    return Stuffs.findOne({ _id: stuff._id });
-  }
-  catch (e) {
     return e;
   }
 };

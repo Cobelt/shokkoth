@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { MOUNTS } from 'shokkoth-models';
+import { MOUNTS } from 'shokkoth-constants';
 import { Equipments } from '../models';
 import { getParam, setLocale, getLocale } from '../utils/common';
 

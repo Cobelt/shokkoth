@@ -76,7 +76,6 @@ export const createOne = async ({ args, context }) => {
 export const updateOne = async ({ source, args, context, info }) => {
   try {
     const { characterId, record } = args;
-    console.log('yooooooo=>', characterId, record)
     return Characters.updateOne({ _id: characterId }, record, { new: true });
   }
   catch (e) {

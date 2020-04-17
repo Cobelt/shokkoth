@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
-import { EquipmentsTypes, translateEquipmentsTypes } from 'shokkoth-models';
-import { EQUIPMENTS } from 'shokkoth-models';
+import { EQUIPMENTS, EquipmentsTypes } from 'shokkoth-constants';
 import { Equipments } from '../models';
 
 import { getParam, setLocale, getLocale } from '../utils/common';

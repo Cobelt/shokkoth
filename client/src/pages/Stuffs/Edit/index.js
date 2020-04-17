@@ -3,22 +3,20 @@ import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { withRouter, Redirect } from 'react-router-dom';
 import { Grid, FullPageSpinner } from 'muejs';
-import { USERS } from 'shokkoth-models';
+import { USERS } from 'shokkoth-constants';
 
 import { getMyStuffs } from '../../../queries';
 
 import Brand from '../../../components/Brand';
 import StuffForm from '../../../components/Stuff/Form';
 
-import UserContext from '../../../store/context/user';
 import { useUser } from '../../../hooks/useUser';
 
 import './stylesheet.styl';
 
 
 const Edit = ({ match: { params: { _id } = {} } = {}, location, staticContext, showLogin }) => {
-  const context = useContext(UserContext);
-  const { user, hasRoles, loading: userLoading } = useUser(context);
+  const { hasRoles, loading: userLoading } = useUser();
 
 
   const { data: { myStuffs: stuffs = [] } = {}, error, loading, refetch } = useQuery(gql(getMyStuffs), { variables: { filter: { _id } }});
@@ -35,16 +33,24 @@ const Edit = ({ match: { params: { _id } = {} } = {}, location, staticContext, s
 
 
   const { character } = stuff;
-  if (!character) return <Redirect to='/stuffs/new' />
+  if (!stuff) return <Redirect to='/stuffs/new' />
+
+  const equip = async ({ equipment, replaced }) => {
+    // actions.equip({ equipment, replaced }, [store, dispatch]); to fix
+    await equipMutation({ variables: {
+      stuffId: stuff._id,
+      equipmentId: get(equipment, '_id'),
+      replacedEquipmentId: get(getItemOfCategory(stuff, get(currentStep, 'category') || get(equipment, 'category'), get(currentStep, 'index') || 0), '_id'),
+    } })
+    refetch();
+  };
 
   return (
-    <Grid className="stuff-editor" gap="3rem" rowsTemplate="2.5rem 2.5rem repeat(3, fit-content(100%))" columnsTemplate={`10vw 1fr 10vw`}>
+    <div className="stuff-editor ph-10vw">
 
-      <Brand row={1} col={1} width={3} height={2} className="align-stretch" />
+      <StuffForm stuff={stuff} equip={equip} refetch={refetch} />
 
-      <StuffForm character={character} stuff={stuff} refetch={refetch} row={3} col={2} />
-
-    </Grid>
+    </div>
   );
 }
 export default withRouter(Edit);

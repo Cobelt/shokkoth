@@ -1,19 +1,31 @@
 import React, { useState } from 'react';
 import get from 'lodash.get';
 import { Link } from 'react-router-dom';
+import { Element } from 'muejs'
 
-import Stuff from '../index.js';
+import Stuff from '../Preview';
 
 import './stylesheet.styl';
 
 const StuffsList = ({ error, stuffs, globalCharacter, small, delete: DeleteButton, editable = false }) => {
-  if (error) return null;
-  return !error && stuffs.map(stuff => (
-    <Link key={`stuff#${stuff._id}`} className="relative flex justify-center link-to-watch" to={(editable ? '/stuffs/edit/' : '/stuffs/') + stuff._id}>
-      <Stuff small={small} elementClassName="stuff-preview align-start" editable={false} setActiveAtMount={false} character={globalCharacter || get(stuff, 'character')} stuff={stuff} />
-      { editable && DeleteButton && <DeleteButton stuff={stuff} /> }
-    </Link>
-  ));
+  if (error) return <Element className="text-error font-20" col={2}>{ error }</Element>
+
+  if (get(stuffs, 'length') > 0) {
+    return (
+      <Link key={`stuff#${stuff._id}`} className="relative flex justify-center link-to-watch" to={(editable ? '/stuffs/edit/' : '/stuffs/') + stuff._id}>
+        <Stuff small={small} elementClassName="stuff-preview align-start" editable={false} character={globalCharacter || get(stuff, 'character')} stuff={stuff} />
+        { editable && DeleteButton && <DeleteButton stuff={stuff} /> }
+      </Link>
+    );
+  }
+
+  return (
+    <Element className="font-20" style={{ gridColumn: '1 / -1' }}>
+      <div className="m-10%">J'ai beau chercher, je ne trouve aucun stuff correspondant aux critères !</div>
+
+      <Link to="/stuffs/new" className='btn filled-primary justify-self-center'>Je crée un stuff !</Link>
+    </Element>
+  )
 }
 
 export default StuffsList;

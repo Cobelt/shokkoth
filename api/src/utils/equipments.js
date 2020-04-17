@@ -1,8 +1,6 @@
 import memoize from 'lodash.memoize'
 
-import { COMMON, WEAPONS, PETS, MOUNTS, EQUIPMENTS } from 'shokkoth-models';
-
-import { WEAPON, PET } from '../constants/categories';
+import { COMMON } from 'shokkoth-constants';
 
 
 export const getRealType = memoize((type) => {
@@ -10,19 +8,6 @@ export const getRealType = memoize((type) => {
 });
 
 
-export const toCategory = memoize((type) => {
-  let toReturn;
-  if (WEAPONS.getKey(type)) {
-    toReturn = WEAPON;
-  }
-  else if (MOUNTS.getKey(type) || PETS.getKey(type)) {
-    toReturn = PET;
-  }
-  else if (EQUIPMENTS.getKey(type) === EQUIPMENTS.getKey('trophy')) {
-    toReturn = EQUIPMENTS.translations.DOFUS.en;
-  }
-  else if (EQUIPMENTS.getKey(type)) {
-    toReturn = EQUIPMENTS.translate(type, 'en');
-  }
-  return toReturn;
-});
+export const toCategory = memoize(COMMON.getCategory)
+
+export const toTypeOrder = memoize(COMMON.getOrder)

@@ -1,17 +1,17 @@
-import HtmlWebPackPlugin from 'html-webpack-plugin';
-import CopyWebPackPlugin from 'copy-webpack-plugin';
-import CleanWebpackPlugin from 'clean-webpack-plugin';
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import HtmlWebPackPlugin from 'html-webpack-plugin'
+import CopyWebPackPlugin from 'copy-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 
 export const htmlPlugin = new HtmlWebPackPlugin({
     template: './public/index.html',
     filename: './index.html',
-});
+})
 
-export const copyPlugin = (file) => new CopyWebPackPlugin([{ from: file }]);
-export const cleanPlugin = (folder) => new CleanWebpackPlugin([folder]);
+export const copyPlugin = (file) => new CopyWebPackPlugin([{ from: file }])
+export const cleanPlugin = () => new CleanWebpackPlugin()
 
-export const HMRPlugin = ({ webpack }) => new webpack.HotModuleReplacementPlugin();
+export const HMRPlugin = ({ webpack }) => new webpack.HotModuleReplacementPlugin()
 
 export const CSSLoaderPlugin = {
   loader: MiniCssExtractPlugin.loader,
@@ -21,4 +21,4 @@ export const CSSLoaderPlugin = {
   },
 }
 
-export const CSSPlugin = (file) => new MiniCssExtractPlugin({ filename: file });
+export const CSSPlugin = (file) => new MiniCssExtractPlugin({ filename: file })

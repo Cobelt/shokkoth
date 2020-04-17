@@ -1,24 +1,19 @@
-.stuff-creator
+.stuff-editor
   width 100%
 
-  .equipments-search
-    grid-template-rows 7rem fit-content(100%)
+  .dropdown-menu
+    img, svg
+      cursor pointer
+      filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0))
+      transform rotate(0deg) scale(1)
+      transition transform 0.3s, filter 0.3s
 
-  .stuff-preview
-    grid-template-rows repeat(2, fit-content(100%))
+      &:hover, &.active
+        filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.2))
+        transform rotate(17.5deg) scale(1.35)
 
   .items-details-container
     height fit-content
-
-
-  @media (min-width: 841px) and (max-width: 1540px)
-    // grid-template-rows 3.5rem 4.5rem repeat(3, fit-content(100%)) !important
-
-
-
-  @media (min-width: 641px) and (max-width: 840px)
-    grid-template-columns 6vw 1fr 6vw !important
-    // grid-template-rows 3.5rem 4.5rem fit-content(100%) !important
 
 
   @media (max-width: 640px)

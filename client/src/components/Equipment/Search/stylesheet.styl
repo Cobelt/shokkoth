@@ -1,0 +1,52 @@
+.equipments-search
+  @media (max-width: 1280px)
+    display inline-grid !important
+
+  .filters
+    --negative-margin -20px
+    position relative
+    margin-left var(--negative-margin)
+    margin-right var(--negative-margin)
+    min-width calc(100% - 2 * var(--negative-margin))
+
+    &:before, &:after
+      --b-wdth calc(-1 * var(--negative-margin, -20px) / 2)
+      bottom var(--negative-margin)
+      content ''
+      position absolute
+      border-top 10px var(--primary-color-dark) solid
+      border-bottom 10px transparent solid
+
+    &:before
+      left 0
+      border-left 10px transparent solid
+      border-right 10px var(--primary-color-dark) solid
+
+    &:after
+      right 0
+      border-left 10px var(--primary-color-dark) solid
+      border-right 10px transparent solid
+
+    .search-filter-icons
+      transition filter 0.2s, opacity 0.2s
+      &:hover
+        background-color: rgba(0,0,0,0.07)
+      &:active
+        background-color: rgba(0,0,0,0.15)
+      
+      &:before, &:after
+        content unset
+
+
+      .grey
+        filter brightness(0.9) grayscale(0.75)
+        opacity 0.85
+
+  .slider
+    opacity 1
+    
+  // .searchbar
+  //   width 50%
+
+  .equipments-list
+    flex: 1

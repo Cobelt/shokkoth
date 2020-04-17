@@ -1,6 +1,6 @@
 import set from 'lodash.set';
 import get from 'lodash.get';
-import { WEAPONS } from 'shokkoth-models';
+import { WEAPONS } from 'shokkoth-constants';
 
 import { Equipments } from '../models';
 import { getLocale } from '../utils';

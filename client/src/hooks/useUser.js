@@ -1,41 +1,44 @@
-import { useEffect } from 'react';
-import memoize from 'lodash.memoize';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { useEffect, useContext } from 'react'
+import { useHistory } from 'react-router-dom'
+import memoize from 'lodash.memoize'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
-import * as actions from '../store/actions/user';
-import * as selectors from '../store/selectors/user';
+import UserContext from '../store/context/user'
+import * as actions from '../store/actions/user'
+import * as selectors from '../store/selectors/user'
 
-import * as mutations from '../queries/mutations';
+import * as mutations from '../queries/mutations'
 
 
 export const hasRoles = memoize((roles, needRoles = [], needEvery = true) => {
-  if (needRoles.length <= 0) return true;
-  if (!roles || roles === []) return null; // not logged
-  if (needEvery && needRoles.some(role => !roles.includes(role))) return false; // doesnt have every roles
-  if (!needEvery && needRoles.every(role => !roles.includes(role))) return false; // doesnt have any role
-  return true;
-}, (...args) => JSON.stringify(args));
+  if (needRoles.length <= 0) return true
+  if (!roles || roles === []) return null // not logged
+  if (needEvery && needRoles.some(role => !roles.includes(role))) return false // doesnt have every roles
+  if (!needEvery && needRoles.every(role => !roles.includes(role))) return false // doesnt have any role
+  return true
+}, (...args) => JSON.stringify(args))
 
 
-export const useUser = ([store, dispatch] = []) => {
+export const useUser = () => {
   try {
-    if (!store || !dispatch) return {};
+    const history = useHistory()
+    const [store, dispatch] = useContext(UserContext)
 
-    const token = selectors.getJWT(store);
-    const user = selectors.getUser(store);
+    const token = selectors.getJWT(store)
+    const user = selectors.getUser(store)
 
 
-    const [signin, { data: { signin: tokenFromSignin } = {}, error: signinError }] = useMutation(gql(mutations.signin));
-    const [login, { data: { login: tokenFromLogin } = {}, error: loginError }] = useMutation(gql(mutations.login));
+    const [signin, { data: { signin: tokenFromSignin } = {}, error: signinError }] = useMutation(gql(mutations.signin))
+    const [login, { data: { login: tokenFromLogin } = {}, error: loginError }] = useMutation(gql(mutations.login))
 
     useEffect(() => {
         actions.decodeUser([store, dispatch])
-    }, [token]);
+    }, [token])
 
     useEffect(() => {
       if (tokenFromLogin || tokenFromSignin) {
-        actions.saveJWT({ token: tokenFromLogin || tokenFromSignin }, [store, dispatch]);
+        actions.saveJWT({ token: tokenFromLogin || tokenFromSignin }, [store, dispatch])
       }
     }, [tokenFromLogin, tokenFromSignin])
 
@@ -43,20 +46,30 @@ export const useUser = ([store, dispatch] = []) => {
       user,
       token,
 
-      signin: ({ username, password }) => signin({ variables: { username, password } }),
-      login:  ({ username, password }) => login({ variables: { username, email: username, password } }),
-      logout: () => actions.logout([store, dispatch]),
+      signin: function ({ username, password }) {
+        return signin({ variables: { username, password } })
+      },
+      login: function ({ username, password }) {
+        return login({ variables: { username, email: username, password } })
+      },
+      logout: function () {
+        actions.logout([store, dispatch])
+        history.push('/login')
+      },
 
       signinError,
       loginError,
 
-      hasRoles: ({ needRoles = [], needEvery = true }) => user ? hasRoles(user.roles, needRoles, needEvery) : null,
+      loading: token && !user,
       isLogged: selectors.isLogged(store),
-    };
+      hasRoles: function ({ needRoles = [], needEvery = true }) {
+        return user ? hasRoles(user.roles, needRoles, needEvery) : null
+      },
+    }
   }
   catch (error) {
-    return { error };
+    return { error }
   }
-};
+}
 
-export default useUser;
+export default useUser

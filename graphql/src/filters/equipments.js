@@ -1,4 +1,5 @@
 import set from 'lodash.set';
+import { COMMON } from 'shokkoth-constants'
 
 export const withCharacters = {
   name: 'withCharacters',
@@ -42,6 +43,12 @@ export const categoryIn = {
   query: (query, value) => set(query, 'category.$in', value),
 };
 
+export const statsAll = {
+  name: 'statsAll',
+  type: '[String]',
+  query: (query, value) => set(query, '$and', value.map(v => console.log({ statistics: { name: new RegExp(value, 'i') } }) || ({ statistics: { name: new RegExp(value, 'i') } }))),
+};
+
 
 export const searchName = {
   name: 'searchName',
@@ -60,7 +67,7 @@ export const search = {
       { 'characteristics.name': new RegExp(value, 'i') },
       { 'passives.name': new RegExp(value, 'i') },
       { 'conditions.name': new RegExp(value, 'i') },
-      { 'type': new RegExp(value, 'i') },
+      { 'type': new RegExp(`(${value}|${COMMON.translate(value, 'fr')}|${COMMON.translate(value, 'en')})`, 'i') },
     ]);
     return query;
   }

@@ -1,5 +1,4 @@
 import express from 'express';
-import { Equipment, EquipmentsTypes, translateEquipmentsTypes } from 'shokkoth-models';
 
 import * as CommonController from '../controllers/common';
 import * as Controller from '../controllers/equipments';

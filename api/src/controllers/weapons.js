@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { WEAPONS } from 'shokkoth-models';
+import { WEAPONS } from 'shokkoth-constants';
 import { Equipments } from '../models';
 
 import { getParam, setLocale, getLocale } from '../utils/common';

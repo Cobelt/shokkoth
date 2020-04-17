@@ -9,7 +9,7 @@ module.exports = {
   devServer: {
     // host: '0.0.0.0',
     port: 3051,
-    public: 'dev.shokkoth.fr',
+    public: 'localhost:3051',
 
     hot: true,
 
@@ -20,7 +20,6 @@ module.exports = {
     allowedHosts: [
       'shokkoth.fr',
       'dev.shokkoth.fr',
-      'labdofus',
       'localhost',
       'www.dofus.com',
     ],

@@ -10,5 +10,6 @@ export const ALLOWED_ORIGINS = [
   'graphql.shokkoth.fr',
   'graphql.dev.shokkoth.fr',
 
+  'localhost',
   'localhost:*',
 ];

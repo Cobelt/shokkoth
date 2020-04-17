@@ -4,7 +4,7 @@ import memoize from 'lodash.memoize';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import { Users, Stuffs, Characters, Equipments } from '../models';
+import { Users } from '../models';
 import { getParam, getLocale, setLocale } from './index.js';
 import { SECRET_KEY } from '../env';
 
@@ -135,10 +135,7 @@ export function ownOrAdmin(resolvers) {
 
 export async function ownStuff(userId, stuffId) {
   if (!userId || !stuffId) return false;
-
-  const characters = await Characters.find({ stuffs: { $in: [stuffId] } });
-
-  const users = await Users.find({ characters: { $in: characters } });
+  const users = await Users.find({ stuffs: { $in: stuffId } });
 
   return users.find(u => u._id == userId);
 }

@@ -14,7 +14,7 @@ import {
 } from './routes';
 
 import { PORT, ALLOWED_ORIGINS } from './env';
-const hostname = '0.0.0.0';
+const hostname = 'localhost';
 const port = process.env.PORT || PORT || 5013;
 
 const DB_HOSTNAME = process.env.MONGO_SERVER || 'localhost';
@@ -31,7 +31,7 @@ mongoose.connect(`mongodb://${DB_HOSTNAME}:${DB_PORT}/${DB_NAME}`, { useNewUrlPa
 app.use(cors({
   origin: function(origin, callback){
     // allow requests with no origin (like mobile apps or curl requests)
-    if (origin && !ALLOWED_ORIGINS.includes(origin.replace(/https?:\/\//, ''))){
+    if (origin && !ALLOWED_ORIGINS.includes(origin.replace(/https?:\/\//, '').replace(/:\d+$/, ''))){
       return callback(new Error('The CORS policy for this site does not allow access from the specified Origin.'), false);
     }
     console.log('Accepted origin =', origin);
@@ -55,4 +55,4 @@ useCharactersRouter(app);
 useExtracterRouter(app);
 useEquipmentsRouter(app);
 
-app.listen(port, hostname, () => console.log(`Shokkoth-API started on http://${hostname}:${port}`));
+app.listen(port, hostname, () => console.log(`Shokkoth's API started on http://${hostname}:${port}`));

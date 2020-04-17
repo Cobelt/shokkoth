@@ -1,62 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import { Grid, FullPageSpinner } from 'muejs';
-import { useMutation, useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import React, { useState, useContext, useEffect } from 'react'
+import { FullPageSpinner } from 'muejs'
+import { useMutation, useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
-import useBreeds from '../../../hooks/useBreeds';
+import { CHARACTERS, STATS } from 'shokkoth-constants'
 
-import Brand from '../../../components/Brand';
-import StuffForm from '../../../components/Stuff/Form';
+import StuffForm from '../../../components/Stuff/Form'
 
-import { getMyCharacters } from '../../../queries';
-import * as mutations from '../../../queries/mutations';
+import EquipmentsContext from '../../../store/context/equipments'
+import * as actions from '../../../store/actions/equipments'
+import * as selectors from '../../../store/selectors/equipments'
 
-import './stylesheet.styl';
+import * as mutations from '../../../queries/mutations'
 
 
-const New = ({ match: { params: { characterId } = {} } = {}, location, staticContext }) => {
-  const [stuff, setStuff] = useState({
-    name: 'Nouvel équipment',
-    public: true,
-    equipments: [],
-  });
+import './stylesheet.styl'
 
-  const [character, setCharacter] = useState({
-    name: 'Nouveau personnage',
-    level: 200,
-    gender: 'MALE',
-  });
+const { VITALITY, WISDOM, STRENGTH, INTELLIGENCE, CHANCE, AGILITY } = STATS
 
-  const { data: { myCharacters: characters = [] } = {}, error, loading, fetchMore, refetch } = useQuery(gql(getMyCharacters), { variables: { filter: { _id: characterId } } });
-  const { breeds, loadingBreeds } = useBreeds();
 
-  const [createStuff] = useMutation(gql(mutations.createStuff));
-
-  const characterFromID = characters[0];
-  useEffect(() => {
-    if (characterFromID) setCharacter(characterFromID);
-  }, [JSON.stringify(characterFromID)])
-
+const New = () => {
+  const [store, dispatch] = useContext(EquipmentsContext)
 
   useEffect(() => {
-    if (!characterFromID && !character.breed && breeds.length > 0) {
-      const withBreed = stuff;
-      withBreed.breed = breeds[0];
-      setCharacter(withBreed);
-    }
-  }, [breeds.length > 0]);
+    actions.setActiveStuff({
+      stuff: {
+        name: 'Nouvel équipement',
+        public: true,
+        equipments: [],
+        level: 200,
+        gender: CHARACTERS.MALE,
+        stats: {
+          [VITALITY]: {
+            base: 0, parcho: 100
+          },
+          [WISDOM]: {
+            base: 0, parcho: 100
+          },
+          [STRENGTH]: {
+            base: 0, parcho: 100
+          },
+          [INTELLIGENCE]: {
+            base: 0, parcho: 100
+          },
+          [CHANCE]: {
+            base: 0, parcho: 100
+          },
+          [AGILITY]: {
+            base: 0, parcho: 100
+          },
+        }
+      }
+    }, [store, dispatch])
+  }, [])
+  
+  const stuff = selectors.getActiveStuff(store)
+
+  const [createStuff] = useMutation(gql(mutations.createStuff))
 
 
-  if (characterId && loading || !characterId && loadingBreeds) return <FullPageSpinner />;
-  //console.log('stuff undefined ????', stuff);
+  if (!stuff) return <FullPageSpinner />
 
   return (
-    <Grid className="stuff-editor" gap="3rem" columnsTemplate={`10vw 1fr 10vw`}>
-
-      <StuffForm character={character} stuff={stuff} row={1} col={2} />
-
-    </Grid>
-  );
+    <div className="stuff-editor">
+      <StuffForm stuff={stuff} beforeSave={createStuff} />
+    </div>
+  )
 }
 
-export default New;
+export default New

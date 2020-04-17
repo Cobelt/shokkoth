@@ -1,0 +1,117 @@
+.stuff
+  .background-line
+    background-color background-item
+    background-size 100%
+    left 0
+    right 0
+    top 0
+    position relative
+    z-index -1
+
+  .avatar
+    padding-bottom 3em
+
+  .chart-icon, .name, .level
+    color var(--primary-color) !important
+    align-self end
+
+
+  .stuff-infos
+    .icon
+      transform rotate(0deg)
+      transition color 0.4s, transform 0.4s
+
+      &.visibility.font-primary
+        transform rotate(360deg)
+
+
+  .name
+    justify-self left
+
+  .breed-icon
+    justify-self right
+    max-width 2em
+    max-height 2em
+
+  .level
+    justify-self right
+
+
+  .name, .level, .breed-icon
+    align-self end
+
+    font-size 1.3em
+    white-space nowrap
+    text-overflow ellipsis
+    overflow hidden
+
+
+  .chart-icon, .close-icon
+    justify-self left
+    font-size 1.5em
+    margin 0
+    padding-bottom 0
+    transition transform 0.4s
+
+  .chart-icon
+    transform translateY(0%)
+    transition-delay 0.2s
+    z-index 4
+  .close-icon
+    transform translateY(-100%)
+    z-index 3
+
+
+
+  // stats
+  .life-points
+    .life-icon
+      height -moz-fill-available
+      height -webkit-fill-available
+      height fill-available
+      min-height 3em
+      max-height 6em
+      width 100%
+
+    .hp
+      font-weight bold
+      place-self center
+      color #fafafa
+
+  .row.stat
+    align-content center
+    margin auto
+
+    .pa-icon, .pm-icon
+      max-height 2em
+      min-width 2em
+      align-self end
+
+    .mp, .ap
+      font-weight bold
+
+
+    .mp, .ap
+      color var(--primary-color)
+      padding 0 0.5em
+      text-align right
+      align-self center
+    // end
+
+  .equipment-input
+    width 4em
+    height 4em
+    justify-self center
+
+
+  &.stats-mode
+
+    .chart-icon
+      cursor helper
+      transform translateY(100%)
+      transition-delay 0s
+      z-index 3
+
+    .close-icon
+      transform translateY(0%)
+      z-index 4

@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import get from 'lodash.get';
-import debounce from 'lodash.debounce';
-import { Link } from 'react-router-dom';
 import { Row, Icon, Input, Spinner } from 'muejs';
 
 import useDebounce from '../../../hooks/useDebounce';
@@ -29,7 +26,7 @@ const StuffsSearch = ({ loading, error, stuffs = [], globalCharacter, delete: De
   return (
     <>
       <Row className="stuff-searchbar" {...searchBarPosition} {...otherProps}>
-        <Icon className="font-primary" icon={small ? "view_array" : "view_module"} size="md" onClick={() => setSmall(!small)} />
+        <Icon className="text-primary" icon={small ? "view_array" : "view_module"} size="md" onClick={() => setSmall(!small)} />
         <Input type="text" placeholder={'Rechercher (2 caractères minimum)'} value={search} onChange={e => setSearch(e.target.value)} />
       </Row>
 

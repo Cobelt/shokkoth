@@ -3,13 +3,15 @@ import get from 'lodash.get';
 
 export default ({ look = "half-closed", ...otherProps }) => {
 
-  // console.log('received look=', look);
   const bg = { strokeWidth: 4, cx: 50, cy: 50, r: 48, fill: '#fafafa' };
   const fg = { strokeWidth: 4, className: 'external-border', cx: 50, cy: 50, r: 48, fill: 'none' };
 
-  let decalage = 20
-  if (look !== 'away')
-    decalage = Math.min(parseInt(get(look.match(/#(\d+)$/i), '[1]') || decalage, 10), 40)
+  let decalage = 0
+  let maxDecalage = 0
+  if (look !== 'away') {
+    decalage = parseInt(get(look.match(/#(\d+)$/i), '[1]') || decalage, 10)
+    maxDecalage = Math.min(decalage, 10)
+  }
   const irisState = look.replace(`#${decalage}`, '');
 
   const tentacles = {
@@ -23,7 +25,7 @@ export default ({ look = "half-closed", ...otherProps }) => {
   const hideSpikesExternal = { fill: '#fafafa', d: "M 50.000 82.000 L 59.271 88.532 L 62.931 77.798 L 74.271 77.634 L 70.923 66.798 L 80.000 60.000 L 70.923 53.202 L 74.271 42.366 L 62.931 42.202 L 59.271 31.468 L 50.000 38.000 L 40.729 31.468 L 37.069 42.202 L 25.729 42.366 L 29.077 53.202 L 20.000 60.000 L 29.077 66.798 L 25.729 77.634 L 37.069 77.798 L 40.729 88.532 L 50.000 82.000 z" };
   const hideSpikesDeco = { fill: 'none', stroke: '#fafafa', strokeWidth: 1, cx: 50, cy: 60, r: 26, style: { opacity: 0.35 } };
   const body = { fill: '#0A7590', cx: 50, cy: 60, r: 22 };
-  const neck = { fill: '#80fb8d', d: "m 52 38 c 5 -35 -5 -35 -10 -24 c -1 15 10 -20 6 24" };
+  const neck = { fill: '#80fb8d', d: "m 52 38 c 5 -35 -5 -35 -10 -24 c -1 15 10 -20 6 24", style: { transformOrigin: 'center', transform: `rotateY(${maxDecalage * 20}deg)`, transition: 'transform 0.2s' } };
 
   const eyeBorder = { fill: '#fafafa', d: "m 40 14.2 c  -3.6 0  -7.2  7.68  4.2  4.8 c  9.6 2.88  9.6 -2.88  4.2 -4.8 c -3 -2.4   1.2 -9.6   -4.2 -12 c -5.4  2.4   -1.2  9.6   -4.2 12" };
   const eye = { fill: '#206d68', d: "m 40.5 14 c  -3 0  -6  6.4  3.5  4 c  8 2.4  8 -2.4  3.5 -4 c -2.5 -2   1 -8   -3.5 -10 c -4.5  2   -1  8   -3.5 10" }
@@ -92,12 +94,14 @@ export default ({ look = "half-closed", ...otherProps }) => {
         {/* <path {...teeth} /> */}
       </g>
 
-      <g className="eye-group" style={{ transform: 'matrix(1.5023,0,0,1.4808765,-20.243813,0.93666372)' }}>
-        {/* <path {...eyeBorder} /> */}
-        {/* <circle {...eyelidBorder} /> */}
-        <path {...eye} />
-        <circle {...eyelid} />
-        <path {...iris} />
+      <g style={{ transform: `translateX(${maxDecalage}px)`, transition: 'transform 0.2s' }}>
+        <g className="eye-group" style={{ transform: 'matrix(1.5023,0,0,1.4808765,-20.243813,0.93666372)' }}>
+          {/* <path {...eyeBorder} /> */}
+          {/* <circle {...eyelidBorder} /> */}
+          <path {...eye} />
+          <circle {...eyelid} />
+          <path {...iris} />
+        </g>
       </g>
 
       <circle {...fg} />

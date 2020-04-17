@@ -1,11 +1,15 @@
-.home-container
-  min-width unset
-  margin-left 6vw
-  margin-right 6vw
+.homepage
+    .choice
+        background-repeat no-repeat
+        background-size cover
+        filter grayscale(0.8) brightness(0.65)
+        transition filter 0.2s
 
-  .link-to-watch, .stuff-searchbar
-    max-width 88vw
+        &:hover
+            filter grayscale(0.2) brightness(1)
 
+        &.one
+            clip-path polygon(0% 0%, 47% 0%, 55% 29%, 47% 41%, 58% 72%, 49% 86%, 55% 100%, 0% 100%)
 
-  @media (min-width: 1881px)
-    font-size: calc(1em - 0.1vw)
+        &.two
+            clip-path polygon(47% 0%, 55% 29%, 47% 41%, 58% 72%, 49% 86%, 55% 100%, 100% 100%, 100% 0%)

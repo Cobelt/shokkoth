@@ -18,5 +18,6 @@ curl "http://graphql.dev.shokkoth.tk/?query=query%20tota(%24skip%3A%20Int%2C%20%
 
 	echo -e $id
 	echo -e $url
-	wget -O /data/github/shokkoth/assets/resources/$id.png https:$url
+	wget -O /data/github/shokkoth/assets/resources/$id.png https:$url -t 3
+	read -p "Continuing in 0.5 Seconds...." -t 0.5
 done

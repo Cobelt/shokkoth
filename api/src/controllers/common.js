@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import get from 'lodash.get';
-import { COMMON } from 'shokkoth-models';
+import { COMMON } from 'shokkoth-constants';
 import { Equipments } from '../models';
 
 import { getParam, setLocale, getLocale, toURLValid } from '../utils/common';

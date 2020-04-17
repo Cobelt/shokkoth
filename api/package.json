@@ -31,7 +31,7 @@
     "lodash.set": "^4.3.2",
     "mongoose": "^5.4.16",
     "mongoose-fuzzy-searching": "^1.1.5",
-    "shokkoth-models": "git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git"
+    "shokkoth-constants": "file:../constants"
   },
   "scripts": {
     "start": "nodemon --exec babel-node src/server.js",

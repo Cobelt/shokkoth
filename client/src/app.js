@@ -1,61 +1,64 @@
-import React, { useState, useEffect, useContext } from 'react';
-import ReactDOM from 'react-dom';
-import { InMemoryCache } from 'apollo-cache-inmemory';
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from '@apollo/react-hooks';
-import { Redirect, Router, Route, Switch } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
-import { Column, Element } from 'muejs';
+import React, { useState, useEffect, useContext } from 'react'
+import ReactDOM from 'react-dom'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import ApolloClient from 'apollo-boost'
+import { ApolloProvider } from '@apollo/react-hooks'
+import { Router, Route, Switch } from 'react-router-dom'
+import { createBrowserHistory } from 'history'
+import { Column, Element } from 'muejs'
 
-import * as selectors from './store/selectors/user';
+import * as selectors from './store/selectors/user'
 
-import UserContext, { UserProvider } from './store/context/user';
-import { EquipmentsProvider } from './store/context/equipments';
-import { DataProvider } from './store/context/data';
+import UserContext, { UserProvider } from './store/context/user'
+import { EquipmentsProvider } from './store/context/equipments'
+import { DataProvider } from './store/context/data'
 
-import Navbar from './components/Navbar';
-import Links from './components/LinksSwitch';
-import Content from './components/RoutesSwitch';
-import Login from './components/Login';
-import AcceptCookies from './components/AcceptCookies';
-import Footer from './components/Footer';
-
-import Puddle from './assets/svg/puddle.js';
+import Home from './pages/Home'
+import Navbar from './components/Navbar'
+import Content from './components/Router'
+import { GRAPHQL_URI } from './constants/URIs'
 
 
-import './app.styl';
+import './app.styl'
 
 
-const history = createBrowserHistory();
+const history = createBrowserHistory()
 
 const App = () => {
-  const [shouldShow, showLogin] = useState(false);
-  const [acceptCookie, setAcceptCookie] = useState(undefined);
+  const [acceptCookie, setAcceptCookie] = useState(undefined)
 
   return (
-    <Column className="page">
-      <Navbar />
+    <Switch>
 
-      <Content showLogin={showLogin} />
+      <Route exact path="/" component={Home} />
 
-      {/* <AcceptCookies row={0} /> */}
+      <Route render={() => (
+        <Column className="page pb-5vh">
+          <Navbar />
 
-      <Footer />
-    </Column>
-  );
-};
+          <Content />
+
+          {/* <AcceptCookies row={0} /> */}
+
+          {/* <Footer /> */}
+        </Column>
+      )}  />
+
+    </Switch>
+  )
+}
 
 
 const ConfiguredApolloProvider = ({ children }) => {
-  const [store] = useContext(UserContext);
-  const token = selectors.getJWT(store);
-  const cache = new InMemoryCache();
+  const [store] = useContext(UserContext)
+  const token = selectors.getJWT(store)
+  const cache = new InMemoryCache()
 
   const apollo = new ApolloClient({
-    uri: process.env.NODE_ENV === 'development' ? '//graphql.dev.shokkoth.fr' : '//graphql.shokkoth.fr/',
+    uri: GRAPHQL_URI,
     headers: token && {'Authorization': `Bearer ${token}`},
     cache,
-  });
+  })
 
   return (
     <ApolloProvider client={apollo}>
@@ -76,4 +79,4 @@ ReactDOM.render((
         </ConfiguredApolloProvider>
       </UserProvider>
     </Router>
-), document.getElementById('root'));
+), document.getElementById('root'))

@@ -14,7 +14,7 @@ const getCookies = () => {
 }
 
 const getCookie = (name) => {
-  if (!name) return;
+  if (!name) return null
   const cookie = get(getCookies(), name);
   try {
     return JSON.parse(cookie);
@@ -24,13 +24,13 @@ const getCookie = (name) => {
   }
 }
 
-const setCookie = (name = undefined, value = undefined, expires = DateTime.local().plus({ weeks: 1 }).toHTTP(), domain = '*.shokkoth.fr', path = '/') => {
-  if ([name, value].includes(undefined)) return;
+const setCookie = (name = undefined, value = undefined, expires = DateTime.local().plus({ weeks: 1 }).toHTTP(), domain = process.env.NODE_ENV === 'development' ? 'localhost' : '.shokkoth.fr', path = '/') => {
+  if ([name, value].includes(undefined)) return null
   document.cookie = `${name}=${value}; expires=${expires}; domain=${domain}; path=${path}`;
 }
 
-const deleteCookie = (name, domain = 'shokkoth.fr', path = '/') => {
-  if (!getCookie(name)) return;
+const deleteCookie = (name, domain = process.env.NODE_ENV === 'development' ? 'localhost' : '.shokkoth.fr', path = '/') => {
+  if (!getCookie(name)) return null
   document.cookie = `${name}=; expires=; domain=${domain}; path=${path}`;
 }
 

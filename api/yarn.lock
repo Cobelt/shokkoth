@@ -2542,7 +2542,7 @@ node-modules-regexp@^1.0.0:
   resolved "https://registry.yarnpkg.com/node-modules-regexp/-/node-modules-regexp-1.0.0.tgz#8d9dbe28964a4ac5712e9131642107c71e90ec40"
   integrity sha1-jZ2+KJZKSsVxLpExZCEHxx6Q7EA=
 
-node-pre-gyp@*, node-pre-gyp@0.14.0:
+node-pre-gyp@0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
   integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
@@ -3182,12 +3182,13 @@ shebang-regex@^1.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
   integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
 
-"shokkoth-models@git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git":
-  version "0.0.2"
-  resolved "git+https://545f769dec24a03cc3c1d3f3c5c0ebf37afa1311:@github.com/Cobelt/shokkoth-models.git#59b063c862f1bc70de6cf0d624ef32325a2bfcf6"
+"shokkoth-constants@file:../constants":
+  version "0.0.1"
   dependencies:
     lodash.deburr "^4.1.0"
     lodash.get "^4.4.2"
+    lodash.memoize "^4.1.2"
+    lodash.set "^4.3.2"
 
 sift@7.0.1:
   version "7.0.1"

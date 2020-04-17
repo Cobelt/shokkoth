@@ -6,7 +6,6 @@ import { getUserId, ownCharacter, ownStuff } from '../utils/auth';
 
 export const canUpdateCharacter = next => rp => {
   const userId = get(rp, 'context.userId') || getUserId(rp);
-  console.log('yo', userId)
   if (!ownCharacter(userId, get(rp, 'args.characterId')) && !isAtLeastAdmin(rp)) {
     return next(new Error('User does not have access to this character.'))
   };

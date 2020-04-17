@@ -1,0 +1,185 @@
+@require './variables.styl';
+@require './animations.styl';
+
+
+.btn.circle
+  background-color var(--primary-color)
+  filter brightness(80%)
+
+
+.min-height-15
+  min-height 15em
+.min-width-15
+  min-width 15em
+
+
+.column
+  position relative
+
+  &.page
+    --navbar-height-mobile 64px
+    padding-top calc(var(--navbar-height-mobile) + 1.2em)
+
+    min-width 100vw
+    min-height 100vh
+    overflow hidden
+
+    > :not(.navbar):not(.footer)
+      flex 1
+
+    > .grid-element:not(.navbar):not(.footer):not(.article-list)
+      place-content center
+      min-width 10em
+      min-height 5em
+
+    .main
+      flex 1
+
+      .main-title
+        margin 0
+        align-self end
+
+
+
+    .login
+      margin-left auto
+      margin-right auto
+
+      .shokkoth
+        max-height 30vh
+        min-height 5em
+
+
+
+    .login:not(.page-login)
+      position absolute
+      left 50%
+      flex-wrap nowrap
+      opacity 0
+      z-index 101
+      transform translateX(-50%)
+      transition opacity 0.25s ease-in, top 0.25s
+      min-height 20em
+      top 1.5em
+      width 80%
+
+      @media (min-width: 641px)
+        top 3em
+        width 65%
+
+      @media (min-width: 1041px)
+        top 5em
+        width 50%
+
+      @media (min-width: 1281px)
+        width 40%
+
+      @media (min-width: 1541px)
+        width 30%
+
+      &:not(.visible)
+        display none
+
+      &.visible
+        opacity 1
+        transition-delay 0.25s
+
+
+    svg.puddle
+      --width 3
+
+      position absolute
+      top 0%
+      right 0%
+      transform-origin top right
+
+      width calc(1.5vw * var(--width))
+      max-width 7vw
+      min-width 7em
+
+      transition width 0.45s, max-width 0s
+      transition-delay 0s, 0.45s
+      fill var(--primary-color)
+      z-index 100
+
+      @media (max-width: 640px)
+        transition width 0.9s
+
+
+      path
+        d path(var(--path))
+        transition d 0.6s, fill 0.6s
+        cursor pointer
+        transition-delay 0.3s
+
+        // animation puddle-idle 4s linear alternate infinite;
+
+
+      &:not(.expand)
+        path:hover
+          --path "m 100 50 v -50 h -70 c -37 1 0 21 0 21 c -7 0 -59 45 13 29 c 6 -2 -6 9 -6 9 c -9 8 -6 12 14 10 c -6 7 -30 51 23 14 c 0 0 22 24 26 7 v -40" !important
+          transition-delay unset
+
+
+      &.expand
+        max-width unset
+        transition width 0.45s, max-width 0s
+        transition-delay 0s, 0s
+        filter brightness(120%)
+        --width 300
+
+        @media (min-width: 381px)
+          --width 250
+
+        @media (min-width: 641px)
+          --width 125
+
+        @media (min-width: 1041px)
+          --width 110
+
+        @media (min-width: 1281px)
+          --width 100
+
+        @media (min-width: 1541px)
+          --width 100
+
+
+
+        path
+          --path "M 100 50 V 0 H 30 c -57 1 -12 10 -20 25 c -11 20 15 3 20 10 c 11 14 -29 10 -20 40 c 4 15 30 -5 50 10 			c 4 4 -16 -3 -17 7 	C 41 106 100 100 100 90 v -40" !important
+          transition-delay unset
+
+
+
+
+.navbar
+  .nav-brand
+    margin 0 2.5vw
+    font-size 2.7em
+
+  .nav-icon, .nav-label, .nav-logo
+    padding 0 1vw
+
+
+.screen
+  display flex
+  position relative
+  justify-content center
+
+  .scroll-btn
+    position absolute
+    bottom 7%
+
+
+.btn.circle
+  padding 0
+  width 5em
+  height 5em
+  border-radius 50%
+  z-index 101
+
+  span
+    vertical-align middle
+
+    i.material-icons
+      font-size 3.75em
