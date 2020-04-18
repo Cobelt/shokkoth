@@ -97,16 +97,37 @@ export async function equip({ equipment } = {}, [store, dispatch]) {
 export async function unequip({ equipment } = {}, [store, dispatch]) {
     if (!equipment) return null
 
-    const stuff = selectors.getActiveStuff(store)
-    if (!stuff || stuff.equipments.length <= 0) return null
-
-    stuff.equipments.splice(stuff.equipments.findIndex(equip => equip._id === equipment._id), 1)
-
+    
     try {
-      dispatch(action({ type: SAVE_ACTIVE, payload: { stuff } }))
+      const stuff = selectors.getActiveStuff(store)
+      if (!stuff || !(stuff.equipments instanceof Object) || !Object.keys(stuff.equipments).length > 0) return null
+
+      let alreadyRemoved = false
+      const newEquipments = {}
+      
+      Object.entries(stuff.equipments).forEach(([category, objects]) => {
+        Object.entries(objects).forEach(([index, obj]) => {
+          if (equipment._id === obj._id && !alreadyRemoved) {
+            alreadyRemoved = true
+          }
+          else {
+            if (!newEquipments[category]) {
+              newEquipments[category] = {}
+            }
+            newEquipments[category][index] = obj
+          }
+        })
+      })
+
+      dispatch(action({ type: SAVE_ACTIVE, payload: { stuff: {
+        ...stuff,
+        equipments: newEquipments
+      } }}))
+
       // cookies.set('STUFF_DRAFT', JSON.stringify(idsOfItems))
     }
     catch (error) {
+      console.error('GOT AN ERROR ON', error)
       dispatch(action({ type: SAVE_ACTIVE, payload: { error } }))
     }
 }
