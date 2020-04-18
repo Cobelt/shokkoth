@@ -17,8 +17,8 @@ skip=$(( ($page-1) * $perPage ))
 [[ "$isLocalhost" = "y" ]] && uri="localhost:4001" || uri="graphql.dev.shokkoth.fr"
 
 curl "http://$uri/?query=query%20tota(%24skip%3A%20Int%2C%20%24limit%3A%20Int)%20%7B%0A%20%20equipmentMany(skip%3A%20%24skip%2C%20limit%3A%20%24limit)%20%7B%0A%20%20%20%20ankamaId%0A%20%20%20%20imgUrl%0A%20%20%7D%0A%7D&variables=%7B%0A%20%20%22skip%22%3A%20$skip%2C%0A%20%20%22limit%22%3A%20$perPage%0A%7D" | jq -r -c '.data.equipmentMany[]' | while read item ; do
-	id=$(echo -e "${item}" | jq '.ankamaId')
-	url=$(echo -e "${item}" | jq '.imgUrl')
+	id=$(echo -e "${item}" | jq '.ankamaId' | sed -e s/\"//g)
+	url=$(echo -e "${item}" | jq '.imgUrl' | sed -e s/\"//g)
 	id=${id%\"}
 	id=${id#\"}
 

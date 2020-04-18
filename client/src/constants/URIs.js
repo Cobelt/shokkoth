@@ -1,13 +1,5 @@
-export const GRAPHQL_URI = 
-    process.env.NODE_ENV === 'development' ? '//localhost:4001/' : 
-    process.env.NODE_ENV === 'production' ? '//grahpql.shokkoth.fr/' : '//graphql.dev.shokkoth.fr'
-
-export const API_URI = 
-    process.env.NODE_ENV === 'development' ? '//localhost:5013/' :
-    process.env.NODE_ENV === 'production' ? '//api.shokkoth.fr/' : '//api.dev.shokkoth.fr/'
-    
-export const IMG_URI =
-process.env.NODE_ENV === 'development' ? '//dev.img.shokkoth.fr/' : '//img.shokkoth.fr/'
+import { IMG_URI } from '../env'
+export { GRAPHQL_URI, API_URI, IMG_URI } from '../env'
 
 export const DOFUS_IMG_URI = IMG_URI + 'dofus'
 
