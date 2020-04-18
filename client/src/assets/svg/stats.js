@@ -1,11 +1,11 @@
 import React from 'react';
 
-export const HPIcon = ({ style, props }) => (
+export const HPIcon = ({ className = '', style, props }) => (
   <svg
     x="0px"
     y="0px"
     viewBox="0 0 426.668 426.668"
-    className={"life-icon"}
+    className={("life-icon " + className).trim()}
     style={{ enableBbackground: 'new 0 0 426.668 426.668', ...style }}
     xmlSpace="preserve"
 		{ ...props }

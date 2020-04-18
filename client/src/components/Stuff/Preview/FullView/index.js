@@ -65,7 +65,7 @@ const StuffFull = ({ className, elementClassName, stuff = {}, editable = true, u
         </Row>
 
         <Element className="life-points relative" row={5} col={3} width={2} show={vitality}>
-          <HPIcon />
+          <HPIcon className="max-height-100" />
           <span className="absolute hp">{ vitality }</span>
         </Element>
 

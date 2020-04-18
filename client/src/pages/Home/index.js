@@ -7,7 +7,7 @@ import './stylesheet.styl'
 
 const Home = () => {
   return (
-    <div className="homepage relative height-100vh overflow-hidden">
+    <div className="homepage bg-dark-grey relative height-100vh overflow-hidden">
         <Link to="/stuffs/new" className="choice one absolute left-0 min-width-100 height-100 flex justify-flex-start align-items-center z-index-5 " style={{ backgroundImage: `url(${HOME_IMG_URI}/toCreateStuff.jpg)` }}>
             <span className="text-white bold ml-10vw max-width-40" style={{ fontSize: 64 }}>Créer un stuff</span>
         </Link>
