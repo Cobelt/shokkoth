@@ -4,7 +4,7 @@ import { cleanPlugin, copyPlugin, htmlPlugin, HMRPlugin, CSSPlugin } from './plu
 import webpack from 'webpack';
 
 module.exports = {
-  mode: 'preprod',
+  mode: 'development',
   devtool: 'inline-source-map',
   devServer: {
     // host: '0.0.0.0',
