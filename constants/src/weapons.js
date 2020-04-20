@@ -1,17 +1,17 @@
-import { findKey, findCategory, findTypesOfCategory, findOrder, translateType, validate } from './utils';
+import { findKey, findCategory, findTypesOfCategory, findOrder, translateType, validate } from './utils'
 
-export const SWORD = 'Épée';
-export const HAMMER = 'Marteau';
-export const SCYTHE = 'Faux';
-export const BOW = 'Arc';
-export const AXE = 'Hache';
-export const DAGGER = 'Dague';
-export const PICKAXE = 'Pioche';
-export const WAND = 'Baguette';
-export const STAFF = 'Bâton';
-export const SHOVEL = 'Pelle';
-export const TOOL = 'Outil';
-export const SOUL_STONE = 'Pierre d\'âme';
+export const SWORD = 'Épée'
+export const HAMMER = 'Marteau'
+export const SCYTHE = 'Faux'
+export const BOW = 'Arc'
+export const AXE = 'Hache'
+export const DAGGER = 'Dague'
+export const PICKAXE = 'Pioche'
+export const WAND = 'Baguette'
+export const STAFF = 'Bâton'
+export const SHOVEL = 'Pelle'
+export const TOOL = 'Outil'
+export const SOUL_STONE = 'Pierre d\'âme'
 
 export const translations = {
   SWORD: {
@@ -84,15 +84,16 @@ export const translations = {
     fr: "pierre d'âme",
     en: 'soul stone',
   },
-};
+}
 
-export const ENUM = Object.keys(translations);
+export const ENUM = Object.keys(translations)
 
-export const getKey = (type) => findKey(type, translations);
-export const getOrder = (type) => findOrder(type, translations);
-export const getCategory = (type) => findCategory(type, translations);
-export const getTypesOfCategory = (category) => findTypesOfCategory(category, translations);
+export const getKey = (type) => findKey(type, translations)
+export const populate = (type) => translations[findKey(type, translations)]
+export const getOrder = (type) => findOrder(type, translations)
+export const getCategory = (type) => findCategory(type, translations)
+export const getTypesOfCategory = (category) => findTypesOfCategory(category, translations)
 
-export const translate = (type, lang) => translateType(type, translations, lang);
+export const translate = (type, lang) => translateType(type, translations, lang)
 
-export const validateType = (type, translationName) => validate(type, translationName, translations);
+export const validateType = (type, translationName) => validate(type, translationName, translations)

@@ -20,13 +20,25 @@
     animation scale0to1 0.25s ease-in-out forwards;
     animation-delay var(--delay) ms
 
-  img
+  > img
     filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0))
     transform rotate(0deg) scale(1)
     transition transform 0.3s, filter 0.3s
     max-width 100%
+    min-height 100%
+
+    &:before
+      content ''
+      display block
+      position absolute
+      min-height 100%
+      width 100%
+      background-image var(--broken-img-link, url("https://gamepedia.cursecdn.com/cryofall_gamepedia_en/3/3a/Broken_Equipment_Icon.png?version=14ae0a28c14a671036ffb05f9e042e52"))
+      background-size contain
+      background-repeat no-repeat
+      filter invert(1) brightness(0.3)
 
   &:hover, &.active
-    img
+    > img
       filter drop-shadow(0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.2))
       transform rotate(-25deg) scale(1.35)

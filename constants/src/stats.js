@@ -1,392 +1,430 @@
-import { findKey, translateType, validate } from './utils';
+import { findKey, translateType, validate } from './utils'
 
 // PRIMARY
-export const AP             = 'PA';
-export const MP             = 'PM';
-export const RANGE          = 'Portée';
+export const AP             = 'PA'
+export const MP             = 'PM'
+export const RANGE          = 'Portée'
 
-export const SUMMONS        = 'Invocations';
-export const CRITICAL       = '% Critique';
-export const INITIATIVE     = 'Initiative';
+export const AP_MP          = 'PA PM'
+export const AP_RANGE       = 'PA PO'
+export const MP_RANGE       = 'PM PO'
+export const AP_MP_RANGE    = 'PA PM PO'
 
-export const VITALITY       = 'Vitalité';
-export const STRENGTH       = 'Force';
-export const AGILITY        = 'Agilité';
-export const INTELLIGENCE   = 'Intelligence';
-export const CHANCE         = 'Chance';
-export const WISDOM         = 'Sagesse';
-export const PUISSANCE      = 'Puissance';
+export const SUMMONS        = 'Invocations'
+export const CRITICAL       = '% Critique'
+export const INITIATIVE     = 'Initiative'
+
+export const VITALITY       = 'Vitalité'
+export const STRENGTH       = 'Force'
+export const AGILITY        = 'Agilité'
+export const INTELLIGENCE   = 'Intelligence'
+export const CHANCE         = 'Chance'
+export const WISDOM         = 'Sagesse'
+export const PUISSANCE      = 'Puissance'
+
+export const MULTI_ELEMENTS = 'Multi-élément'
 
 
 
 // DAMAGES
-export const DAMAGE           = 'Dommages';
-export const NEUTRAL_DAMAGE   = 'Dommages Neutre';
-export const EARTH_DAMAGE     = 'Dommages Terre';
-export const AIR_DAMAGE       = 'Dommages Air';
-export const FIRE_DAMAGE      = 'Dommages Feu';
-export const WATER_DAMAGE     = 'Dommages Eau';
+export const DAMAGE           = 'Dommages'
+export const NEUTRAL_DAMAGE   = 'Dommages Neutre'
+export const EARTH_DAMAGE     = 'Dommages Terre'
+export const AIR_DAMAGE       = 'Dommages Air'
+export const FIRE_DAMAGE      = 'Dommages Feu'
+export const WATER_DAMAGE     = 'Dommages Eau'
 
-export const MELEE_DAMAGE     = '% Dommages mêlée';
-export const RANGED_DAMAGE    = '% Dommages distance';
+export const MELEE_DAMAGE     = '% Dommages mêlée'
+export const RANGED_DAMAGE    = '% Dommages distance'
 
-export const CRITICAL_DAMAGE  = 'Dommages Critiques';
-export const PUSHBACK_DAMAGE  = 'Dommages Poussée';
+export const CRITICAL_DAMAGE  = 'Dommages Critiques'
+export const PUSHBACK_DAMAGE  = 'Dommages Poussée'
 
 
 
 // RESISTANCES
-export const NEUTRAL_RESISTANCE   = '% Résistance Neutre';
-export const EARTH_RESISTANCE     = '% Résistance Terre';
-export const FIRE_RESISTANCE      = '% Résistance Feu';
-export const WATER_RESISTANCE     = '% Résistance Eau';
-export const AIR_RESISTANCE       = '% Résistance Air';
+export const NEUTRAL_RESISTANCE   = '% Résistance Neutre'
+export const EARTH_RESISTANCE     = '% Résistance Terre'
+export const FIRE_RESISTANCE      = '% Résistance Feu'
+export const WATER_RESISTANCE     = '% Résistance Eau'
+export const AIR_RESISTANCE       = '% Résistance Air'
 
-export const NEUTRAL_STATIC_RESISTANCE   = 'Résistance Neutre';
-export const EARTH_STATIC_RESISTANCE     = 'Résistance Terre';
-export const FIRE_STATIC_RESISTANCE      = 'Résistance Feu';
-export const WATER_STATIC_RESISTANCE     = 'Résistance Eau';
-export const AIR_STATIC_RESISTANCE       = 'Résistance Air';
+export const NEUTRAL_STATIC_RESISTANCE   = 'Résistance Neutre'
+export const EARTH_STATIC_RESISTANCE     = 'Résistance Terre'
+export const FIRE_STATIC_RESISTANCE      = 'Résistance Feu'
+export const WATER_STATIC_RESISTANCE     = 'Résistance Eau'
+export const AIR_STATIC_RESISTANCE       = 'Résistance Air'
 
-export const MELEE_RESISTANCE     = '% Résistance mêlée';
-export const RANGED_RESISTANCE    = '% Résistance distance';
+export const MELEE_RESISTANCE     = '% Résistance mêlée'
+export const RANGED_RESISTANCE    = '% Résistance distance'
 
-export const CRITICAL_RESISTANCE  = 'Résistance Critiques';
-export const PUSHBACK_RESISTANCE  = 'Résistance Poussée';
+export const CRITICAL_RESISTANCE  = 'Résistance Critiques'
+export const PUSHBACK_RESISTANCE  = 'Résistance Poussée'
 
 
 
 // SECONDARY
-export const AP_PARRY             = 'Esquive PA';
-export const MP_PARRY             = 'Esquive PM';
+export const AP_PARRY             = 'Esquive PA'
+export const MP_PARRY             = 'Esquive PM'
 
-export const AP_REDUCTION         = 'Retrait PA';
-export const MP_REDUCTION         = 'Retrait PM';
+export const AP_REDUCTION         = 'Retrait PA'
+export const MP_REDUCTION         = 'Retrait PM'
 
-export const DODGE                = 'Fuite';
-export const LOCK                 = 'Tacle';
+export const DODGE                = 'Fuite'
+export const LOCK                 = 'Tacle'
 
-export const PROSPECTING          = 'Prospection';
+export const PROSPECTING          = 'Prospection'
 
-export const HEALS                = 'Soins';
+export const HEALS                = 'Soins'
 
 
 
 // WEAPONS DAMAGES
-export const WEAPONS_NEUTRAL_DAMAGES  = 'dommages Neutre';
-export const WEAPONS_EARTH_DAMAGES    = 'dommages Terre';
-export const WEAPONS_AIR_DAMAGES      = 'dommages Air';
-export const WEAPONS_FIRE_DAMAGES     = 'dommages Feu';
-export const WEAPONS_WATER_DAMAGES    = 'dommages Eau';
+export const WEAPONS_NEUTRAL_DAMAGES  = 'dommages Neutre'
+export const WEAPONS_EARTH_DAMAGES    = 'dommages Terre'
+export const WEAPONS_AIR_DAMAGES      = 'dommages Air'
+export const WEAPONS_FIRE_DAMAGES     = 'dommages Feu'
+export const WEAPONS_WATER_DAMAGES    = 'dommages Eau'
 
-export const WEAPONS_NEUTRAL_STEAL    = 'vol Neutre';
-export const WEAPONS_EARTH_STEAL      = 'vol Terre';
-export const WEAPONS_AIR_STEAL        = 'vol Air';
-export const WEAPONS_FIRE_STEAL       = 'vol Feu';
-export const WEAPONS_WATER_STEAL      = 'vol Eau';
+export const WEAPONS_NEUTRAL_STEAL    = 'vol Neutre'
+export const WEAPONS_EARTH_STEAL      = 'vol Terre'
+export const WEAPONS_AIR_STEAL        = 'vol Air'
+export const WEAPONS_FIRE_STEAL       = 'vol Feu'
+export const WEAPONS_WATER_STEAL      = 'vol Eau'
 
-export const WEAPONS_HEAL             = 'PV rendus';
+export const WEAPONS_HEAL             = 'PV rendus'
 
-export const WEAPONS_CRITICAL         = '% Critique (base)';
-export const WEAPONS_NO_CRITICAL      = 'Pas de critique possible';
-export const WEAPONS_CRIT_DAMAGES     = 'Dommages bonus (CC)';
+export const WEAPONS_CRITICAL         = '% Critique (base)'
+export const WEAPONS_NO_CRITICAL      = 'Pas de critique possible'
+export const WEAPONS_CRIT_DAMAGES     = 'Dommages bonus (CC)'
 
+export const PASSIVE                  = 'Passif'
 export const translations = {
   AP: {
     fr: AP,
     short: AP,
-    imgUrl: '.png',
+    imgUrl: 'PA.png',
   },
   MP: {
     fr: MP,
     short: MP,
-    imgUrl: '.png',
+    imgUrl: 'PM.png',
   },
   RANGE: {
     fr: RANGE,
     short: 'PO',
-    imgUrl: '.png',
+    imgUrl: 'PO.png',
+  },
+  AP_MP: {
+    fr: AP_MP,
+    short: AP_MP,
+    imgUrl: 'papm.png',
+  },
+  AP_RANGE: {
+    fr: AP_RANGE,
+    short: AP_RANGE,
+    imgUrl: 'papo.png',
+  },
+  MP_RANGE: {
+    fr: MP_RANGE,
+    short: MP_RANGE,
+    imgUrl: 'pmpo.png',
+  },
+  AP_MP_RANGE: {
+    fr: AP_MP_RANGE,
+    short: AP_MP_RANGE,
+    imgUrl: 'papmpo.png',
   },
   SUMMONS: {
     fr: SUMMONS,
     short: 'Invo',
-    imgUrl: '.png',
+    imgUrl: 'invocation.png',
   },
   CRITICAL: {
     fr: CRITICAL,
     short: 'CC',
-    imgUrl: '.png',
+    imgUrl: 'crit.png',
   },
   INITIATIVE: {
     fr: INITIATIVE,
     short: 'Ini',
-    imgUrl: '.png',
+    imgUrl: 'initiative.png',
   },
   VITALITY: {
     fr: VITALITY,
     short: 'PV',
-    imgUrl: '.png',
+    imgUrl: 'vitalite.png',
   },
   STRENGTH: {
     fr: STRENGTH,
     short: STRENGTH,
-    imgUrl: '.png',
+    imgUrl: 'terre.png',
   },
   AGILITY: {
     fr: AGILITY,
     short: 'Agi',
-    imgUrl: '.png',
+    imgUrl: 'air.png',
   },
   INTELLIGENCE: {
     fr: INTELLIGENCE,
     short: 'Intel',
-    imgUrl: '.png',
+    imgUrl: 'feu.png',
   },
   CHANCE: {
     fr: CHANCE,
     short: CHANCE,
-    imgUrl: '.png',
+    imgUrl: 'eau.png',
   },
   WISDOM: {
     fr: WISDOM,
     short: 'Sasa',
-    imgUrl: '.png',
+    imgUrl: 'sagesse.png',
   },
   PUISSANCE: {
     fr: PUISSANCE,
-    short: 'puiss',
-    imgUrl: '.png',
+    short: 'Puiss',
+    imgUrl: 'puissance.png',
+  },
+  MULTI_ELEMENTS: {
+    fr: MULTI_ELEMENTS,
+    short: 'Multi',
+    imgUrl: 'multi.png',
   },
   DAMAGE: {
     fr: DAMAGE,
     short: 'Do',
-    imgUrl: '.png',
+    imgUrl: 'dommage.png',
   },
   NEUTRAL_DAMAGE: {
     fr: NEUTRAL_DAMAGE,
     short: 'Do neutre',
-    imgUrl: '.png',
+    imgUrl: 'neutre.png',
   },
   EARTH_DAMAGE: {
     fr: EARTH_DAMAGE,
     short: 'Do terre',
-    imgUrl: '.png',
+    imgUrl: 'terre.png',
   },
   AIR_DAMAGE: {
     fr: AIR_DAMAGE,
     short: 'Do air',
-    imgUrl: '.png',
+    imgUrl: 'air.png',
   },
   FIRE_DAMAGE: {
     fr: FIRE_DAMAGE,
     short: 'Do feu',
-    imgUrl: '.png',
+    imgUrl: 'feu.png',
   },
   WATER_DAMAGE: {
     fr: WATER_DAMAGE,
     short: 'Do eau',
-    imgUrl: '.png',
+    imgUrl: 'eau.png',
   },
   MELEE_DAMAGE: {
     fr: MELEE_DAMAGE,
     short: '% Do mêlée',
-    imgUrl: '.png',
+    imgUrl: 'arme.png',
   },
   RANGED_DAMAGE: {
     fr: RANGED_DAMAGE,
     short: '% Do dist',
-    imgUrl: '.png',
+    imgUrl: 'arme.png',
   },
   CRITICAL_DAMAGE: {
     fr: CRITICAL_DAMAGE,
     short: 'Do crit',
-    imgUrl: '.png',
+    imgUrl: 'dommage-crit.png',
   },
   PUSHBACK_DAMAGE: {
     fr: PUSHBACK_DAMAGE,
     short: 'Do pou',
-    imgUrl: '.png',
+    imgUrl: 'dommage-poussee.png',
   },
   NEUTRAL_RESISTANCE: {
     fr: NEUTRAL_RESISTANCE,
     short: '% Res neutre',
-    imgUrl: '.png',
+    imgUrl: 'neutre.png',
   },
   EARTH_RESISTANCE: {
     fr: EARTH_RESISTANCE,
     short: '% Res terre',
-    imgUrl: '.png',
+    imgUrl: 'terre.png',
   },
   FIRE_RESISTANCE: {
     fr: FIRE_RESISTANCE,
     short: '% Res feu',
-    imgUrl: '.png',
+    imgUrl: 'feu.png',
   },
   WATER_RESISTANCE: {
     fr: WATER_RESISTANCE,
     short: '% Res eau',
-    imgUrl: '.png',
+    imgUrl: 'eau.png',
   },
   AIR_RESISTANCE: {
     fr: AIR_RESISTANCE,
     short: '% Res air',
-    imgUrl: '.png',
+    imgUrl: 'air.png',
   },
   NEUTRAL_STATIC_RESISTANCE: {
     fr: NEUTRAL_STATIC_RESISTANCE,
     short: 'Ré neutre',
-    imgUrl: '.png',
+    imgUrl: 'neutre.png',
   },
   EARTH_STATIC_RESISTANCE: {
     fr: EARTH_STATIC_RESISTANCE,
     short: 'Ré terre',
-    imgUrl: '.png',
+    imgUrl: 'terre.png',
   },
   FIRE_STATIC_RESISTANCE: {
     fr: FIRE_STATIC_RESISTANCE,
     short: 'Ré feu',
-    imgUrl: '.png',
+    imgUrl: 'feu.png',
   },
   WATER_STATIC_RESISTANCE: {
     fr: WATER_STATIC_RESISTANCE,
     short: 'Ré eau',
-    imgUrl: '.png',
+    imgUrl: 'eau.png',
   },
   AIR_STATIC_RESISTANCE: {
     fr: AIR_STATIC_RESISTANCE,
     short: 'Ré air',
-    imgUrl: '.png',
+    imgUrl: 'air.png',
   },
   MELEE_RESISTANCE: {
     fr: MELEE_RESISTANCE,
     short: '% Res mélée',
-    imgUrl: '.png',
+    imgUrl: 'PB.png',
   },
   RANGED_RESISTANCE: {
     fr: RANGED_RESISTANCE,
     short: '% Res dist',
-    imgUrl: '.png',
+    imgUrl: 'PB.png',
   },
   CRITICAL_RESISTANCE: {
     fr: CRITICAL_RESISTANCE,
     short: 'Ré crit',
-    imgUrl: '.png',
+    imgUrl: 'resistance-crit.png',
   },
   PUSHBACK_RESISTANCE: {
     fr: PUSHBACK_RESISTANCE,
     short: 'Ré pou',
-    imgUrl: '.png',
+    imgUrl: 'resistance-poussee.png',
   },
   AP_PARRY: {
     fr: AP_PARRY,
     short: AP_PARRY,
-    imgUrl: '.png',
+    imgUrl: 'esquive-pa.png',
   },
   MP_PARRY: {
     fr: MP_PARRY,
     short: MP_PARRY,
-    imgUrl: '.png',
+    imgUrl: 'esquive-pm.png',
   },
   AP_REDUCTION: {
     fr: AP_REDUCTION,
     short: 'Ret PA',
-    imgUrl: '.png',
+    imgUrl: 'retrait-pa.png',
   },
   MP_REDUCTION: {
     fr: MP_REDUCTION,
     short: 'Ret PM',
-    imgUrl: '.png',
+    imgUrl: 'retrait-pm.png',
   },
   DODGE: {
     fr: DODGE,
     short: DODGE,
-    imgUrl: '.png',
+    imgUrl: 'fuite.png',
   },
   LOCK: {
     fr: LOCK,
     short: LOCK,
-    imgUrl: '.png',
+    imgUrl: 'tacle.png',
   },
   PROSPECTING: {
     fr: PROSPECTING,
     short: 'PP',
-    imgUrl: '.png',
+    imgUrl: 'prospection.png',
   },
   HEALS: {
     fr: HEALS,
     short: HEALS,
-    imgUrl: '.png',
+    imgUrl: 'soin.png',
   },
   WEAPONS_NEUTRAL_DAMAGES: {
     fr: WEAPONS_NEUTRAL_DAMAGES,
     short: '(Do neutre)',
-    imgUrl: '.png',
+    imgUrl: 'neutre.png',
   },
   WEAPONS_EARTH_DAMAGES: {
     fr: WEAPONS_EARTH_DAMAGES,
     short: '(Do terre)',
-    imgUrl: '.png',
-  },
-  WEAPONS_AIR_DAMAGES: {
-    fr: WEAPONS_AIR_DAMAGES,
-    short: '(Do air)',
-    imgUrl: '.png',
+    imgUrl: 'terre.png',
   },
   WEAPONS_FIRE_DAMAGES: {
     fr: WEAPONS_FIRE_DAMAGES,
     short: '(Do feu)',
-    imgUrl: '.png',
+    imgUrl: 'feu.png',
   },
   WEAPONS_WATER_DAMAGES: {
     fr: WEAPONS_WATER_DAMAGES,
     short: '(Do eau)',
-    imgUrl: '.png',
+    imgUrl: 'eau.png',
+  },
+  WEAPONS_AIR_DAMAGES: {
+    fr: WEAPONS_AIR_DAMAGES,
+    short: '(Do air)',
+    imgUrl: 'air.png',
   },
   WEAPONS_NEUTRAL_STEAL: {
     fr: WEAPONS_NEUTRAL_STEAL,
     short: '(Vol neutre)',
-    imgUrl: '.png',
+    imgUrl: 'neutre.png',
   },
   WEAPONS_EARTH_STEAL: {
     fr: WEAPONS_EARTH_STEAL,
     short: '(Vol terre)',
-    imgUrl: '.png',
-  },
-  WEAPONS_AIR_STEAL: {
-    fr: WEAPONS_AIR_STEAL,
-    short: '(Vol air)',
-    imgUrl: '.png',
+    imgUrl: 'terre.png',
   },
   WEAPONS_FIRE_STEAL: {
     fr: WEAPONS_FIRE_STEAL,
     short: '(Vol feu)',
-    imgUrl: '.png',
+    imgUrl: 'feu.png',
   },
   WEAPONS_WATER_STEAL: {
     fr: WEAPONS_WATER_STEAL,
     short: '(Vol eau)',
-    imgUrl: '.png',
+    imgUrl: 'eau.png',
+  },
+  WEAPONS_AIR_STEAL: {
+    fr: WEAPONS_AIR_STEAL,
+    short: '(Vol air)',
+    imgUrl: 'air.png',
   },
   WEAPONS_HEAL: {
     fr: WEAPONS_HEAL,
     short: '(PV rendus)',
-    imgUrl: '.png',
+    imgUrl: 'pv-rendus.png',
   },
   WEAPONS_CRITICAL: {
     fr: WEAPONS_CRITICAL,
     short: '%CC (base)',
-    imgUrl: '.png',
+    imgUrl: 'crit.png',
   },
   WEAPONS_NO_CRITICAL: {
     fr: WEAPONS_NO_CRITICAL,
     short: 'Pas de crit',
-    imgUrl: '.png',
+    imgUrl: 'no-crit.png',
   },
   WEAPONS_CRIT_DAMAGES: {
     fr: WEAPONS_CRIT_DAMAGES,
     short: 'Do bonus (CC)',
-    imgUrl: '.png',
+    imgUrl: 'dommage-crit.png',
   },
+  PASSIVE: {
+    fr: PASSIVE,
+    short: PASSIVE,
+    imgUrl: 'passif.png'
+  }
 }
 
 
@@ -671,9 +709,10 @@ export const SEARCH_BUTTONS = {
 }
 
 
-export const ENUM = Object.keys(translations);
+export const ENUM = Object.keys(translations)
 
-export const getKey = (stat) => findKey(stat, translations);
-export const translate = (stat, lang) => translateType(stat, translations, lang);
+export const getKey = (stat) => findKey(stat, translations)
+export const translate = (stat, lang) => translateType(stat, translations, lang)
+export const populate = (stat) => translations[findKey(stat, translations)]
 
-export const validateType = (stat, translationName) => validate(stat, translationName, translations);
+export const validateType = (stat, translationName) => validate(stat, translationName, translations)

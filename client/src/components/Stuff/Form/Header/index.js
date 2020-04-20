@@ -38,7 +38,7 @@ const NameAndLevel = () => {
         />
         
         <Input
-          className={`ph-24 pv-20 mr-10 flex-1 level ${parseInt(level, 10) > 200 ? 'over-200' : ''}`.trim()}
+          className={`ph-24 pv-20 flex-1 level ${parseInt(level, 10) > 200 ? 'over-200' : ''}`.trim()}
           type="text"
           value={name}
           placeholder="Nom du stuff"

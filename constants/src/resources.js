@@ -1,4 +1,4 @@
-import { findKey, translateType, validate } from './utils';
+import { findKey, translateType, validate } from './utils'
 
 export const translations = {
     ALCHEMY_EQUIPMENT: {
@@ -253,11 +253,12 @@ export const translations = {
       fr: 'emballage',
       en: 'wrapping paper',
     },
-};
+}
 
-export const ENUM = Object.keys(translations);
+export const ENUM = Object.keys(translations)
 
-export const getKey = (type) => findKey(type, translations);
-export const translate = (type, lang) => translateType(type, translations, lang);
+export const getKey = (type) => findKey(type, translations)
+export const populate = (type) => translations[findKey(type, translations)]
+export const translate = (type, lang) => translateType(type, translations, lang)
 
-export const validateType = (type, translationName) => validate(type, translationName, translations);
+export const validateType = (type, translationName) => validate(type, translationName, translations)

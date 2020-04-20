@@ -1,18 +1,18 @@
-import { findKey, findCategory, findTypesOfCategory, findOrder, translateType, validate } from './utils';
+import { findKey, findCategory, findTypesOfCategory, findOrder, translateType, validate } from './utils'
 
-export const HAT = 'Chapeau';
-export const CLOAK = 'Cape';
-export const AMULET = 'Amulette';
-export const RING = 'Anneau';
-export const BELT = 'Ceinture';
-export const BOOTS = 'Bottes';
-export const SHIELD = 'Bouclier';
-export const DOFUS = 'Dofus';
-export const TROPHY = 'Trophée';
-// export const PRYSMARADITE = 'Prysmaradite';
-export const CEREMONIAL = 'Objet d\'apparat';
-export const BACKPACK = 'Sac à dos';
-export const LIVING_OBJECT = 'Objet vivant';
+export const HAT = 'Chapeau'
+export const CLOAK = 'Cape'
+export const AMULET = 'Amulette'
+export const RING = 'Anneau'
+export const BELT = 'Ceinture'
+export const BOOTS = 'Bottes'
+export const SHIELD = 'Bouclier'
+export const DOFUS = 'Dofus'
+export const TROPHY = 'Trophée'
+// export const PRYSMARADITE = 'Prysmaradite'
+export const CEREMONIAL = 'Objet d\'apparat'
+export const BACKPACK = 'Sac à dos'
+export const LIVING_OBJECT = 'Objet vivant'
 
 export const translations = {
   HAT: {
@@ -91,15 +91,16 @@ export const translations = {
     fr: "objet d'apparat",
     en: 'ceremonial',
   },
-};
+}
 
-export const ENUM = Object.keys(translations);
+export const ENUM = Object.keys(translations)
 
-export const getKey = (type) => findKey(type, translations);
-export const getOrder = (type) => findOrder(type, translations);
-export const getCategory = (type) => findCategory(type, translations);
-export const getTypesOfCategory = (category) => findTypesOfCategory(category, translations);
+export const getKey = (type) => findKey(type, translations)
+export const populate = (type) => translations[findKey(type, translations)]
+export const getOrder = (type) => findOrder(type, translations)
+export const getCategory = (type) => findCategory(type, translations)
+export const getTypesOfCategory = (category) => findTypesOfCategory(category, translations)
 
-export const translate = (type, lang) => translateType(type, translations, lang);
+export const translate = (type, lang) => translateType(type, translations, lang)
 
-export const validateType = (type, translationName) => validate(type, translationName, translations);
+export const validateType = (type, translationName) => validate(type, translationName, translations)

@@ -57,9 +57,9 @@ export const formatStatistics = toFormat => {
           }
           else if (name !== 'Compatible avec : 0') {
             if (isStat(name))
-              statisticsArray.push({ name, imgUrl: getStatSrcImg(name), ...value })
+              statisticsArray.push({ name, ...value })
             else if (isPassif(name))
-              passivesArray.push({ name, imgUrl: getDefaultPassiveImg(name), ...value })
+              passivesArray.push({ name, ...value })
           }
 
         })

@@ -23,13 +23,6 @@ const SearchBar = ({ setQueryVariables = () => undefined }) => {
     const category = selectors.getActiveCategory(store) || undefined
     const typesList = COMMON.getTypesOfCategory(category)
 
-    const [previousCategory, setPreviousCategory] = useState(category)
-    
-    const level = selectors.getStuffLevel(store) || LEVEL_MAX
-
-    const [savedLevelMin, saveLevelMin] = useState(Math.max(level - 15, LEVEL_MIN))
-    const [savedLevelMax, saveLevelMax] = useState(Math.min(level + 15, LEVEL_MAX))
-
     const state = ['shield', 'dofus', 'weapon'].some(cat => category == cat) ? WEAPON_STATE : DEFAULT_STATE
 
     const [params, dispatch] = useParams({
@@ -38,17 +31,12 @@ const SearchBar = ({ setQueryVariables = () => undefined }) => {
         types: {},
         page: 1,
         perPage: 80,
-        levelMin: Math.max(level - 15, LEVEL_MIN),
-        levelMax: Math.min(level + 15, LEVEL_MAX)
+        levelMin: LEVEL_MIN,
+        levelMax: LEVEL_MAX,
     })
 
     const debouncedParams = useDebounce(params, 350)
     const { search, page, perPage, levelMin, levelMax, stats, types } = params || {}
-    
-    useEffect(() => {
-        dispatch({ levelMin: Math.max(level - 15, LEVEL_MIN) })
-        dispatch({ levelMax: Math.min(level + 15, LEVEL_MAX) })
-    }, [level])
     
     useEffect(() => {
         const cleanedTypes = {}
@@ -58,23 +46,6 @@ const SearchBar = ({ setQueryVariables = () => undefined }) => {
             }
         })
         dispatch({ types: cleanedTypes, options: { replace: true } })
-
-        const newCatMatch = ['pet', 'dofus'].some(cat => category == cat)
-        const oldCatMatch = ['pet', 'dofus'].some(cat => previousCategory == cat)
-
-        if (newCatMatch && !oldCatMatch) {
-            saveLevelMin(levelMin)
-            dispatch({ levelMin: LEVEL_MIN })
-
-            saveLevelMax(levelMax)
-            dispatch({ levelMax: LEVEL_MAX })
-        } 
-        else if (!newCatMatch && oldCatMatch) {
-            dispatch({ levelMin: savedLevelMin })
-            dispatch({ levelMax: savedLevelMax })
-        }
-
-        setPreviousCategory(category)
     }, [category])
 
     useEffect(() => {

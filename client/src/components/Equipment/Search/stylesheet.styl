@@ -1,4 +1,10 @@
 .equipments-search
+  transition transform 0.2s
+  
+  &.minimized
+    transform translateY(calc(100% - 60px))
+
+
   @media (max-width: 1280px)
     display inline-grid !important
 

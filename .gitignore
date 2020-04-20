@@ -8,4 +8,7 @@ nohup.out
 api/src/extractable/
 assets/breeds/
 assets/equipments/
+!assets/equipments/broken.png
+assets/uncompressedEquipments/
+!assets/uncompressedEquipments/broken.png
 assets/resources/
