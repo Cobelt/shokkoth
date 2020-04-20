@@ -79,7 +79,7 @@ const MainStats = ({ equipment }) => {
 
     return (
         <div className="width-100" style={{ marginTop: '-5px'}}>
-            <Row className="nowrap justify-center align-flex-end">
+            <Row className="nowrap justify-center align-flex-end z-index-5">
                 { get(interestingStats, 'length') > 0 && interestingStats.map(({ fr, imgUrl }) => {
                     return <img key={fr} title={fr} src={`${STATS_IMG_URI}/${imgUrl}`} className="mh-2" height="25%" width="25%" />
                 }) }
