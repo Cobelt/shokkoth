@@ -46,7 +46,7 @@ export const categoryIn = {
 export const statsAll = {
   name: 'statsAll',
   type: '[String]',
-  query: (query, value) => set(query, '$and', value.map(v => console.log({ statistics: { name: new RegExp(value, 'i') } }) || ({ statistics: { name: new RegExp(value, 'i') } }))),
+  query: (query, value) => set(query, '$and', value.map(v => ({ statistics: { name: new RegExp(value, 'i') } }))),
 };
 
 

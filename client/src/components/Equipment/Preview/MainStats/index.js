@@ -31,9 +31,6 @@ const getInterestingStats = memoize(({ name, statistics, passives }) => {
         }
     })
 
-    
-    if (name === "Cape Solution") console.log({ AP: STATS.populate(AP), essentialStats, elementalStats, statistics})
-
     if ([essentialStats, elementalStats].flat().length > passive ? 3 : 4) {
         if (essentialStats.length > 1) {
             if (essentialStats.includes(AP)) {
