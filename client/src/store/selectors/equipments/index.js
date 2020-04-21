@@ -132,13 +132,29 @@ export const getStuffSetsBonuses = createSelector(
 
 
 // STATS
-export const getInitStats = () => {
+const _initStats = () => {
   const toReturn = {}
-  for (let stat of Object.keys(ALL_STATS)) {
+  for (let stat of ALL_STATS) {
     toReturn[stat] = 0
   }
+
   return toReturn
 }
+
+
+export const getInitStats = createSelector(
+  _initStats,
+  getStuffLevel,
+  (initStats, level) => {
+    initStats[AP] = level && level < 100 ? 6 : 7
+    initStats[MP] = 3
+    initStats[SUMMONS] = 1
+    initStats[VITALITY] = 55 + ((level || 200) - 1) * 5
+
+    return initStats
+  }
+)
+
 
 export const getPointsToDispatch = createSelector(
   getCharacterBaseStats,
@@ -149,7 +165,7 @@ export const getPointsToDispatch = createSelector(
     pointsToDispatch -= parseInt(base[VITALITY], 10)
     pointsToDispatch -= parseInt(base[WISDOM], 10) * 3
 
-    for (let stat of Object.keys(ELEMENTS_STATS)) {
+    for (let stat of ELEMENTS_STATS) {
       let statsPoints = parseInt(base[stat], 10)
       let ratio = 1
       while(statsPoints > 0) {
@@ -161,10 +177,27 @@ export const getPointsToDispatch = createSelector(
     }
     return pointsToDispatch
   }
-  )
-  
-export const getEquipmentsStats = createSelector(
+)
+
+
+export const getCharacterStats = createSelector(
   getInitStats,
+  getStatsStore,
+  memoize((initStats, stats) => {
+    
+    if (stats) {
+      for (let [statName, { base = 0, parcho = 0 } = {}] of Object.entries(stats)) {
+        initStats[statName] += base + parcho
+      }
+    }
+    return initStats
+
+  }, (_, stats) => JSON.stringify(stats)
+))
+  
+
+export const getEquipmentsStats = createSelector(
+  _initStats,
   getStuffEquipments,
   getStuffSetsBonuses,
   memoize((initStats, equipments, setsBonuses) => {
@@ -175,7 +208,7 @@ export const getEquipmentsStats = createSelector(
         for (let equipment of Object.values(equipmentsList)) {
           if (get(equipment, 'statistics.length') > 0)
           for (let stat of equipment.statistics) {
-            if (stat && Object.keys(ALL_STATS).includes(stat.name)) {
+            if (stat && ALL_STATS.includes(stat.name)) {
               initStats[stat.name] += parseInt(stat.value || stat.max || stat.min, 10)
             }
           }
@@ -186,7 +219,7 @@ export const getEquipmentsStats = createSelector(
             const currentBonus = set.bonus.find(bonus => bonus.number === nbItems - 1)
             if (get(currentBonus, 'statistics')) {
               for (let stat of currentBonus.statistics) {
-                if (stat && Object.keys(ALL_STATS).includes(stat.name)) {
+                if (stat && ALL_STATS.includes(stat.name)) {
                   initStats[stat.name] += parseInt(stat.value || stat.max || stat.min, 10)
                 }
               }
@@ -205,6 +238,7 @@ export const getEquipmentsStats = createSelector(
   }, (_, equipments) => JSON.stringify(equipments))
 )
 
+
 export const getEquipmentsStat = createSelector(
   getEquipmentsStats,
   _getStatNameParam,
@@ -213,45 +247,33 @@ export const getEquipmentsStat = createSelector(
 
 
 export const getStats = createSelector(
-  getInitStats,
-  getStatsStore,
+  getCharacterStats,
   getEquipmentsStats,
-  getStuffLevel,
-  (initStats, characterStats, equipmentsStats, level) => {
-    initStats[AP] = level && level < 100 ? 6 : 7
-    initStats[MP] = 3
-    initStats[SUMMONS] = 1
-    initStats[VITALITY] = 55 + ((level || 200) - 1) * 5
-
-    if (characterStats) {
-      for (let [statName, { base = 0, parcho = 0 } = {}] of Object.entries(characterStats)) {
-        initStats[statName] += base + parcho
-      }
-    }
+  (stats, equipmentsStats) => {
 
     Object.entries(equipmentsStats).forEach(([name, value]) => 
-      initStats[name] += parseInt(value, 10)
+      stats[name] += parseInt(value, 10)
     )
 
     Object.keys(ELEMENTS_STATS).forEach(name => {
-      initStats[INITIATIVE] += initStats[name]
+      stats[INITIATIVE] += stats[name]
     })
 
     Object.keys(AP_MP_PARRY).forEach(name => {
-      initStats[name] += Math.trunc(initStats[WISDOM] / 10)
+      stats[name] += Math.trunc(stats[WISDOM] / 10)
     })
 
     Object.keys(AP_MP_REDUCTION).forEach(name => {
-      initStats[name] += Math.trunc(initStats[WISDOM] / 10)
+      stats[name] += Math.trunc(stats[WISDOM] / 10)
     })
 
     Object.keys(ESCAPE_STATS).forEach(name => {
-      initStats[name] += Math.trunc(initStats[AGILITY] / 10)
+      stats[name] += Math.trunc(stats[AGILITY] / 10)
     })
 
-    initStats[PROSPECTING] += Math.trunc(initStats[CHANCE] / 10)
+    stats[PROSPECTING] += Math.trunc(stats[CHANCE] / 10)
 
-    return initStats
+    return stats
   }
 )
 

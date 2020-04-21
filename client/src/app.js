@@ -14,8 +14,10 @@ import { EquipmentsProvider } from './store/context/equipments'
 import { DataProvider } from './store/context/data'
 
 import Home from './pages/Home'
+
 import Navbar from './components/Navbar'
-import Content from './components/Router'
+import Content from './pages'
+
 import { GRAPHQL_URI } from './constants/URIs'
 
 

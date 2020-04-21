@@ -27,7 +27,7 @@ const Search = ({ className, ...otherProps }) => {
       <Row className="justify-center hide-since-lg" style={{ transform: 'translateY(50%)' }}>
         <span 
           onClick={() => minimizeSearch(!isMinimized)} 
-          className={`bg-primary round ph-20 pb-25 pt-5 pointer`}
+          className={`bg-primary round ph-20 pb-30 pt-5 pointer`}
         >
           <Icon icon={ isMinimized ? 'add' : 'remove' } size="sm" />
         </span>

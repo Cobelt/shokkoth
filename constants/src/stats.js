@@ -428,72 +428,49 @@ export const translations = {
 }
 
 
+
+export const ENUM = Object.keys(translations)
+
+export const getKey = (stat) => findKey(stat, translations)
+export const translate = (stat, lang) => translateType(stat, translations, lang)
+export const populate = (stat) => translations[findKey(stat, translations)]
+
+export const validateType = (stat, translationName) => validate(stat, translationName, translations)
+
+
+
+
 // PRIMARY
-export const ESSENTIAL_STATS = {
-  [AP]:           'PA.png',
-  [MP]:           'PM.png',
-  [RANGE]:        'PO.png',
-}
+export const ESSENTIAL_STATS = [AP, MP, RANGE]
+export const ELEMENTS_STATS = [STRENGTH, INTELLIGENCE, CHANCE, AGILITY]
 
-export const ELEMENTS_STATS = {
-  [STRENGTH]:     'terre.png',
-  [INTELLIGENCE]: 'feu.png',
-  [CHANCE]:       'eau.png',
-  [AGILITY]:      'air.png',
-}
+export const OTHERS_PRIMARY_STATS = [SUMMONS, CRITICAL, INITIATIVE]
+export const OTHERS_ELEMENTS_STATS = [VITALITY, PUISSANCE, WISDOM]
 
-export const OTHERS_ELEMENTS_STATS = {
-  [VITALITY]:     'vitalite.png',
-  [PUISSANCE]:    'puissance.png',
-  [WISDOM]:       'sagesse.png',
-}
 
-export const OTHERS_PRIMARY_STATS = {
-  [SUMMONS]:      'invocation.png',
-  [CRITICAL]:     'crit.png',
-  [INITIATIVE]:   'initiative.png',
-}
+export const BOOSTABLE_STATS = [VITALITY, WISDOM, ...ELEMENTS_STATS]
+
+export const PRIMARY_STATS = [
+  ...ESSENTIAL_STATS,
+  ...ELEMENTS_STATS,
+  ...OTHERS_ELEMENTS_STATS,
+  ...OTHERS_PRIMARY_STATS,
+]
 
 
 // DAMAGES
-export const ELEMENTS_DAMAGES = {
-  [NEUTRAL_DAMAGE]:   'neutre.png',
-  [EARTH_DAMAGE]:     'terre.png',
-  [FIRE_DAMAGE]:      'feu.png',
-  [WATER_DAMAGE]:     'eau.png',
-  [AIR_DAMAGE]:       'air.png',
-}
+export const ELEMENTS_DAMAGES = [NEUTRAL_DAMAGE, EARTH_DAMAGE, FIRE_DAMAGE, WATER_DAMAGE, AIR_DAMAGE]
 
-export const MELEE_RANGED_DAMAGES = {
-  [MELEE_DAMAGE]:     'arme.png',
-  [RANGED_DAMAGE]:    'arme.png',
-}
+export const MELEE_RANGED_DAMAGES = [MELEE_DAMAGE, RANGED_DAMAGE]
+export const OTHERS_DAMAGES = [DAMAGE, CRITICAL_DAMAGE, PUSHBACK_DAMAGE, ...MELEE_RANGED_DAMAGES]
 
-export const OTHERS_DAMAGES = {
-  [DAMAGE]:           'dommage.png',
-  [CRITICAL_DAMAGE]:  'dommage-crit.png',
-  [PUSHBACK_DAMAGE]:  'dommage-poussee.png',
-  ...MELEE_RANGED_DAMAGES
-}
+export const DAMAGES_STATS = [...ELEMENTS_DAMAGES, ...OTHERS_DAMAGES]
 
 
 // RESISTANCES
-export const PERCENTS_RES_STATS = {
-  [NEUTRAL_RESISTANCE]:   'neutre.png',
-  [EARTH_RESISTANCE]:     'terre.png',
-  [FIRE_RESISTANCE]:      'feu.png',
-  [WATER_RESISTANCE]:     'eau.png',
-  [AIR_RESISTANCE]:       'air.png',
-}
+export const PERCENTS_RES_STATS = [NEUTRAL_RESISTANCE, EARTH_RESISTANCE, FIRE_RESISTANCE, WATER_RESISTANCE, AIR_RESISTANCE]
 
-
-export const STATIC_RES_STATS = {
-  [NEUTRAL_STATIC_RESISTANCE]:   'neutre.png',
-  [EARTH_STATIC_RESISTANCE]:     'terre.png',
-  [FIRE_STATIC_RESISTANCE]:      'feu.png',
-  [WATER_STATIC_RESISTANCE]:     'eau.png',
-  [AIR_STATIC_RESISTANCE]:       'air.png',
-}
+export const STATIC_RES_STATS = [NEUTRAL_STATIC_RESISTANCE, EARTH_STATIC_RESISTANCE, FIRE_STATIC_RESISTANCE, WATER_STATIC_RESISTANCE, AIR_STATIC_RESISTANCE]
 
 export const RES_STATS = {
   NEUTRAL: {
@@ -518,161 +495,58 @@ export const RES_STATS = {
   }
 }
 
-export const MELEE_RANGED_RES = {
-  [MELEE_RESISTANCE]:     'passif.png',
-  [RANGED_RESISTANCE]:    'passif.png',
-}
+export const MELEE_RANGED_RES = [MELEE_RESISTANCE, RANGED_RESISTANCE]
+export const OTHERS_RES = [CRITICAL_RESISTANCE, PUSHBACK_RESISTANCE, ...MELEE_RANGED_RES]
 
-export const OTHERS_RES = {
-  [CRITICAL_RESISTANCE]:  'resistance-crit.png',
-  [PUSHBACK_RESISTANCE]:  'resistance-poussee.png',
-  ...MELEE_RANGED_RES
-}
-
-
+export const RESISTANCES_STATS = [...PERCENTS_RES_STATS, ...STATIC_RES_STATS, ...OTHERS_RES]
 
 
 // SECONDARY
-export const ESCAPE_STATS = {
-  [DODGE]:          'fuite.png',
-  [LOCK]:           'tacle.png',
-}
+export const ESCAPE_STATS = [DODGE, LOCK]
 
-export const AP_MP_PARRY = {
-  [AP_PARRY]:       'esquive-pa.png',
-  [MP_PARRY]:       'esquive-pm.png',
-}
+export const AP_MP_PARRY = [AP_PARRY, MP_PARRY]
+export const AP_MP_REDUCTION = [AP_REDUCTION, MP_REDUCTION]
 
-export const AP_MP_REDUCTION = {
-  [AP_REDUCTION]:   'retrait-pa.png',
-  [MP_REDUCTION]:   'retrait-pm.png',
-}
+export const OTHERS_SECONDARY = [PROSPECTING, HEALS]
 
-export const OTHERS_SECONDARY = {
-  [PROSPECTING]:    'prospection.png',
-  [HEALS]:          'soin.png',
-}
+export const SECONDARY_STATS = [...ESCAPE_STATS, ...AP_MP_PARRY, ...AP_MP_REDUCTION, ...OTHERS_SECONDARY]
 
 
 
-
-
-export const BOOSTABLE_STATS = {
-  [VITALITY]: OTHERS_ELEMENTS_STATS[VITALITY],
-  [WISDOM]: OTHERS_ELEMENTS_STATS[WISDOM],
-  ...ELEMENTS_STATS,
-}
-
-export const PRIMARY_STATS = {
-  ...ESSENTIAL_STATS,
-  ...ELEMENTS_STATS,
-  ...OTHERS_ELEMENTS_STATS,
-  ...OTHERS_PRIMARY_STATS,
-}
-
-
-export const DAMAGES_STATS = {
-  ...ELEMENTS_DAMAGES,
-  ...OTHERS_DAMAGES,
-}
-
-
-export const RESISTANCES_STATS = {
-  ...PERCENTS_RES_STATS,
-  ...STATIC_RES_STATS,
-  ...OTHERS_RES,
-}
-
-export const SECONDARY_STATS = {
-  ...ESCAPE_STATS,
-  ...AP_MP_PARRY,
-  ...AP_MP_REDUCTION,
-  ...OTHERS_SECONDARY,
-}
+export const STATS = [...PRIMARY_STATS, ...DAMAGES_STATS, ...RESISTANCES_STATS, ...SECONDARY_STATS]
 
 
 
-export const STATS = {
-  ...PRIMARY_STATS,
-  ...DAMAGES_STATS,
-  ...RESISTANCES_STATS,
-  ...SECONDARY_STATS,
-}
+export const WEAPONS_CHARACTERISTICS = [
+  WEAPONS_NEUTRAL_DAMAGES,
+  WEAPONS_EARTH_DAMAGES,
+  WEAPONS_AIR_DAMAGES,
+  WEAPONS_FIRE_DAMAGES,
+  WEAPONS_WATER_DAMAGES,
 
+  WEAPONS_NEUTRAL_STEAL,
+  WEAPONS_EARTH_STEAL,
+  WEAPONS_AIR_STEAL,
+  WEAPONS_FIRE_STEAL,
+  WEAPONS_WATER_STEAL,
 
+  WEAPONS_HEAL,
 
-export const WEAPONS_CHARACTERISTICS = {
-  [WEAPONS_NEUTRAL_DAMAGES]: {
-    imgUrl: 'neutre.png',
-    shortType: 'do',
-  },
-  [WEAPONS_EARTH_DAMAGES]: {
-    imgUrl: 'terre.png',
-    shortType: 'do',
-  },
-  [WEAPONS_AIR_DAMAGES]: {
-    imgUrl: 'air.png',
-    shortType: 'do',
-  },
-  [WEAPONS_FIRE_DAMAGES]: {
-    imgUrl: 'feu.png',
-    shortType: 'do',
-  },
-  [WEAPONS_WATER_DAMAGES]: {
-    imgUrl: 'eau.png',
-    shortType: 'do',
-  },
+  WEAPONS_CRITICAL,
+  WEAPONS_NO_CRITICAL,
+  WEAPONS_CRIT_DAMAGES,
+]
 
-  [WEAPONS_NEUTRAL_STEAL]: {
-    imgUrl: 'neutre.png',
-    shortType: 'vol',
-  },
-  [WEAPONS_EARTH_STEAL]: {
-    imgUrl: 'terre.png',
-    shortType: 'vol',
-  },
-  [WEAPONS_AIR_STEAL]: {
-    imgUrl: 'air.png',
-    shortType: 'vol',
-  },
-  [WEAPONS_FIRE_STEAL]: {
-    imgUrl: 'feu.png',
-    shortType: 'vol',
-  },
-  [WEAPONS_WATER_STEAL]: {
-    imgUrl: 'eau.png',
-    shortType: 'vol',
-  },
-
-  [WEAPONS_HEAL]: {
-    imgUrl: 'pv-rendus.png',
-    shortType: 'heal',
-  },
-
-  [WEAPONS_CRITICAL]: {
-    imgUrl: 'crit.png',
-    shortType: '%CC',
-  },
-  [WEAPONS_NO_CRITICAL]: {
-    imgUrl: 'crit.png',
-    shortType: 'No CC',
-  },
-  [WEAPONS_CRIT_DAMAGES]: {
-    imgUrl: 'dommage-crit.png',
-    shortType: 'do',
-  },
-}
-
-export const SHIELD_CHARACTERISTICS = {
-  [RANGE]:        'PO.png',
-  [CRITICAL]:     'crit.png',
-  [PUISSANCE]:    'puissance.png',
-  [CRITICAL_DAMAGE]:  'dommage-crit.png',
-  [PUSHBACK_DAMAGE]:  'dommage-poussee.png',
+export const SEARCH_SHIELD = [
+  RANGE,
+  CRITICAL,
+  PUISSANCE,
+  CRITICAL_DAMAGE,
+  PUSHBACK_DAMAGE,
   ...MELEE_RANGED_DAMAGES,
   ...OTHERS_RES,
-  ...PERCENTS_RES_STATS
-}
+  ...PERCENTS_RES_STATS,
+]
 
 export const STATS_TYPE = {
   BASE: 'baseStat.png',
@@ -694,25 +568,8 @@ export const SHIELD_STATE = 'SHIELD'
 export const DOFUS_STATE = 'DOFUS'
 
 export const SEARCH_BUTTONS = {
-  [DEFAULT_STATE]: {
-    ...PRIMARY_STATS,
-  },
-  [WEAPON_STATE]: {
-    ...WEAPONS_CHARACTERISTICS,
-  },
-  [SHIELD_STATE]: {
-    ...SHIELD_CHARACTERISTICS,
-  },
-  [DOFUS_STATE]: {
-    ...PRIMARY_STATS,
-  },
+  [DEFAULT_STATE]: PRIMARY_STATS,
+  [WEAPON_STATE]: WEAPONS_CHARACTERISTICS,
+  [SHIELD_STATE]: SEARCH_SHIELD,
+  [DOFUS_STATE]: PRIMARY_STATS,
 }
-
-
-export const ENUM = Object.keys(translations)
-
-export const getKey = (stat) => findKey(stat, translations)
-export const translate = (stat, lang) => translateType(stat, translations, lang)
-export const populate = (stat) => translations[findKey(stat, translations)]
-
-export const validateType = (stat, translationName) => validate(stat, translationName, translations)

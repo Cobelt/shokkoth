@@ -17,6 +17,10 @@ const { translations, SEARCH_BUTTONS, DEFAULT_STATE, WEAPON_STATE, SHIELD_STATE,
 const LEVEL_MIN = 1
 const LEVEL_MAX = 200
 
+function clean() {
+
+}
+
 const SearchBar = ({ setQueryVariables = () => undefined }) => {
     const [store] = useContext(EquipmentsContext)
 
@@ -31,8 +35,8 @@ const SearchBar = ({ setQueryVariables = () => undefined }) => {
         types: {},
         page: 1,
         perPage: 80,
-        levelMin: LEVEL_MIN,
-        levelMax: LEVEL_MAX,
+        levelMin: '',
+        levelMax: '',
     })
 
     const debouncedParams = useDebounce(params, 350)
@@ -59,7 +63,7 @@ const SearchBar = ({ setQueryVariables = () => undefined }) => {
 
         
         setQueryVariables({
-            filter: { search: search, categoryIn: category, typeIn, statsAll, levelMin, levelMax },
+            filter: { search: search || undefined, categoryIn: category, typeIn, statsAll, levelMin: levelMin || undefined, levelMax: levelMax || undefined },
             skip: Math.max((page - 1), 0) * perPage, // page 0 and page 1 are the same
             perPage: perPage,
             sort: ['pet', 'dofus'].some(cat => category == cat) ? 'TYPEORDER_ASC' : 'LEVEL_DESC',
@@ -81,7 +85,7 @@ const SearchBar = ({ setQueryVariables = () => undefined }) => {
 
             <Column className="filters bg-primary p-15">
                 <div className="justify-center">
-                    { Object.entries(SEARCH_BUTTONS[state]).map(([name, value]) => (
+                    { SEARCH_BUTTONS[state].map(name => (
                         <Button
                             key={name}
                             aspect="text"
@@ -92,42 +96,36 @@ const SearchBar = ({ setQueryVariables = () => undefined }) => {
                         >
                             <img 
                                 className={!get(stats, name) ? 'grey' : ''} 
-                                src={`${STATS_IMG_URI}/${typeof value === 'string' ? value : get(value, 'imgUrl')}`} 
+                                src={`${STATS_IMG_URI}/${get(STATS.populate(name), 'imgUrl')}`} 
                                 height={20} width={20}
                             />
                         </Button>
                     )) }
                 </div>
+
+                <Row className="justify-space-evenly pt-10">
+                    <Input
+                        className="font-18 ph-20"
+                        style={{ width: '7em' }}
+                        type="text"
+                        placeholder="Level Min"
+                        value={levelMin}
+                        onChange={e => dispatch({ levelMin: Math.trunc(Math.max(Math.min(e.target.value, levelMax), LEVEL_MIN)) })}
+                    />
+                    <Input
+                        className="font-18 ph-20"
+                        style={{ width: '7em' }}
+                        type="text"
+                        placeholder="Level Max"
+                        value={levelMax}
+                        onChange={e => dispatch({ levelMax: Math.trunc(Math.min(Math.max(e.target.value, levelMin), LEVEL_MAX)) })}
+                    />
+                </Row>
             </Column>
             
             <Row className="bg-input ph-15">
                 <Column className="width-100">
-                    <div className="text-center pt-10">Level des équipements</div>
-                    <Row className="align-items-center">
-                        <span className="mr-10">{ levelMin }</span>
-                        <Row className="flex-1" style={{ backgroundColor: 'rgba(0,0,0,0.2)'}}>
-                            <Input 
-                                type="range" 
-                                min={LEVEL_MIN - 5} 
-                                max={medianLevel - 1}
-                                value={levelMin}
-                                className="slider p-0 mv-0 ml-0 bg-primary"
-                                style={{ marginRight: -1, flex: medianLevel - 1, clipPath: `polygon(${(levelMin - 1) * 100 / (medianLevel - 1)}% 0%, 100% 0%, 100% 100%, ${(levelMin - 1) * 100 / (medianLevel - 1)}% 100%)` }} 
-                                onChange={e => dispatch({ levelMin: Math.trunc(Math.max(Math.min(e.target.value, levelMax), LEVEL_MIN)) })}
-                            />
-
-                            <Input 
-                                type="range"
-                                min={medianLevel + 1}
-                                max={LEVEL_MAX + 5}
-                                value={levelMax}
-                                className="slider m-0 p-0 bg-primary" 
-                                style={{ flex: LEVEL_MAX - medianLevel, clipPath: `polygon(0% 0%, ${(levelMax - medianLevel) * 100 / (LEVEL_MAX - medianLevel)}% 0%, ${(levelMax - medianLevel) * 100 / (LEVEL_MAX - medianLevel)}% 100%, 0% 100%)` }} 
-                                onChange={e => dispatch({ levelMax: Math.trunc(Math.min(Math.max(e.target.value, levelMin), LEVEL_MAX)) })}
-                            />
-                        </Row>
-                        <span className="ml-10">{ levelMax }</span>
-                    </Row>
+                    
                     <Row className="pt-10 justify-space-evenly">
                         { category && get(typesList, 'length') > 1 && typesList.map((name) => (
                             <Button

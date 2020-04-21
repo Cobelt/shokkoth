@@ -2,13 +2,11 @@ import React from 'react';
 import { Redirect, Switch, Route } from 'react-router-dom';
 
 
-import Account from '../../pages/Account';
-import Login from '../../pages/Login';
+import Account from './Account';
+import Login from './Login';
 
-import My from '../../pages/My';
-import Stuffs from '../../pages/Stuffs';
-
-// import Home from '../../pages/Home';
+import My from './My';
+import Stuffs from './Stuffs';
 
 // import Characters from '../../pages/Characters';
 
@@ -25,9 +23,7 @@ const RoutesSwitch = () => (
     <Route path="/my" component={My} />
     <Route path="/stuffs" component={Stuffs} />
 
-    {/* <Route exact path="/" component={Home} />
-
-
+    {/* 
     <Route path="/characters" render={() => <Characters showLogin={showLogin} />}  />
 
     <Route exact path="/cookies" component={Cookies} />

@@ -32,11 +32,11 @@ export async function equip({ equipment } = {}, [store, dispatch]) {
 
     try {
       const { _id, name: equipName, category: equipmentCategory } = equipment || {}
-
-      const { category: activeCategory, index: activeIndex } = selectors.getActiveStep(store) || { index: 0 }
+      
+      const { category: activeCategory, index: activeIndex } = selectors.getActiveStep(store) || {}
       
       let category = activeCategory
-      let index = activeIndex
+      let index = activeIndex || 0
 
       if (!activeCategory || !activeCategory.match(equipmentCategory)) {
         // todo use "last ring added" and "last dofus added"

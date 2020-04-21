@@ -19,14 +19,14 @@ const getInterestingStats = memoize(({ name, statistics, passives }) => {
 
     const essentialStats = []
     statistics.forEach(stat => {
-        if (Object.keys(ESSENTIAL_STATS).includes(stat.name)) {
+        if (ESSENTIAL_STATS.includes(stat.name)) {
             essentialStats.push(stat.name)
         }
     })
 
     const elementalStats = []
     statistics.forEach(stat => {
-        if (Object.keys(ELEMENTS_STATS).includes(stat.name)) {
+        if (ELEMENTS_STATS.includes(stat.name)) {
             elementalStats.push(stat.name)
         }
     })
@@ -71,12 +71,12 @@ const getInterestingStats = memoize(({ name, statistics, passives }) => {
 }, ({ statistics }) => JSON.stringify(statistics.map(s => s.name)))
 
 
-const MainStats = ({ equipment }) => {
+const MainStatsIcons = ({ equipment }) => {
     const interestingStats = getInterestingStats(equipment)
 
     return (
-        <div className="width-100" style={{ marginTop: '-5px'}}>
-            <Row className="nowrap justify-center align-flex-end z-index-5">
+        <div className="width-100 z-index-5" style={{ marginTop: '-5px'}}>
+            <Row className="nowrap justify-center align-flex-end">
                 { get(interestingStats, 'length') > 0 && interestingStats.map(({ fr, imgUrl }) => {
                     return <img key={fr} title={fr} src={`${STATS_IMG_URI}/${imgUrl}`} className="mh-2" height="25%" width="25%" />
                 }) }
@@ -85,4 +85,4 @@ const MainStats = ({ equipment }) => {
     )
 }
 
-export default MainStats
+export default MainStatsIcons

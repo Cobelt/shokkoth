@@ -11,12 +11,15 @@
   justify-content center
 
   cursor pointer
-  background-color #efefef
+  background-color var(--default-input-bg)
   transition background-color 0.5s, border 0.5s
 
   position relative
 
   z-index 2
+
+  ::selection
+    background none
 
   &.filled
     background-color var(--bordered-item-bg)

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Row, Column } from 'muejs'
 import get from 'lodash.get'
 
@@ -25,8 +25,10 @@ import './stylesheet.styl'
 
 const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefined, ...otherProps}) => {
   const [store, dispatch] = useContext(EquipmentsContext)
+  const [small, setSmall] = useState(false)
+
+  const smallWidth = useMediaQuery('(max-width: 640px)')
   
-  const small = useMediaQuery('(max-width: 540px)')
   const { breeds, loading: loadingBreeds } = useBreeds()
 
   useEffect(() => {
@@ -38,7 +40,7 @@ const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefi
 
   return (
     <Column className="stuff-form-container ph-10vw" {...otherProps}>
-      <NameAndLevel />
+      <NameAndLevel small={small} setSmall={setSmall} />
 
       <Row className="nowrap justify-center">
 
@@ -47,12 +49,12 @@ const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefi
           <Stuff
             elementClassName="stuff-preview align-start"
             stuff={stuff}
-            small={small}
+            small={smallWidth || small}
             setBreed={breed => actions.changeStuffBreed(breed, [store, dispatch])}
             setGender={gender => actions.changeStuffGender(gender, [store, dispatch])}
           />
 
-          <Boostable stuff={stuff} small={small} />
+          <Boostable stuff={stuff} small={smallWidth} />
           <Primary stuff={stuff} />
           
           <StaticDamages stuff={stuff} />

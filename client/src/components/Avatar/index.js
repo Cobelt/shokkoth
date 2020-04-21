@@ -25,7 +25,7 @@ const Avatar = ({ small, breed, setBreed = () => undefined, gender = 'male', set
 
   return (
       <Row className="align-items-center justify-center relative" {...otherProps}>
-        { withArrows && !small && <Icon className="text-primary absolute left-0" size="md" icon="keyboard_arrow_left" onClick={() => setRotation((rotation+1)%8)} />}
+        { withArrows && !small && <Icon className="text-primary absolute left-0 z-index-5" size="md" icon="keyboard_arrow_left" onClick={() => setRotation((rotation+1)%8)} />}
 
         <Dropdown
           detached={small}
@@ -58,7 +58,7 @@ const Avatar = ({ small, breed, setBreed = () => undefined, gender = 'male', set
         />
         
 
-        { withArrows && !small && <Icon className="text-primary absolute right-0" size="md" icon="keyboard_arrow_right" onClick={() => setRotation(rotation <= 0 ? 7 : rotation-1)} /> }
+        { withArrows && !small && <Icon className="text-primary absolute right-0 z-index-5" size="md" icon="keyboard_arrow_right" onClick={() => setRotation(rotation <= 0 ? 7 : rotation-1)} /> }
       </Row>
   )
 }

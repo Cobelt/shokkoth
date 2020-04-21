@@ -1,14 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import get from 'lodash.get'
-import { Row, Column, Input } from 'muejs'
+import { Row, Column } from 'muejs'
 import { STATS } from 'shokkoth-constants'
-
-import useDebounce from '../../../hooks/useDebounce'
 
 import EquipmentsContext from '../../../store/context/equipments'
 
 import * as selectors from '../../../store/selectors/equipments'
-import * as actions from '../../../store/actions/equipments'
 
 
 import { STATS_IMG_URI } from '../../../constants/URIs'
@@ -27,11 +24,11 @@ const Secondary = ({ stuff }) => {
         <Column className="align-items-stretch mv-10">
             <div className="text-primary text-center font-18">Caractéristiques secondaires</div>
             <Row className="justify-space-between nowrap pv-10">
-                { Object.entries({ ...AP_MP_PARRY, ...AP_MP_REDUCTION }).map(([name, imgUrl]) => (
+                { [ ...AP_MP_PARRY, ...AP_MP_REDUCTION ].map(name => (
                     <div key={name} className="displayed-stat">
 
                         <div className="flex align-items-center">
-                            <img src={`${STATS_IMG_URI}/${imgUrl}`} alt={name} title={name} width={16} height={16} />
+                            <img src={`${STATS_IMG_URI}/${get(STATS.populate(name), 'imgUrl')}`} alt={name} title={name} width={16} height={16} />
                             <span className="text-primary bold font-20 ml-5">
                                 { selectors.getStat(store, { name, stuff }) || 0 }
                             </span>
@@ -44,11 +41,11 @@ const Secondary = ({ stuff }) => {
                 )) }
             </Row>
             <Row className="justify-space-between nowrap pv-10">
-                { Object.entries({ ...ESCAPE_STATS, ...OTHERS_SECONDARY }).map(([name, imgUrl]) => (
+                { [ ...ESCAPE_STATS, ...OTHERS_SECONDARY ].map(name => (
                     <div key={name} className="displayed-stat">
 
                         <div className="flex align-items-center">
-                            <img src={`${STATS_IMG_URI}/${imgUrl}`} alt={name} title={name} width={16} height={16} />
+                            <img src={`${STATS_IMG_URI}/${get(STATS.populate(name), 'imgUrl')}`} alt={name} title={name} width={16} height={16} />
                             <span className="text-primary bold font-20 ml-5">
                                 { selectors.getStat(store, { name, stuff }) || 0 }
                             </span>

@@ -45,7 +45,7 @@ const Boostable = ({ stuff, small }) => {
 
     function setAllParchoTo(value) {
         const newStats = {}
-        Object.keys(BOOSTABLE_STATS).forEach(name => newStats[name] = value)
+        BOOSTABLE_STATS.forEach(name => newStats[name] = value)
         setParchoStats(newStats)
     }
     
@@ -54,12 +54,12 @@ const Boostable = ({ stuff, small }) => {
             <div className="text-primary font-18">Il vous reste { pointsToDispatch } point{ pointsToDispatch === 1 ? '' : 's' } à répartir.</div>
 
             <Grid className="boostable-stat justify-space-between pv-10" columnsTemplate={small ? 'repeat(4, 1fr)' : "20px repeat(7, auto)"} colGap="10px" rowGap="5px">
-                <Element className="flex align-items-center" row={1} col={1}>
+                <Element className="flex align-items-center justify-self-end" row={1} col={1}>
                     <img src={`${STATS_IMG_URI}/${BASE}`} alt={'Caractéristiques'} title={'Points de caractéristiques'} width={20} height={20} />
-                    { small && <span className="ml-5">Carac</span> }
+                    { small && <span className="text-primary ml-5">Carac</span> }
                 </Element>
 
-                { Object.keys(BOOSTABLE_STATS).map((name, index) => (
+                { BOOSTABLE_STATS.map((name, index) => (
                     <Input
                         key={name}
                         col={small ? 1 : index + 2}
@@ -82,12 +82,12 @@ const Boostable = ({ stuff, small }) => {
                     </Button>
                 </Element>
 
-                <Element className="flex align-items-center" row={small ? 1 : 2} col={small ? 2 : 1}>
+                <Element className="flex align-items-center justify-self-end" row={small ? 1 : 2} col={small ? 2 : 1}>
                     <img src={`${STATS_IMG_URI}/${PARCHO['all']}`} alt={'Parcho'} title={'Parchotage'} width={20} height={20} />
-                    { small && <span className="ml-5">Parcho</span> }
+                    { small && <span className="text-primary ml-5">Parcho</span> }
                 </Element>
 
-                { Object.keys(BOOSTABLE_STATS).map((name, index) => (
+                { BOOSTABLE_STATS.map((name, index) => (
                     <Input 
                         key={name}
                         col={small ? 2 : index + 2}
@@ -101,12 +101,12 @@ const Boostable = ({ stuff, small }) => {
                 )) }
             
 
-                <Element className="flex align-items-center" row={small ? 1 : 3} col={small ? 3 : 1}>
+                <Element className="flex align-items-center justify-self-end" row={small ? 1 : 3} col={small ? 3 : 1}>
                     <img src={`${STATS_IMG_URI}/${EQUIPMENT}`} alt={'Équipement'} title={'Équipement'} width={20} height={20} />
-                    { small && <span className="ml-5">Stuff</span> }
+                    { small && <span className="text-primary ml-5">Stuff</span> }
                 </Element>
 
-                { Object.entries(BOOSTABLE_STATS).map(([name, imgUrl], index) => (
+                { BOOSTABLE_STATS.map((name, index) => (
                     <Element 
                         key={name}
                         col={small ? 3 : index + 2}
@@ -122,14 +122,14 @@ const Boostable = ({ stuff, small }) => {
                 
                 <Element row={small ? 1 : 4} col={small ? 4 : 1} />
 
-                { Object.entries(BOOSTABLE_STATS).map(([name, imgUrl], index) => (
+                { BOOSTABLE_STATS.map((name, index) => (
                     <Row
                         key={name}
                         col={small ? 4 : index + 2}
                         row={small ? index + 2 : 4}
                         className={`${small ? 'reverse' : 'justify-space-between'} nowrap align-items-center ph-5`.trim()}
                     >
-                        <img className={small ? 'ml-5' : ''} src={`${STATS_IMG_URI}/${imgUrl}`} alt={name} title={name} width={16} height={16} />
+                        <img className={small ? 'ml-5' : ''} src={`${STATS_IMG_URI}/${get(STATS.populate(name), 'imgUrl')}`} alt={name} title={name} width={16} height={16} />
                         <span className="text-primary bold font-20 ml-4">
                             { selectors.getStat(store, { stuff, name }) || 0 }
                         </span>
@@ -137,7 +137,7 @@ const Boostable = ({ stuff, small }) => {
                 )) }
 
                 <Row className={`${small ? 'reverse' : 'justify-space-between'} nowrap align-items-center ph-5`.trim()}>
-                    <img className={small ? 'ml-5' : ''} src={`${STATS_IMG_URI}/${OTHERS_ELEMENTS_STATS[PUISSANCE]}`} alt={PUISSANCE} title={PUISSANCE} width={16} height={16} />
+                    <img className={small ? 'ml-5' : ''} src={`${STATS_IMG_URI}/${get(STATS.populate(PUISSANCE), 'imgUrl')}`} alt={PUISSANCE} title={PUISSANCE} width={16} height={16} />
                     <span className="text-primary bold font-18 ml-4">
                         { selectors.getStat(store, { stuff, name: PUISSANCE }) || 0 }
                     </span>

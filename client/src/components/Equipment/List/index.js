@@ -21,7 +21,7 @@ const EquipmentsList = ({ equipments = [], className, loading, ...otherProps }) 
       { !get(equipments, 'length') > 0 && (
         loading ? 
         <Spinner style={{ gridColumn: '1 / -1', gridRow: '1 / span 1', margin: 'auto' }} /> : 
-        <span className="text-primary text-center font-20" style={{ gridColumn: '1 / -1', gridRow: '-1 / span 1' }}>Aucun équipement correspondant.</span>
+        <span className="text-input text-center font-20" style={{ gridColumn: '1 / -1', gridRow: '-1 / span 1' }}>Aucun équipement correspondant.</span>
       ) }
 
       { get(equipments, 'length') > 0 && (
