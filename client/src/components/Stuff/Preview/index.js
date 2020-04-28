@@ -33,24 +33,20 @@ const { VITALITY, AP, MP } = STATS
 import './stylesheet.styl'
 
 
-const Stuff = ({ small = false, stuff, className, elementClassName, refetch, setBreed, setGender, editable = true, setActiveAtMount = false, updateStuff, ...otherProps }) => {
+const Stuff = ({ smallOption = false, smallWidth = false, stuff, className, elementClassName, refetch, setBreed, setGender, editable = true, setActiveAtMount = false, updateStuff, ...otherProps }) => {
   const [store, dispatch] = useContext(EquipmentsContext)
 
   useEffect(() => {
-    if (setActiveAtMount) {
+    if (setActiveAtMount && stuff) {
       actions.setActiveStuff({ stuff }, [store, dispatch])
     }
-  }, [stuff])
-
-  let stuffToDisplay = stuff
-  if (setActiveAtMount) {
-    stuffToDisplay = selectors.getActiveStuff(store)
-  }
+  }, [!stuff]) // only change if go from null/undefined/... to something and reverse
   
-  const ap = selectors.getStat(store, { name: AP }) || 0
-  const mp = selectors.getStat(store, { name: MP }) || 0
-  const vitality = selectors.getStat(store, { name: VITALITY }) || 0
+  const ap = selectors.getStat(store, { stuff, name: AP }) || 0
+  const mp = selectors.getStat(store, { stuff, name: MP }) || 0
+  const vitality = selectors.getStat(store, { stuff, name: VITALITY }) || 0
 
+  const small = smallWidth || smallOption
 
   return (
     <Element className={elementClassName} {...otherProps}>
@@ -61,7 +57,7 @@ const Stuff = ({ small = false, stuff, className, elementClassName, refetch, set
         gap={small ? '1em' : "0.5em"}
       >
 
-        <Avatar small={small} withArrows row={1} col={small ? 1 : 2} width={small ? 1 : 4} height={small ? 1 : 5} breed={stuff.breed} gender={stuff.gender} setBreed={setBreed} setGender={setGender} />
+        <Avatar smallOption={smallOption} smallWidth={smallWidth} withArrows row={1} col={small ? 1 : 2} width={small ? 1 : 4} height={small ? 1 : 5} breed={stuff.breed} gender={stuff.gender} setBreed={setBreed} setGender={setGender} />
 
         <Row className="stat" row={small ? 1 : 5} col={small ? 3 : 2} width={small ? 1 : 2} show={ap}>
           <span className="ap">{ ap }</span>
@@ -75,7 +71,7 @@ const Stuff = ({ small = false, stuff, className, elementClassName, refetch, set
 
         <Element className="life-points relative" row={small ? 1 : 5} col={small ? 2 : 3} width={small ? 1 : 2} show={vitality}>
           <HPIcon className="max-height-100" />
-          <span className="absolute hp">{ vitality }</span>
+          <span className={`absolute hp max-width-${small ? '90' : '40'} text-ellipsis`} style={{ left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }} title={vitality}>{ vitality }</span>
         </Element>
 
         {/* Left side */}

@@ -12,28 +12,31 @@ import { BREEDS_IMG_URI } from '../../constants/URIs'
 import './stylesheet.styl'
 
 
-const Avatar = ({ small, breed, setBreed = () => undefined, gender = 'male', setGender = () => undefined, withArrows = false, ...otherProps }) => {
-  const { breeds, loading: loadingBreeds } = useBreeds()
-  
+const Avatar = ({ smallOption = false, smallWidth = false, breed: stuffBreed, setBreed = () => undefined, gender = 'male', setGender = () => undefined, withArrows = false, ...otherProps }) => {
   const [rotation, setRotation] = useState(1)
+  const { breeds, loading: loadingBreeds } = useBreeds()  
 
-  if (!breed) return null
+  const breed = stuffBreed || get(breeds, '[0]')
 
-  const triggerImg = small ? 
-    `${BREEDS_IMG_URI}/${breed.name.toLowerCase()}/heads/${gender.toLowerCase()}.png` :
-    `${BREEDS_IMG_URI}/${breed.name.toLowerCase()}/full/${gender.toLowerCase()}/${isNaN(rotation) || rotation < 0 || rotation > 8 ? 1 : rotation}.png`
+  const small = smallWidth || smallOption
+
+  const triggerImg = breed && (
+      small ? 
+      `${BREEDS_IMG_URI}/${(get(breed, 'name') || '').toLowerCase()}/heads/${gender.toLowerCase()}.png` :
+      `${BREEDS_IMG_URI}/${(get(breed, 'name') || '').toLowerCase()}/full/${gender.toLowerCase()}/${isNaN(rotation) || rotation < 0 || rotation > 8 ? 1 : rotation}.png`
+    )
 
   return (
       <Row className="align-items-center justify-center relative" {...otherProps}>
         { withArrows && !small && <Icon className="text-primary absolute left-0 z-index-5" size="md" icon="keyboard_arrow_left" onClick={() => setRotation((rotation+1)%8)} />}
 
         <Dropdown
-          detached={small}
-          side={'center'}
-          trigger={(
-            <img className="pointer" alt={`Avatar ${breed.name} (${gender})`} src={triggerImg} />
+          detached={smallWidth}
+          side={smallOption ? 'left' : (!small && 'center')}
+          trigger={triggerImg && (
+            <img className="pointer" alt={`Avatar ${get(breed, 'name')} (${gender})`} src={triggerImg} />
           )}
-          contentStyle={{ top: small && '26%', minWidth: 'calc(6 * 48px + 5 * 6px + 2 * 20px)', padding: 18 }}
+          contentStyle={{ top: smallWidth && '26%', minWidth: 'calc(6 * 48px + 5 * 6px + 2 * 20px)', padding: 18 }}
           renderChildren={({ close }) => (
               <Column>
                 <Row className="justify-center mb-15">
@@ -45,10 +48,10 @@ const Avatar = ({ small, breed, setBreed = () => undefined, gender = 'male', set
                   { get(breeds, 'length') > 0 && breeds.map(breed => (
                     <img
                       key={breed._id}
-                      src={`${BREEDS_IMG_URI}/${get(breed, 'name').toLowerCase() }/heads/${gender}.png`} 
+                      src={`${BREEDS_IMG_URI}/${(get(breed, 'name') || '').toLowerCase() }/heads/${gender}.png`} 
                       style={{ maxHeight: 56, objectFit: 'contain' }}
-                      alt={breed.name}
-                      title={breed.name}
+                      alt={get(breed, 'name')}
+                      title={get(breed, 'name')}
                       onClick={() => { setBreed(breed); close() }}
                     /> 
                   )) }

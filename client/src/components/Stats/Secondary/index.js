@@ -21,7 +21,7 @@ const Secondary = ({ stuff }) => {
     const [store] = useContext(EquipmentsContext);
     
     return (
-        <Column className="align-items-stretch mv-10">
+        <Column className="align-items-stretch mv-20">
             <div className="text-primary text-center font-18">Caractéristiques secondaires</div>
             <Row className="justify-space-between nowrap pv-10">
                 { [ ...AP_MP_PARRY, ...AP_MP_REDUCTION ].map(name => (

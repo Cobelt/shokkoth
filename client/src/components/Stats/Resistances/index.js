@@ -21,7 +21,7 @@ const Resistances = ({ stuff }) => {
     const [store] = useContext(EquipmentsContext);
     
     return (
-        <Column className="align-items-stretch mv-10">
+        <Column className="align-items-stretch mv-20">
             <div className="text-primary text-center font-18">Résistances</div>
             <Row className="justify-space-between nowrap pv-10">
                 { Object.values(RES_STATS).map(({ PERCENT, STATIC }) => (

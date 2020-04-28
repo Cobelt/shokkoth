@@ -21,7 +21,7 @@ const Primary = ({ stuff }) => {
     const [store] = useContext(EquipmentsContext);
     
     return (
-        <Column className="align-items-stretch mv-10">
+        <Column className="align-items-stretch mv-20">
             <div className="text-primary text-center font-18">Caractéristiques primaires</div>
             <Row className="justify-space-between nowrap pv-10">
                 { [ ...ESSENTIAL_STATS, ...OTHERS_PRIMARY_STATS ].map(name => (

@@ -4,7 +4,7 @@ import memoize from 'lodash.memoize'
 import { Row } from 'muejs'
 import { STATS } from 'shokkoth-constants'
 
-import { STATS_IMG_URI } from '../../../../constants/URIs'
+import { STATS_IMG_URI } from '../../../constants/URIs'
 
 const { ESSENTIAL_STATS, ELEMENTS_STATS, AP, MP, RANGE, AP_MP, AP_RANGE, MP_RANGE, AP_MP_RANGE, MULTI_ELEMENTS, PASSIVE } = STATS
 

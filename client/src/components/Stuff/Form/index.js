@@ -25,7 +25,7 @@ import './stylesheet.styl'
 
 const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefined, ...otherProps}) => {
   const [store, dispatch] = useContext(EquipmentsContext)
-  const [small, setSmall] = useState(false)
+  const [smallOption, setSmallOption] = useState(false)
 
   const smallWidth = useMediaQuery('(max-width: 640px)')
   
@@ -40,7 +40,7 @@ const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefi
 
   return (
     <Column className="stuff-form-container ph-10vw" {...otherProps}>
-      <NameAndLevel small={small} setSmall={setSmall} />
+      <NameAndLevel small={smallOption} setSmall={setSmallOption} />
 
       <Row className="nowrap justify-center">
 
@@ -49,7 +49,8 @@ const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefi
           <Stuff
             elementClassName="stuff-preview align-start"
             stuff={stuff}
-            small={smallWidth || small}
+            smallOption={smallOption}
+            smallWidth={smallWidth}
             setBreed={breed => actions.changeStuffBreed(breed, [store, dispatch])}
             setGender={gender => actions.changeStuffGender(gender, [store, dispatch])}
           />

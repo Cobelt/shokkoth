@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import isEqual from 'lodash.isequal'
-import { Element } from 'muejs'
+import { Element, Tooltip, Column } from 'muejs'
 
 import MainStatsIcons from './MainStatsIcons'
 
@@ -44,7 +44,7 @@ const Equipment = ({ index, className, style, editable = true, equipment, displa
   }
 
   return (
-    <Element
+    <Column
       className={arrayToClassName(['equipment', isBroken && 'broken', isSelected && 'isSelected', className])}
       // onClick={() => actions.display(isSelected ? undefined : { equipment }, [store, dispatch])}
       onDoubleClick={handleDoubleClick}
@@ -53,7 +53,7 @@ const Equipment = ({ index, className, style, editable = true, equipment, displa
       <img alt={equipment.name} src={`${EQUIPMENTS_IMG_URI}/${equipment.ankamaId}.png`} onError={handleError} />
 
       { displayMainStats && <MainStatsIcons equipment={equipment} /> }
-    </Element>
+    </Column>
   )
 }
 

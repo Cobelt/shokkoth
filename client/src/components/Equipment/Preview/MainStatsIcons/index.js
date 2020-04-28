@@ -2,14 +2,15 @@ import React, { useState, useContext } from 'react'
 import get from 'lodash.get'
 import memoize from 'lodash.memoize'
 import { Row } from 'muejs'
-import { STATS } from 'shokkoth-constants'
+import { STATS, PETS } from 'shokkoth-constants'
 
 import { STATS_IMG_URI } from '../../../../constants/URIs'
 
 const { ESSENTIAL_STATS, ELEMENTS_STATS, AP, MP, RANGE, AP_MP, AP_RANGE, MP_RANGE, AP_MP_RANGE, MULTI_ELEMENTS, PASSIVE } = STATS
+const { PET } = PETS
 
-const getInterestingStats = memoize(({ name, statistics, passives }) => {
-    const toReturn = []
+const getInterestingStats = memoize(({ name, statistics, passives, category }) => {
+    let toReturn = []
 
     let passive = null
     if (get(passives, 'length') > 0) {
@@ -65,6 +66,21 @@ const getInterestingStats = memoize(({ name, statistics, passives }) => {
     }
     else {
         toReturn.push(essentialStats, elementalStats)
+        if (essentialStats.includes(RANGE)) {
+            toReturn.push(STATS.populate(AP_MP_RANGE))
+        }
+    }
+
+    toReturn = toReturn.flat()
+
+    console.log({ category, PETS, cat: PETS.getCategory(PET) })
+    if (category === PETS.getCategory(PET)) {
+        statistics.forEach(stat => {
+            if (toReturn.length < 3 && SECONDARY_STATS.includes(stat.name)) {
+                console.log({ stat })
+                toReturn.push(STATS.populate(stat.name))
+            }
+        })
     }
 
     return toReturn.flat()
