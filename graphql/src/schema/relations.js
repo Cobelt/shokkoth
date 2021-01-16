@@ -33,6 +33,17 @@ export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, Stuffs
       projection: { equipments: 1 },
     }
   );
+  
+  StuffsTC.addRelation(
+    'breed',
+    {
+      resolver: () => BreedsTC.get('$findById'),
+      prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
+        _id: (source) => source.breed,
+      },
+      projection: { breed: 1 },
+    }
+  );
 
   SetsTC.addRelation(
     'equipments',
@@ -88,6 +99,17 @@ export default function createRelations({ BreedsTC, SetsTC, EquipmentsTC, Stuffs
         _ids: (source) => source.characters,
       },
       projection: { characters: 1 },
+    }
+  );
+
+  UsersTC.addRelation(
+    'stuffs',
+    {
+      resolver: () => StuffsTC.get('$findByIds'),
+      prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
+        _ids: (source) => source.stuffs,
+      },
+      projection: { stuffs: 1 },
     }
   );
 }

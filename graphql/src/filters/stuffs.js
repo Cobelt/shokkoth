@@ -25,16 +25,6 @@ export const almostFullStuff = {
   query: (query, value) => set(query, 'equipments.14', { $exists: value }),
 };
 
-export const notDraftStuffs = {
-  name: 'notDraft',
-  type: 'Boolean',
-  query: async (query, value) => {
-    const charactersDraft = await Characters.find({ name: 'Brouillon' });
-
-    set(query, '_id.$nin', charactersDraft.map(c => c.stuffs).flat());
-  },
-};
-
 export const search = {
   name: 'search',
   type: 'String',

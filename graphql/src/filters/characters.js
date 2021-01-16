@@ -14,12 +14,6 @@ export const withStuffs = {
   query: (query, value) => set(query, 'stuffs', { $exists: value, $ne: [] }),
 };
 
-export const draft = {
-  name: 'draft',
-  type: 'Boolean',
-  query: (query, value) => set(query, 'name', drafts ? "Brouillon" : get(query, 'name')),
-};
-
 export const searchStuffs = {
   name: 'searchStuffs',
   type: 'String',

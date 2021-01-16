@@ -46,9 +46,6 @@ export const UsersSchema = new mongoose.Schema({
       default: [USERS.DEFAULT],
     },
 
-
-    acceptCookies: Boolean,
-
     goals: Array,
 
     ip: String,

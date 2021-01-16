@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Row, Column } from 'muejs'
 import get from 'lodash.get'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
+import * as mutations from '../../../queries/mutations'
+
+import useUser from '../../../hooks/useUser'
 import useMediaQuery from '../../../hooks/useMediaQuery'
 import useBreeds from '../../../hooks/useBreeds'
 
@@ -9,7 +14,7 @@ import EquipmentsContext from '../../../store/context/equipments'
 import * as actions from '../../../store/actions/equipments'
 
 
-import NameAndLevel from './Header'
+import Header from './Header'
 import Stuff from '../Preview'
 import Boostable from '../../Stats/Boostable'
 import Primary from '../../Stats/Primary'
@@ -23,7 +28,9 @@ import EquipmentsSearch from '../../Equipment/Search'
 import './stylesheet.styl'
 
 
-const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefined, ...otherProps}) => {
+const StuffForm = ({ stuff, refetch = () => undefined, ...otherProps}) => {
+  const { isLogged } = useUser()
+
   const [store, dispatch] = useContext(EquipmentsContext)
   const [smallOption, setSmallOption] = useState(false)
 
@@ -31,16 +38,22 @@ const StuffForm = ({ stuff, beforeSave = () => undefined, refetch = () => undefi
   
   const { breeds, loading: loadingBreeds } = useBreeds()
 
-  useEffect(() => {
-      if (get(breeds, 'length') > 0) {
-        actions.changeStuffBreed(breeds[0], [store, dispatch])
-      }
-  }, [breeds])  
+  const isModified = true // TODO
+  const canSave = isLogged && isModified // TODO
 
+
+  useEffect(() => {
+    if (get(breeds, 'length') > 0) {
+      actions.changeStuffBreed(breeds[0], [store, dispatch])
+    }
+  }, [breeds])
+  
+
+  const [save, { data: { login: tokenFromLogin } = {}, error: loginError } = {}] = [] // useMutation(gql(mutations.login))
 
   return (
     <Column className="stuff-form-container ph-10vw" {...otherProps}>
-      <NameAndLevel small={smallOption} setSmall={setSmallOption} />
+      <Header small={smallOption} setSmall={setSmallOption} canSave={canSave} save={save} />
 
       <Row className="nowrap justify-center">
 

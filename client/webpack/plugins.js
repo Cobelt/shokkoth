@@ -8,7 +8,7 @@ export const htmlPlugin = new HtmlWebPackPlugin({
     filename: './index.html',
 })
 
-export const copyPlugin = (file) => new CopyWebPackPlugin([{ from: file }])
+export const copyPlugin = (file) => new CopyWebPackPlugin({ patterns: [{ from: file }] })
 export const cleanPlugin = () => new CleanWebpackPlugin()
 
 export const HMRPlugin = ({ webpack }) => new webpack.HotModuleReplacementPlugin()

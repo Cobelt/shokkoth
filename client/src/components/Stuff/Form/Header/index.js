@@ -6,7 +6,7 @@ import useDebounce from '../../../../hooks/useDebounce'
 import EquipmentsContext from '../../../../store/context/equipments'
 import * as actions from '../../../../store/actions/equipments'
 
-const NameAndLevel = ({ small, setSmall }) => {
+const Header = ({ small, setSmall, save, canSave }) => {
   const [store, dispatch] = useContext(EquipmentsContext)
   
   const [level, setLevel] = useState(200)
@@ -22,8 +22,6 @@ const NameAndLevel = ({ small, setSmall }) => {
   useEffect(() => {
     actions.changeStuffName(debouncedName, [store, dispatch])
   }, [debouncedName])  
-
-
 
   return (
       <Row className="inputs justify-center mb-40 ph-15vw">
@@ -46,8 +44,10 @@ const NameAndLevel = ({ small, setSmall }) => {
           placeholder="Nom du stuff"
           onChange={e => setName(e.target.value)}
         />
+
+        <Icon className={`text-primary ml-15 ${canSave ? '' : 'disabled'}`} icon="save" size="md" onClick={canSave ? () => undefined : save} />
       </Row>
   )
 }
 
-export default NameAndLevel
+export default Header

@@ -16,8 +16,7 @@ import './stylesheet.styl'
 const MyStuffs = () => {
   const { token, user, isLogged } = useUser()
 
-  const variables = { filter: { notDraft: true, notEmpty: true } }
-  const { data: { myStuffs: stuffs = [] } = {}, loading, error, refetch } = useQuery(gql(getMyStuffs), { variables })
+  const { data: { myStuffs: stuffs = [] } = {}, loading, error, refetch } = useQuery(gql(getMyStuffs))
 
   if (token && !user) return <Spinner />
 

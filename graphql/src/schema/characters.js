@@ -12,13 +12,11 @@ export default function useCharacters(schemaComposer, customizationOptions = {})
     .addFilterArg(filters.hasStuff)
     .addFilterArg(filters.withStuffs)
     .addFilterArg(filters.searchStuffs)
-    .addFilterArg(filters.draft)
   );
 
   CharactersTC.setResolver('findOne', CharactersTC.get('$findOne')
     .addFilterArg(filters.hasStuff)
     .addFilterArg(filters.searchStuffs)
-    .addFilterArg(filters.draft)
   );
 
   CharactersTC.addResolver({

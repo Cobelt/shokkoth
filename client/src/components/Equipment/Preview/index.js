@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import isEqual from 'lodash.isequal'
 import { Element, Tooltip, Column } from 'muejs'
 
@@ -14,7 +14,19 @@ import * as selectors from '../../../store/selectors/equipments'
 import './stylesheet.styl'
 
 
-const Equipment = ({ index, className, style, editable = true, equipment, displayMainStats = false, unequipOnDoubleClick = false, ...otherProps }) => {
+const Equipment = ({ 
+  index,
+  className,
+  style,
+  editable = true,
+  equipment,
+  displayMainStats = false,
+  doubleClick,
+  fireDoubleClick = () => undefined,
+  onDoubleClick = () => undefined,
+  unequipOnDoubleClick = false,
+  ...otherProps
+}) => { 
   const [isBroken, setBroken] = useState(false)
 
   function handleError(e) {
@@ -27,27 +39,24 @@ const Equipment = ({ index, className, style, editable = true, equipment, displa
   const selected = selectors.getDisplayedEquipment(store)
   const isSelected = isEqual(equipment, selected)
 
-  function handleDoubleClick(e) {
-    e.stopPropagation()
-    e.preventDefault()
+  useEffect(() => {
+    if (doubleClick && editable) {
+      if (unequipOnDoubleClick) {
+        actions.unequip({ equipment }, [store, dispatch])   
+      }
+      else {
+        actions.equip({ equipment }, [store, dispatch])
+      }
 
-    if (!editable) return false
-    
-    if (unequipOnDoubleClick) {
-      actions.unequip({ equipment }, [store, dispatch])   
+      fireDoubleClick(false)
     }
-    else {
-      actions.equip({ equipment }, [store, dispatch])
-    }
+  }, [doubleClick])
 
-    return false
-  }
 
   return (
     <Column
       className={arrayToClassName(['equipment', isBroken && 'broken', isSelected && 'isSelected', className])}
-      // onClick={() => actions.display(isSelected ? undefined : { equipment }, [store, dispatch])}
-      onDoubleClick={handleDoubleClick}
+      onDoubleClick={onDoubleClick}
       style={{ ...style }}
     >
       <img alt={equipment.name} src={`${EQUIPMENTS_IMG_URI}/${equipment.ankamaId}.png`} onError={handleError} />

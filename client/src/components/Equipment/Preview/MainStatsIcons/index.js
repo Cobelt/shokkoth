@@ -73,7 +73,7 @@ const getInterestingStats = memoize(({ name, statistics, passives, category }) =
 
     toReturn = toReturn.flat()
 
-    console.log({ category, PETS, cat: PETS.getCategory(PET) })
+    // console.log({ category, PETS, cat: PETS.getCategory(PET) })
     if (category === PETS.getCategory(PET)) {
         statistics.forEach(stat => {
             if (toReturn.length < 3 && SECONDARY_STATS.includes(stat.name)) {

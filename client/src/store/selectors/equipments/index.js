@@ -1,5 +1,6 @@
 import get from 'lodash.get'
 import pickBy from 'lodash.pickby'
+import clone from 'lodash.clonedeep'
 import memoize from 'lodash.memoize'
 import { createSelector } from 'reselect'
 
@@ -132,20 +133,22 @@ export const getStuffSetsBonuses = createSelector(
 
 
 // STATS
-const _initStats = () => {
+const _statsToZero = memoize(() => {
   const toReturn = {}
-  for (let stat of ALL_STATS) {
+
+  ALL_STATS.forEach(stat => {
     toReturn[stat] = 0
-  }
+  })
 
   return toReturn
-}
+}, () => JSON.stringify(ALL_STATS))
 
 
 export const getInitStats = createSelector(
-  _initStats,
   getStuffLevel,
-  (initStats, level) => {
+  memoize(level => {
+    const initStats = clone(_statsToZero())
+
     initStats[AP] = level && level < 100 ? 6 : 7
     initStats[MP] = 3
     initStats[SUMMONS] = 1
@@ -153,13 +156,13 @@ export const getInitStats = createSelector(
 
     return initStats
   }
-)
+))
 
 
 export const getPointsToDispatch = createSelector(
   getCharacterBaseStats,
   getStuffLevel,
-  (base, level) => {
+  memoize((base, level) => {
     // todo change 200 by lvl
     let pointsToDispatch = 5*(level - 1)
     pointsToDispatch -= parseInt(base[VITALITY], 10)
@@ -176,14 +179,16 @@ export const getPointsToDispatch = createSelector(
       }
     }
     return pointsToDispatch
-  }
+  },
+  (base, level) => `${JSON.stringify(base)}#${level}`)
 )
 
 
 export const getCharacterStats = createSelector(
   getInitStats,
   getStatsStore,
-  memoize((initStats, stats) => {
+  memoize((_initStats, stats) => {
+    const initStats = clone(_initStats)
     
     if (stats) {
       for (let [statName, { base = 0, parcho = 0 } = {}] of Object.entries(stats)) {
@@ -192,15 +197,17 @@ export const getCharacterStats = createSelector(
     }
     return initStats
 
-  }, (_, stats) => JSON.stringify(stats)
-))
+  },
+  (initStats, stats) => `${JSON.stringify(initStats)}#${JSON.stringify(stats)}`)
+)
   
 
 export const getEquipmentsStats = createSelector(
-  _initStats,
   getStuffEquipments,
   getStuffSetsBonuses,
-  memoize((initStats, equipments, setsBonuses) => {
+  memoize((equipments, setsBonuses) => {
+    const initStats = clone(_statsToZero())
+    
     try {
       if (equipments) {
         const equipmentsList = Object.values(equipments).map(category => Object.values(category)).flat()
@@ -235,7 +242,7 @@ export const getEquipmentsStats = createSelector(
       console.warn('Error on getEquipmentsStats', e)
       return initStats
     }
-  }, (_, equipments) => JSON.stringify(equipments))
+  }, (equipments) => JSON.stringify(equipments))
 )
 
 
@@ -249,7 +256,8 @@ export const getEquipmentsStat = createSelector(
 export const getStats = createSelector(
   getCharacterStats,
   getEquipmentsStats,
-  (stats, equipmentsStats) => {
+  memoize((_stats, equipmentsStats) => {
+    const stats = clone(_stats)
 
     Object.entries(equipmentsStats).forEach(([name, value]) => 
       stats[name] += parseInt(value, 10)
@@ -274,8 +282,9 @@ export const getStats = createSelector(
     stats[PROSPECTING] += Math.trunc(stats[CHANCE] / 10)
 
     return stats
-  }
-)
+  },
+  (stats, equipmentsStats) => `${JSON.stringify(stats)}${JSON.stringify(equipmentsStats)}`
+))
 
 export const getStat = createSelector(
   getStats,

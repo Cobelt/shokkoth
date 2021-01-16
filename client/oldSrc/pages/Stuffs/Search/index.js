@@ -11,8 +11,7 @@ import './stylesheet.styl';
 
 
 const Search = () => {
-  const variables = { filter: { notDraft: true, notEmpty: true } };
-  const { data: { stuffMany: stuffs = [] } = {}, error, loading, fetchMore, refetch } = useQuery(gql(getStuffs), { variables });
+  const { data: { stuffMany: stuffs = [] } = {}, error, loading, fetchMore, refetch } = useQuery(gql(getStuffs));
 
   return (
     <Grid className="stuffs-list" gap="3rem" columnsTemplate={{ xs: '1fr', md: 'repeat(2, 1fr)', xl: 'repeat(3, 1fr)', xxxl: 'repeat(4, 1fr)' }}>

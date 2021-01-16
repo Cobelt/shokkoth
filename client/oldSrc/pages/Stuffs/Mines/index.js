@@ -22,7 +22,6 @@ const MyStuffs = ({ showLogin, history: { goBack, push } = {} }) => {
   const context = useContext(UserContext);
 
   const { user, token, isLogged } = useUser(context);
-  const variables = { filter: { notDraft: true, notEmpty: true } };
   const { data: { myStuffs: stuffs = [] } = {}, loading, error, refetch } = useQuery(gql(getMyStuffs));
 
   if (token && !isLogged) return <Redirect to="/" />

@@ -2,7 +2,7 @@ import React from 'react'
 import get from 'lodash.get'
 import { Grid, Spinner } from 'muejs'
 
-import Equipment from '../Preview'
+import EquipmentContainer from '../Container'
 
 import { arrayToClassName } from '../../../utils/common'
 import { EQUIPMENTS_IMG_URI } from '../../../constants/URIs'
@@ -27,7 +27,7 @@ const EquipmentsList = ({ equipments = [], className, loading, ...otherProps }) 
       { get(equipments, 'length') > 0 && (
         <>
           { equipments.map((equipment, index) => (
-            <Equipment
+            <EquipmentContainer
               key={`equipment-list#${equipment._id}`}
               index={index}
               equipment={equipment}

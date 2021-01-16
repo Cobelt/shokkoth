@@ -60,11 +60,6 @@ export const StuffsSchema = new mongoose.Schema({
         default: true,
     },
 
-    draft: {
-        type: Boolean,
-        default: true,
-    },
-
     // likes: [{
     //   type: [mongoose.Schema.Types.ObjectId],
     //   ref: 'Likes',

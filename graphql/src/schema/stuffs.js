@@ -13,7 +13,6 @@ export default function useStuffs(schemaComposer, customizationOptions = {}) {
     .addFilterArg(filters.search)
     .addFilterArg(filters.notEmptyStuffs)
     .addFilterArg(filters.almostFullStuff)
-    .addFilterArg(filters.notDraftStuffs)
   );
 
   StuffsTC.setResolver('findOne', StuffsTC.get('$findOne')
@@ -21,7 +20,6 @@ export default function useStuffs(schemaComposer, customizationOptions = {}) {
     .addFilterArg(filters.search)
     .addFilterArg(filters.notEmptyStuffs)
     .addFilterArg(filters.almostFullStuff)
-    .addFilterArg(filters.notDraftStuffs)
   );
 
   StuffsTC.addResolver({
@@ -58,10 +56,11 @@ export default function useStuffs(schemaComposer, customizationOptions = {}) {
 
   StuffsTC.addResolver({
     kind: 'mutation',
-    name: 'createDraft',
+    name: 'saveStuff',
     type: StuffsTC,
-    args: StuffsTC.get('$createOne').getArgs(),
-    resolve: resolvers.createDraft,
+    // change args to public / name / level / equipments ?
+    args: { record: StuffsTC.get('$updateOne').getArgs().record, stuffId: 'MongoID' },
+    resolve: resolvers.save,
   })
 
   StuffsTC.addResolver({
@@ -69,17 +68,21 @@ export default function useStuffs(schemaComposer, customizationOptions = {}) {
     name: 'createStuff',
     type: StuffsTC,
     // change args to public / name / level / equipments ?
-    args: { ...StuffsTC.get('$createOne').getArgs(), characterId: 'MongoID!' },
-    resolve: resolvers.createOne,
-  })
-
-  StuffsTC.addResolver({
-    kind: 'mutation',
-    name: 'duplicateStuff',
-    type: StuffsTC,
-    // change args to public / name / level / equipments ?
-    args: { stuffId: 'MongoID!', characterId: 'MongoID' },
-    resolve: resolvers.duplicateOne,
+    args: StuffsTC.get('$createOne').getArgs(),
+    resolve: async function createOne(rp) {
+      try {
+        const { record } = rp.args
+        const userId = getUserId(rp)
+    
+        const stuff = await Stuffs.create(record)
+        await Users.updateOne({ _id: userId }, { $push: { stuffs: stuff._id } }).exec()
+    
+        return Stuffs.findOne({ _id: stuff._id })
+      }
+      catch (e) {
+        return e
+      }
+    },
   })
 
   StuffsTC.addResolver({
@@ -89,6 +92,15 @@ export default function useStuffs(schemaComposer, customizationOptions = {}) {
     // change args to public / name / level / equipments ?
     args: { record: StuffsTC.get('$updateOne').getArgs().record, stuffId: 'MongoID!' },
     resolve: resolvers.updateOne,
+  })
+
+  StuffsTC.addResolver({
+    kind: 'mutation',
+    name: 'duplicateStuff',
+    type: StuffsTC,
+    // change args to public / name / level / equipments ?
+    args: { stuffId: 'MongoID!', characterId: 'MongoID' },
+    resolve: resolvers.duplicateOne,
   })
 
   StuffsTC.addResolver({
@@ -125,12 +137,10 @@ export default function useStuffs(schemaComposer, customizationOptions = {}) {
     emptyEquipments: StuffsTC.get('$emptyEquipments').wrapResolve(authResolvers.canUpdateStuff),
 
     duplicateStuff: StuffsTC.get('$duplicateStuff').wrapResolve(authResolvers.canUpdateCharacter).wrapResolve(authResolvers.canSeeStuff),
-    createStuff: StuffsTC.get('$createStuff').wrapResolve(authResolvers.canUpdateCharacter),
+    saveStuff: StuffsTC.get('$saveStuff').wrapResolve(authResolvers.canUpdateStuff),
+    createStuff: StuffsTC.get('$createStuff').wrapResolve(authResolvers.canUpdateStuff),
     updateStuff: StuffsTC.get('$updateStuff').wrapResolve(authResolvers.canUpdateStuff),
     removeStuff: StuffsTC.get('$removeStuff').wrapResolve(authResolvers.canUpdateStuff),
-
-    createDraft: StuffsTC.get('$createDraft'),
-
 
     ...adminAccess({
       stuffUpdateById: StuffsTC.get('$updateById'),

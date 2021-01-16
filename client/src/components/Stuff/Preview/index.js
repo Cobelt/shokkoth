@@ -40,7 +40,7 @@ const Stuff = ({ smallOption = false, smallWidth = false, stuff, className, elem
     if (setActiveAtMount && stuff) {
       actions.setActiveStuff({ stuff }, [store, dispatch])
     }
-  }, [!stuff]) // only change if go from null/undefined/... to something and reverse
+  }, [!stuff]) // only change if go from null/undefined/... to something
   
   const ap = selectors.getStat(store, { stuff, name: AP }) || 0
   const mp = selectors.getStat(store, { stuff, name: MP }) || 0

@@ -1,7 +1,5 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { FullPageSpinner } from 'muejs'
-import { useMutation, useQuery } from '@apollo/react-hooks'
-import gql from 'graphql-tag'
 
 import { CHARACTERS, STATS } from 'shokkoth-constants'
 
@@ -10,8 +8,6 @@ import StuffForm from '../../../components/Stuff/Form'
 import EquipmentsContext from '../../../store/context/equipments'
 import * as actions from '../../../store/actions/equipments'
 import * as selectors from '../../../store/selectors/equipments'
-
-import * as mutations from '../../../queries/mutations'
 
 
 import './stylesheet.styl'
@@ -56,14 +52,11 @@ const New = () => {
   
   const stuff = selectors.getActiveStuff(store)
 
-  const [createStuff] = useMutation(gql(mutations.createStuff))
-
-
   if (!stuff) return <FullPageSpinner />
 
   return (
     <div className="stuff-editor">
-      <StuffForm stuff={stuff} beforeSave={createStuff} />
+      <StuffForm stuff={stuff} />
     </div>
   )
 }
